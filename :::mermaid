@@ -1,0 +1,105 @@
+erDiagram
+    user_table ||--o{ post_table : "posts"
+    user_table ||--o{ question_table : "asks"
+    user_table ||--o{ iine_table : "likes"
+    company_table ||--o{ post_table : "has"
+    post_table ||--o{ question_table : "has"
+    post_table ||--o{ reply_table : "replies to"
+    question_table ||--o| reply_table : "has"
+    post_table ||--o{ iine_table : "receives"
+
+    user_table {
+        int id PK
+        string email
+        string password
+        boolean is_deleted
+        boolean can_view_posts
+        string first_name
+        string last_name
+        string first_name_kana
+        string last_name_kana
+        date birth_date
+        int gender
+        int prefecture
+        int current_career
+        int job_change_motivation
+        int side_job_motivation
+        int current_industry
+        int current_job_category
+        int current_job_subcategory
+        int current_job_years
+        int annual_income
+        int college_type
+        string college_name
+        string college_faculty
+        string college_department
+        date graduation_schedule
+    }
+
+    company_table {
+        int id PK
+        string company_name
+        string company_description
+        string company_mission
+        string company_vision
+        string company_values
+        string company_logo
+        string industry
+        string website_url
+        string location
+        int employee_count
+        int founding_year
+        int capital
+        string representative
+        string listing_status
+    }
+
+    post_table {
+        int id PK
+        int user_id FK
+        int company_id FK
+        string company_name
+        int employment_type
+        int entry_type
+        int employment_status
+        date join_date
+        date leave_date
+        int initial_job_category
+        int initial_job_subcategory
+        int reason_for_joining_1st
+        string reason_for_joining_details_1st
+        int satisfaction_level_1st
+        string satisfaction_details_1st
+        int reason_for_joining_2nd
+        string reason_for_joining_details_2nd
+        int satisfaction_level_2nd
+        string satisfaction_details_2nd
+        int reason_for_joining_3rd
+        string reason_for_joining_details_3rd
+        int satisfaction_level_3rd
+        string satisfaction_details_3rd
+        date post_date
+        int is_visible
+    }
+
+    question_table {
+        int id PK
+        int post_id FK
+        int question_user_id FK
+        string question
+        date question_date
+    }
+
+    reply_table {
+        int id PK
+        int post_id FK
+        int question_id FK
+        string reply
+        date reply_date
+    }
+
+    iine_table {
+        int id PK
+        int user_id FK
+        int post_id FK
+    }
