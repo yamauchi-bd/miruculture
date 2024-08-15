@@ -1,8 +1,13 @@
 @include('layouts.header')
 
+
 <x-guest-layout>
     <form method="POST" action="{{ route('register') }}">
         @csrf
+
+        <div class="flex justify-center mt-5 mb-10">
+            <p class="text-xl font-bold">無料ユーザー登録（１分）</p>
+        </div>
 
         <a href="{{ route('login.google') }}"
             class="flex items-center justify-center w-full pr-10 gap-2 rounded-lg border mt-4 border-gray-300 bg-white px-8 py-3 text-center text-sm font-semibold text-gray-800 outline-none ring-gray-300 transition duration-100 hover:bg-gray-100 focus-visible:ring active:bg-gray-200 md:text-base">

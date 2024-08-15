@@ -46,10 +46,10 @@
                 class="bg-indigo-50 text-indigo-600 rounded-full cursor-pointer font-semibold text-center shadow-xs transition-all duration-500 py-3 px-6 text-sm hover:bg-indigo-100">
                 ユーザー登録
               </a>
-              <button
+              <a href="{{ route('login') }}"
                 class="bg-indigo-600 text-white rounded-full cursor-pointer font-semibold text-center shadow-xs transition-all duration-500 py-3 px-6 text-sm hover:bg-indigo-700">
                 ログイン
-              </button>
+              </a>
             </div>
           </div>
         </div>
