@@ -42,10 +42,10 @@
               class="flex lg:items-center w-full justify-end flex-col lg:flex-row gap-4 lg:w-max max-lg:gap-4 lg:ml-auto">
               <a href="javascript:;"
                 class="nav-link mb-2 block lg:mr-6 md:mb-0 lg:text-left text-sm text-gray-500 font-semibold transition-all duration-500 hover:text-gray-900">新着データ</a>
-              <button
+              <a href="{{ route('register') }}"
                 class="bg-indigo-50 text-indigo-600 rounded-full cursor-pointer font-semibold text-center shadow-xs transition-all duration-500 py-3 px-6 text-sm hover:bg-indigo-100">
                 ユーザー登録
-              </button>
+              </a>
               <button
                 class="bg-indigo-600 text-white rounded-full cursor-pointer font-semibold text-center shadow-xs transition-all duration-500 py-3 px-6 text-sm hover:bg-indigo-700">
                 ログイン

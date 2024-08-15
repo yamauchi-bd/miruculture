@@ -7,7 +7,7 @@
             あなたの決め手が､誰かの決め手に｡
           </h1>
           <div
-            class="parent flex flex-col flex-row items-center max-w-xl mx-auto justify-center gap-y-4 pr-2 bg-white rounded-md mb-5 relative group transition-all duration-500 border border-transparent hover:border-indigo-600 focus-within:border-indigo-600">
+            class="parent flex flex-row items-center max-w-xl mx-auto justify-center gap-y-4 pr-2 bg-white rounded-md mb-5 relative group transition-all duration-500 border border-transparent hover:border-indigo-600 focus-within:border-indigo-600">
             <input type="text"
               class="block w-full px-6 py-3.5 text-base font-normal shadow-xs text-gray-900 bg-transparent placeholder-gray-400 focus:outline-none leading-normal"
               placeholder="気になる企業を検索する..." required="">
