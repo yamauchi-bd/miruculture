@@ -4,6 +4,15 @@ namespace App\Http\Controllers;
 
 use App\Models\Career;
 use Illuminate\Http\Request;
+use App\Models\Gender;
+use App\Models\Prefecture;
+use App\Models\CareerStatus;
+use App\Models\Industry;
+use App\Models\JobMotivation;
+use App\Models\JobCategory;
+use App\Models\JobYear;
+use App\Models\AnnualIncome;
+use App\Models\CollegeType;
 
 class CareerController extends Controller
 {
@@ -20,7 +29,29 @@ class CareerController extends Controller
      */
     public function create()
     {
-        return view('careers.create');
+        $genders = Gender::all();
+        $prefectures = Prefecture::all();
+        $careerStatuses = CareerStatus::all();
+        $industries = Industry::all();
+        $jobChangeMotivations = JobMotivation::where('type', 'change')->get();
+        $sideJobMotivations = JobMotivation::where('type', 'side')->get();
+        $jobCategories = JobCategory::whereNull('parent_id')->with('children')->get();
+        $jobYears = JobYear::all();
+        $annualIncomes = AnnualIncome::all();
+        $collegeTypes = CollegeType::all();
+
+        return view('careers.create', compact(
+            'genders',
+            'prefectures',
+            'careerStatuses',
+            'industries',
+            'jobChangeMotivations',
+            'sideJobMotivations',
+            'jobCategories',
+            'jobYears',
+            'annualIncomes',
+            'collegeTypes'
+        ));
     }
 
     /**
