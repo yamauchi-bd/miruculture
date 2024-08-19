@@ -25,7 +25,7 @@ class GoogleLoginController extends Controller
 
             Auth::login($user);
 
-            return redirect()->intended('dashboard');
+            return redirect()->route('careers.create');
         } catch (Exception $e) {
             Log::error($e);
             throw $e;
