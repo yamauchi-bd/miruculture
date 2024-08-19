@@ -18,13 +18,18 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        DB::table('job_years')->insert([
-            ['name' => '1年未満'],
-            ['name' => '1〜2年'],
-            ['name' => '3〜5年'],
-            ['name' => '6〜10年'],
-            ['name' => '10年以上'],
-        ]);
+         // 経験年数データの挿入
+         $job_years = [
+            '1年未満',
+            '1〜2年',
+            '3〜5年',
+            '6〜10年',
+            '10年以上'
+        ];
+
+         foreach ($job_years as $job_year) {
+             DB::table('job_years')->insert(['name' => $job_year]);
+         }
     }
 
     /**

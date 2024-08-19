@@ -18,11 +18,12 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        DB::table('genders')->insert([
-            ['name' => '男性'],
-            ['name' => '女性'],
-            ['name' => '無回答'],
-        ]);
+        // 性別データの挿入
+        $genders = ['男性', '女性', 'その他'];
+
+        foreach ($genders as $gender) {
+            DB::table('genders')->insert(['name' => $gender]);
+        }
     }
 
     /**

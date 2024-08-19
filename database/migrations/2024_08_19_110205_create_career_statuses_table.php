@@ -18,11 +18,12 @@ return new class extends Migration
             $table->timestamps();
         });
 
-        DB::table('career_statuses')->insert([
-            ['name' => '社会人'],
-            ['name' => '学生'],
-            ['name' => 'その他'],
-        ]);
+        // 現在のキャリアデータの挿入
+        $career_statuses = ['社会人', '学生', 'その他'];
+
+        foreach ($career_statuses as $career_status) {
+            DB::table('career_statuses')->insert(['name' => $career_status]);
+        }
     }
 
     /**
