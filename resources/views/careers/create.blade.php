@@ -7,8 +7,9 @@
                 <h4 class="text-gray-900 text-xl font-semibold leading-loose self-start">基本情報の登録</h4>
 
                 <div class="w-full justify-center items-center gap-8 flex sm:flex-row flex-col">
-                    <form action="{{ route('careers.store') }}" method="POST" class="w-full">
+                    <form method="POST" action="{{ route('careers.store') }}" class="w-full">
                         @csrf
+                        <input type="hidden" name="user_id" value="{{ Auth::id() }}">
                         <!-- 基本情報 -->
                         <div class="w-full justify-start items-start mb-6 gap-8 flex sm:flex-row flex-col">
                             <div class="w-full flex-col justify-start items-start gap-1.5 flex">
@@ -300,7 +301,7 @@
                                         class="w-2/5 focus:outline-none text-gray-900 text-base font-normal leading-relaxed px-4 py-2 rounded-md shadow-sm border border-gray-300 focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500">
                                         <option value="" selected disabled>月</option>
                                         @for ($month = 1; $month <= 12; $month++)
-                                            <option value="{{ $month }}" {{ $month == 3 ? 'selected' : '' }}>{{ $month }}月</option>
+                                            <option value="{{ $month }}">{{ $month }}月</option>
                                         @endfor
                                     </select>
                                 </div>
@@ -316,19 +317,29 @@
 
                     <script>
                         // 現在のキャリア選択に応じてフィールドの表示/非表示を切り替える
+                        let currentModal = null;
                         document.querySelectorAll('input[name="career_status_id"]').forEach(radio => {
                             radio.addEventListener('change', function() {
                                 const workingFields = document.getElementById('working-fields');
+                                const workingInputs = workingFields.querySelectorAll('input, select');
                                 const studentFields = document.getElementById('student-fields');
+                                const studentInputs = studentFields.querySelectorAll('input, select');
+
                                 if (this.value === '1' || this.value === '3') { // 社会人またはその他
                                     workingFields.style.display = 'block';
                                     studentFields.style.display = 'none';
+                                    workingInputs.forEach(input => input.setAttribute('required', ''));
+                                    studentInputs.forEach(input => input.removeAttribute('required'));
                                 } else if (this.value === '2') { // 学生
                                     workingFields.style.display = 'none';
                                     studentFields.style.display = 'block';
+                                    workingInputs.forEach(input => input.removeAttribute('required'));
+                                    studentInputs.forEach(input => input.setAttribute('required', ''));
                                 } else {
                                     workingFields.style.display = 'none';
                                     studentFields.style.display = 'none';
+                                    workingInputs.forEach(input => input.removeAttribute('required'));
+                                    studentInputs.forEach(input => input.removeAttribute('required'));
                                 }
                             });
                         });

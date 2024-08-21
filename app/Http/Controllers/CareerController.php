@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Illuminate\Support\Facades\Log;
 use App\Models\Career;
 use Illuminate\Http\Request;
 use App\Models\Gender;
@@ -21,7 +22,8 @@ class CareerController extends Controller
      */
     public function index()
     {
-        //
+        $careers = Career::with('user')->latest()->get();
+        return view('careers.index', compact('careers'));
     }
 
     /**
@@ -59,7 +61,52 @@ class CareerController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Log::info('All form data:', $request->all());
+    Log::info('graduation_year:', [$request->input('graduation_year')]);
+    Log::info('graduation_month:', [$request->input('graduation_month')]);
+
+        try {
+            $baseRules = [
+                'user_id' => 'required|exists:users,id',
+                'last_name' => 'required|string|max:255',
+                'first_name' => 'required|string|max:255',
+                'last_name_kana' => 'required|string|max:255',
+                'first_name_kana' => 'required|string|max:255',
+                'birth_date' => 'required|date',
+                'gender_id' => 'required|exists:genders,id',
+                'prefecture_id' => 'required|exists:prefectures,id',
+                'career_status_id' => 'required|exists:career_statuses,id',
+            ];
+
+            $conditionalRules = [
+                'current_industry_id' => 'required_if:career_status_id,1,3|exists:industries,id',
+                'current_job_category_id' => 'required_if:career_status_id,1,3|exists:job_categories,id',
+                'current_job_subcategory_id' => 'required_if:career_status_id,1,3|exists:job_categories,id',
+                'current_job_years_id' => 'required_if:career_status_id,1,3|exists:job_years,id',
+                'annual_income_id' => 'required_if:career_status_id,1,3|exists:annual_incomes,id',
+                'job_change_motivation_id' => 'required_if:career_status_id,1,3|exists:job_motivations,id',
+                'side_job_motivation_id' => 'required_if:career_status_id,1,3|exists:job_motivations,id',
+                'college_name' => 'nullable|string|max:255',
+                'college_faculty' => 'nullable|string|max:255',
+                'college_department' => 'nullable|string|max:255',
+                'graduation_year' => 'required_if:career_status_id,2|nullable|integer|min:' . date('Y') . '|max:' . (date('Y') + 10),
+                'graduation_month' => 'required_if:career_status_id,2|nullable|integer|min:1|max:12',
+            ];
+
+            $validatedData = $request->validate(array_merge($baseRules, $conditionalRules));
+
+            $career = Career::create($validatedData);
+
+            Log::info('Career created successfully:', $career->toArray());
+
+            return redirect()->route('careers.index')->with('success', 'キャリア情報が正常に保存されました。');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            Log::error('Validation failed:', $e->errors());
+            return back()->withErrors($e->errors())->withInput();
+        } catch (\Exception $e) {
+            Log::error('Error in store method: ' . $e->getMessage());
+            return back()->with('error', 'エラーが発生しました。もう一度お試しください。')->withInput();
+        }
     }
 
     /**
