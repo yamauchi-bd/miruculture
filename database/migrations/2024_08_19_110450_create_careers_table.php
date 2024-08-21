@@ -37,8 +37,8 @@ return new class extends Migration
             $table->string('college_name')->nullable();
             $table->string('college_faculty')->nullable();
             $table->string('college_department')->nullable();
-            $table->date('graduation_schedule')->nullable();
-
+            $table->integer('graduation_years')->nullable();
+            $table->integer('graduation_month')->nullable();
             $table->timestamps();
         });
     }

@@ -20,23 +20,22 @@ class Career extends Model
         'gender_id',
         'prefecture_id',
         'career_status_id',
-        'job_change_motivation_id',
-        'side_job_motivation_id',
         'current_industry_id',
         'current_job_category_id',
         'current_job_subcategory_id',
         'current_job_years_id',
         'annual_income_id',
-        'college_type_id',
+        'job_change_motivation_id',
+        'side_job_motivation_id',
         'college_name',
         'college_faculty',
         'college_department',
-        'graduation_schedule',
+        'graduation_year',
+        'graduation_month',
     ];
 
     protected $dates = [
         'birth_date',
-        'graduation_schedule',
     ];
 
     // リレーションシップ
