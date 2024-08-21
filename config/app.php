@@ -123,4 +123,9 @@ return [
         'store' => env('APP_MAINTENANCE_STORE', 'database'),
     ],
 
+    'aliases' => [
+    'Lang' => Illuminate\Support\Facades\Lang::class,
+    'Auth' => Illuminate\Support\Facades\Auth::class,
+],
+
 ];
