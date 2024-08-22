@@ -1,3 +1,7 @@
+@php
+use Illuminate\Support\Facades\Route;
+@endphp
+
 @include('layouts.header')
 
 <x-guest-layout>
