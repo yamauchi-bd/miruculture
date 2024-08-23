@@ -60,7 +60,7 @@ Route::get('/email/change/{token}', [ProfileController::class, 'confirmEmailChan
 //企業情報
 // Route::resource('company', CompanyController::class);
 Route::get('/company', function () {
-    return view('/company/index');
+    return view('company.index');
 });
 
 require __DIR__ . '/auth.php';
