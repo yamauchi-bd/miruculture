@@ -123,32 +123,102 @@ class CareerController extends Controller
             Log::info('User not found');
             return redirect()->route('login')->with('error', 'ログインしてください。');
         }
-    
+
         $career = $user->career;
         Log::info('Career data:', ['career' => $career]);
-    
+
         if (!$career) {
             Log::info('Career not found for user:', ['user_id' => $user->id]);
             return redirect()->route('careers.create')->with('info', 'キャリア情報がまだ登録されていません。新しく作成してください。');
         }
-    
+
         return view('careers.show', ['career' => $career]);
     }
-
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Career $career)
+    public function edit()
     {
-        //
+        $user = Auth::user();
+        $career = $user->career;
+
+        if (!$career) {
+            return redirect()->route('careers.create')->with('info', 'キャリア情報がまだ登録されていません。新しく作成してください。');
+        }
+
+        $genders = Gender::all();
+        $prefectures = Prefecture::all();
+        $careerStatuses = CareerStatus::all();
+        $industries = Industry::all();
+        $jobChangeMotivations = JobMotivation::where('type', 'change')->get();
+        $sideJobMotivations = JobMotivation::where('type', 'side')->get();
+        $jobCategories = JobCategory::whereNull('parent_id')->with('children')->get();
+        $jobYears = JobYear::all();
+        $annualIncomes = AnnualIncome::all();
+        $collegeTypes = CollegeType::all();
+
+        return view('careers.edit', compact(
+            'career',
+            'genders',
+            'prefectures',
+            'careerStatuses',
+            'industries',
+            'jobChangeMotivations',
+            'sideJobMotivations',
+            'jobCategories',
+            'jobYears',
+            'annualIncomes',
+            'collegeTypes'
+        ));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Career $career)
+    public function update(Request $request)
     {
-        //
+        $user = Auth::user();
+        $career = $user->career;
+
+        if (!$career) {
+            return redirect()->route('careers.create')->with('info', 'キャリア情報がまだ登録されていません。新しく作成してください。');
+        }
+
+        $baseRules = [
+            'last_name' => 'required|string|max:255',
+            'first_name' => 'required|string|max:255',
+            'last_name_kana' => 'required|string|max:255',
+            'first_name_kana' => 'required|string|max:255',
+            'birth_date' => 'required|date',
+            'gender_id' => 'required|exists:genders,id',
+            'prefecture_id' => 'required|exists:prefectures,id',
+            'career_status_id' => 'required|exists:career_statuses,id',
+        ];
+
+        $conditionalRules = [
+            'current_industry_id' => 'required_if:career_status_id,1,3|exists:industries,id',
+            'current_job_category_id' => 'required_if:career_status_id,1,3|exists:job_categories,id',
+            'current_job_subcategory_id' => 'required_if:career_status_id,1,3|exists:job_categories,id',
+            'current_job_years_id' => 'required_if:career_status_id,1,3|exists:job_years,id',
+            'annual_income_id' => 'required_if:career_status_id,1,3|exists:annual_incomes,id',
+            'job_change_motivation_id' => 'required_if:career_status_id,1,3|exists:job_motivations,id',
+            'side_job_motivation_id' => 'required_if:career_status_id,1,3|exists:job_motivations,id',
+            'college_name' => 'nullable|string|max:255',
+            'college_faculty' => 'nullable|string|max:255',
+            'college_department' => 'nullable|string|max:255',
+            'graduation_year' => 'required_if:career_status_id,2|nullable|integer|min:' . date('Y') . '|max:' . (date('Y') + 10),
+            'graduation_month' => 'required_if:career_status_id,2|nullable|integer|min:1|max:12',
+        ];
+
+        $validatedData = $request->validate(array_merge($baseRules, $conditionalRules));
+
+        $career->update($validatedData);
+
+        if ($request->ajax()) {
+            return response()->json(['success' => true]);
+        }
+
+        return redirect()->route('careers.show')->with('success', 'キャリア情報が更新されました。');
     }
 
     /**

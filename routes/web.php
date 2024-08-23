@@ -23,9 +23,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('careers', CareerController::class);
 });
 
-Route::get('/careers/show', [CareerController::class, 'show'])
-    ->middleware(['auth', 'verified'])
-    ->name('careers.show');
+//ここは要確認、　careersにまとめられない？
+Route::middleware(['auth'])->group(function () {
+    Route::get('/career', [CareerController::class, 'show'])->name('career.show');
+    Route::get('/career/edit', [CareerController::class, 'edit'])->name('career.edit');
+    Route::put('/career', [CareerController::class, 'update'])->name('career.update');
+});
 
 Route::get('/auth/google', [GoogleLoginController::class, 'redirectToGoogle'])
     ->name('login.google');
