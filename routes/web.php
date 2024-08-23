@@ -23,6 +23,10 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('careers', CareerController::class);
 });
 
+Route::get('/careers/show', [CareerController::class, 'show'])
+    ->middleware(['auth', 'verified'])
+    ->name('careers.show');
+
 Route::get('/auth/google', [GoogleLoginController::class, 'redirectToGoogle'])
     ->name('login.google');
 

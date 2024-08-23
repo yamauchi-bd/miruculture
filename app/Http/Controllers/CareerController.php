@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Log;
+use App\Models\User;
 use App\Models\Career;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Gender;
 use App\Models\Prefecture;
 use App\Models\CareerStatus;
@@ -17,6 +19,7 @@ use App\Models\CollegeType;
 
 class CareerController extends Controller
 {
+
     /**
      * Display a listing of the resource.
      */
@@ -62,8 +65,8 @@ class CareerController extends Controller
     public function store(Request $request)
     {
         Log::info('All form data:', $request->all());
-    Log::info('graduation_year:', [$request->input('graduation_year')]);
-    Log::info('graduation_month:', [$request->input('graduation_month')]);
+        Log::info('graduation_year:', [$request->input('graduation_year')]);
+        Log::info('graduation_month:', [$request->input('graduation_month')]);
 
         try {
             $baseRules = [
@@ -112,9 +115,24 @@ class CareerController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Career $career)
+    public function show()
     {
-        //
+        Log::info('Show method called');
+        $user = Auth::user();
+        if (!$user) {
+            Log::info('User not found');
+            return redirect()->route('login')->with('error', 'ログインしてください。');
+        }
+    
+        $career = $user->career;
+        Log::info('Career data:', ['career' => $career]);
+    
+        if (!$career) {
+            Log::info('Career not found for user:', ['user_id' => $user->id]);
+            return redirect()->route('careers.create')->with('info', 'キャリア情報がまだ登録されていません。新しく作成してください。');
+        }
+    
+        return view('careers.show', ['career' => $career]);
     }
 
     /**
