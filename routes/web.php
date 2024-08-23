@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\GoogleLoginController;
 use App\Http\Controllers\CareerController;
@@ -54,5 +55,12 @@ Route::post('/email/verification-notification', function (Request $request) {
 Route::get('/email/change/{token}', [ProfileController::class, 'confirmEmailChange'])
     ->middleware(['auth'])
     ->name('email.change.confirm');
+
+
+//企業情報
+// Route::resource('company', CompanyController::class);
+Route::get('/company', function () {
+    return view('/company/index');
+});
 
 require __DIR__ . '/auth.php';
