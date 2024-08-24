@@ -150,9 +150,11 @@ class CareerController extends Controller
         $prefectures = Prefecture::all();
         $careerStatuses = CareerStatus::all();
         $industries = Industry::all();
+        $jobMotivations = JobMotivation::all();
         $jobChangeMotivations = JobMotivation::where('type', 'change')->get();
         $sideJobMotivations = JobMotivation::where('type', 'side')->get();
         $jobCategories = JobCategory::whereNull('parent_id')->with('children')->get();
+        $jobSubcategories = JobCategory::whereNotNull('parent_id')->get(); 
         $jobYears = JobYear::all();
         $annualIncomes = AnnualIncome::all();
         $collegeTypes = CollegeType::all();
@@ -163,9 +165,11 @@ class CareerController extends Controller
             'prefectures',
             'careerStatuses',
             'industries',
+            'jobMotivations',
             'jobChangeMotivations',
             'sideJobMotivations',
             'jobCategories',
+            'jobSubcategories',
             'jobYears',
             'annualIncomes',
             'collegeTypes'
