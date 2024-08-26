@@ -1,4 +1,8 @@
-@include('layouts.header')
+@php
+use Illuminate\Support\Facades\Route;
+@endphp
+
+@include('layouts.navigation')
 
 <x-guest-layout>
     <!-- Session Status -->

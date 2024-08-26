@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
@@ -11,10 +12,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('posts', function (Blueprint $table) {
+        Schema::create('genders', function (Blueprint $table) {
             $table->id();
+            $table->string('name');
             $table->timestamps();
         });
+
+        // 性別データの挿入
+        $genders = ['男性', '女性', 'その他'];
+
+        foreach ($genders as $gender) {
+            DB::table('genders')->insert(['name' => $gender]);
+        }
     }
 
     /**
@@ -22,6 +31,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('posts');
+        Schema::dropIfExists('genders');
     }
 };

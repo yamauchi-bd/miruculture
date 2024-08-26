@@ -7,17 +7,23 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Support\Str;
 use Illuminate\View\View;
+use App\Models\User;
 
 class ProfileController extends Controller
 {
     /**
      * Display the user's profile form.
      */
-    public function edit(Request $request): View
+    public function edit(Request $request)
     {
+        $user = $request->user();
+        $career = $user->career; // ユーザーに関連付けられたキャリア情報を取得
+    
         return view('profile.edit', [
-            'user' => $request->user(),
+            'user' => $user,
+            'career' => $career,
         ]);
     }
 
@@ -26,15 +32,36 @@ class ProfileController extends Controller
      */
     public function update(ProfileUpdateRequest $request): RedirectResponse
     {
-        $request->user()->fill($request->validated());
+        $user = $request->user();
+        $newEmail = $request->input('email');
 
-        if ($request->user()->isDirty('email')) {
-            $request->user()->email_verified_at = null;
+        if ($newEmail !== $user->email) {
+            $user->new_email = $newEmail;
+            $user->email_change_token = Str::random(60);
+            $user->save();
+
+            // 確認メールを送信
+            $user->sendEmailChangeNotification();
+
+            return Redirect::route('profile.edit')->with('status', 'verification-link-sent');
         }
 
-        $request->user()->save();
+        // その他のプロフィール更新処理
 
         return Redirect::route('profile.edit')->with('status', 'profile-updated');
+    }
+
+    public function confirmEmailChange(Request $request, $token)
+    {
+        $user = User::where('email_change_token', $token)->firstOrFail();
+
+        $user->email = $user->new_email;
+        $user->new_email = null;
+        $user->email_change_token = null;
+        $user->email_verified_at = now();
+        $user->save();
+
+        return Redirect::route('profile.edit')->with('status', 'email-changed');
     }
 
     /**
