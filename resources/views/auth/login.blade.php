@@ -2,7 +2,7 @@
 use Illuminate\Support\Facades\Route;
 @endphp
 
-@include('layouts.header')
+@include('layouts.navigation')
 
 <x-guest-layout>
     <!-- Session Status -->

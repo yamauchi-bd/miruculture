@@ -1,4 +1,4 @@
-@include('layouts.header')
+@include('layouts.navigation')
 
 <section class="lg:py-24 md:py-12 sm:py-4 relative">
     <div class="max-w-3xl lg:w-1/2 px-4 md:px-5 lg:px-5 mx-auto">

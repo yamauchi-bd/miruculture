@@ -14,6 +14,9 @@ export default {
             fontFamily: {
                 sans: ['Figtree', ...defaultTheme.fontFamily.sans],
             },
+            boxShadow: {
+                'inner-cyan': 'inset 0 0 0 2px #06b6d4', // cyan-500の色コード
+            },
         },
     },
 
