@@ -4,6 +4,7 @@ use App\Http\Controllers\CompanyController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\GoogleLoginController;
 use App\Http\Controllers\CareerController;
+use App\Http\Controllers\PostController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Auth;
@@ -23,7 +24,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('careers', CareerController::class);
 });
 
-//ここは要確認、　careersにまとめられない？
+Route::resource('posts', PostController::class);
+
 Route::middleware(['auth'])->group(function () {
     Route::get('/career', [CareerController::class, 'show'])->name('career.show');
     Route::get('/career/edit', [CareerController::class, 'edit'])->name('career.edit');
