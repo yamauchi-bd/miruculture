@@ -14,18 +14,18 @@ return new class extends Migration
         Schema::create('companies', function (Blueprint $table) {
             $table->integer('corporate_number');
             $table->string('name');
-            $table->text('business_summary');
+            $table->text('business_summary')->nullable();;
             $table->text('company_mission')->nullable();
             $table->text('company_vision')->nullable();
             $table->text('company_values')->nullable();
             $table->string('company_logo')->nullable();
             $table->string('industry')->nullable();
-            $table->text('company_url');
+            $table->text('company_url')->nullable();
             $table->string('location');
-            $table->integer('employee_number');
-            $table->integer('date_of_establishment');
-            $table->integer('capital_stock');
-            $table->string('representative_name');
+            $table->integer('employee_number')->nullable();
+            $table->integer('date_of_establishment')->nullable();
+            $table->integer('capital_stock')->nullable();
+            $table->string('representative_name')->nullable();
             $table->string('listing_status')->nullable();
             $table->timestamps();
         });
