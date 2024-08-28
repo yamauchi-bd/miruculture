@@ -25,6 +25,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
 });
 
 Route::resource('posts', PostController::class);
+Route::post('/posts/validate-section1', [PostController::class, 'validateSection1'])->name('posts.validate.section1');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/career', [CareerController::class, 'show'])->name('career.show');
