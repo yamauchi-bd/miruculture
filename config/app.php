@@ -126,6 +126,7 @@ return [
     'aliases' => [
     'Lang' => Illuminate\Support\Facades\Lang::class,
     'Auth' => Illuminate\Support\Facades\Auth::class,
+    'DB' => Illuminate\Support\Facades\DB::class,
 ],
 
 ];
