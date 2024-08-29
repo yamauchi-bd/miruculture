@@ -127,11 +127,11 @@
                 </label>
                 <div class="flex gap-8">
                     <label class="inline-flex items-center">
-                        <input type="radio" class="form-radio" name="entry_type" value="新卒" required>
+                        <input type="radio" class="form-radio" name="entry_type" value="新卒入社" required>
                         <span class="ml-2">新卒入社</span>
                     </label>
                     <label class="inline-flex items-center">
-                        <input type="radio" class="form-radio" name="entry_type" value="中途">
+                        <input type="radio" class="form-radio" name="entry_type" value="中途入社">
                         <span class="ml-2">中途入社</span>
                     </label>
                 </div>
