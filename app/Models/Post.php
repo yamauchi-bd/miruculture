@@ -48,4 +48,20 @@ class Post extends Model
     {
         return $this->belongsTo(JobCategory::class, 'current_job_subcategory_id');
     }
+    
+    public function getDecidingFactorsAttribute()
+    {
+        $factors = collect();
+        for ($i = 1; $i <= 3; $i++) {
+            if ($this->{"deciding_factor_$i"}) {
+                $factors->push((object)[
+                    'factor' => $this->{"deciding_factor_$i"},
+                    'detail' => $this->{"factor_{$i}_detail"},
+                    'satisfaction' => $this->{"factor_{$i}_satisfaction"},
+                    'satisfaction_reason' => $this->{"factor_{$i}_satisfaction_reason"},
+                ]);
+            }
+        }
+        return $factors;
+    }
 }
