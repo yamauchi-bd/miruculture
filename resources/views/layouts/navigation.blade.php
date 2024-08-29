@@ -45,6 +45,9 @@
                         <x-nav-link :href="route('careers.create')" :active="request()->routeIs('careers.create')">
                             {{ __('キャリア作成') }}
                         </x-nav-link>
+                        <x-nav-link :href="route('posts.create')" :active="request()->routeIs('careers.create')">
+                            {{ __('決め手投稿') }}
+                        </x-nav-link>
                     </div>
                 </div>
 
@@ -127,6 +130,9 @@
                     </x-responsive-nav-link>
                     <x-responsive-nav-link :href="route('careers.create')" :active="request()->routeIs('careers.create')">
                         {{ __('キャリア作成') }}
+                    </x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('posts.create')" :active="request()->routeIs('careers.create')">
+                        {{ __('決め手投稿') }}
                     </x-responsive-nav-link>
                 </div>
 

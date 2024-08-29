@@ -41,9 +41,9 @@ class Post extends Model
 
     public function jobCategory()
     {
-        return $this->belongsTo(JobCategory::class);
+        return $this->belongsTo(JobCategory::class, 'current_job_category_id');
     }
-
+    
     public function jobSubcategory()
     {
         return $this->belongsTo(JobCategory::class, 'current_job_subcategory_id');
