@@ -4,7 +4,7 @@
     <div class="flex pb-2">
         <div class="flex-1 flex flex-col items-center">
             <div class="w-10 h-10 bg-cyan-500 mx-auto rounded-full text-lg text-white flex items-center">
-                <span class="text-white text-center w-full"><i class="fa fa-check w-full fill-current white"></i>1</span>
+                <span class="text-white text-center w-full">1</span>
             </div>
         </div>
 
@@ -630,5 +630,56 @@
                 });
             }
         }
+    });
+</script>
+
+<script>
+    // 入社の決め手の重複選択を防ぐ
+    document.addEventListener('DOMContentLoaded', function() {
+        const decidingFactors = document.querySelectorAll('.deciding-factor');
+        const factorGroups = {};
+
+        decidingFactors.forEach(factor => {
+            const groupName = factor.getAttribute('name');
+            if (!factorGroups[groupName]) {
+                factorGroups[groupName] = [];
+            }
+            factorGroups[groupName].push(factor);
+        });
+
+        function updateAvailableOptions() {
+            const selectedValues = new Set();
+
+            // 選択された値を収集
+            Object.values(factorGroups).forEach(group => {
+                group.forEach(factor => {
+                    if (factor.checked) {
+                        selectedValues.add(factor.value);
+                    }
+                });
+            });
+
+            // 各グループの選択可能なオプションを更新
+            Object.values(factorGroups).forEach(group => {
+                group.forEach(factor => {
+                    const label = factor.nextElementSibling;
+                    if (selectedValues.has(factor.value) && !factor.checked) {
+                        factor.disabled = true;
+                        label.classList.add('opacity-50', 'cursor-not-allowed');
+                    } else {
+                        factor.disabled = false;
+                        label.classList.remove('opacity-50', 'cursor-not-allowed');
+                    }
+                });
+            });
+        }
+
+        // 各ラジオボタンの変更イベントにリスナーを追加
+        decidingFactors.forEach(factor => {
+            factor.addEventListener('change', updateAvailableOptions);
+        });
+
+        // 初期状態を設定
+        updateAvailableOptions();
     });
 </script>
