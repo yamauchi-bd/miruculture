@@ -12,7 +12,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('user_id')->nullable()->constrained()->onDelete('set null');
             $table->string('company_name');
-            $table->char('corporate_number', 13);
+            $table->char('corporate_number', 13)->nullable();
             $table->enum('employment_type', ['正社員', '契約社員', 'その他']);
             $table->enum('entry_type', ['新卒入社', '中途入社']);
             $table->enum('status', ['在籍中', '退職済み']);

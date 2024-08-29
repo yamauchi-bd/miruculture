@@ -10,6 +10,7 @@ class Post extends Model
     use HasFactory;
 
     protected $fillable = [
+        'user_id',
         'company_name',
         'corporate_number',
         'employment_type',
@@ -41,5 +42,10 @@ class Post extends Model
     public function jobCategory()
     {
         return $this->belongsTo(JobCategory::class);
+    }
+
+    public function jobSubcategory()
+    {
+        return $this->belongsTo(JobCategory::class, 'current_job_subcategory_id');
     }
 }
