@@ -12,8 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('companies', function (Blueprint $table) {
-            $table->integer('corporate_number');
-            $table->string('name');
+            $table->bigInteger('corporate_number')->unsigned();
+            $table->string('company_name');
             $table->text('business_summary')->nullable();;
             $table->text('company_mission')->nullable();
             $table->text('company_vision')->nullable();
@@ -23,8 +23,8 @@ return new class extends Migration
             $table->text('company_url')->nullable();
             $table->string('location');
             $table->integer('employee_number')->nullable();
-            $table->integer('date_of_establishment')->nullable();
-            $table->integer('capital_stock')->nullable();
+            $table->date('date_of_establishment')->nullable();
+            $table->bigInteger('capital_stock')->nullable();
             $table->string('representative_name')->nullable();
             $table->string('listing_status')->nullable();
             $table->timestamps();

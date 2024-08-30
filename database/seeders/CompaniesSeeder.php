@@ -2,34 +2,156 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
-
-# ライブラリの読込
-use Flynsarmy\CsvSeeder\CsvSeeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Log;
+use League\Csv\Reader;
+use League\Csv\Statement;
+use Carbon\Carbon;
 
-class CompaniesSeeder extends CsvSeeder
+class CompaniesSeeder extends Seeder
 {
-    public function __construct()
+    protected $columnMapping = [
+        '法人番号' => 'corporate_number',
+        '法人名' => 'company_name',
+        '事業概要' => 'business_summary',
+        '企業ホームページ' => 'company_url',
+        '本社所在地' => 'location',
+        '従業員数' => 'employee_number',
+        '設立年月日' => 'date_of_establishment',
+        '資本金' => 'capital_stock',
+        '法人代表者名' => 'representative_name',
+    ];
+
+    public function run()
     {
-        $this->table = 'companies';
-        $this->filename = base_path() . '/database/seeders/csv/Book1.csv';
-        $this->timestamps = true;
-        $this->created_at = \Carbon\Carbon::now()->format('Y-m-d H:i:s');
-        $this->updated_at = \Carbon\Carbon::now()->format('Y-m-d H:i:s');
+        $files = glob(storage_path('app/company_data/*.csv'));
+        $totalProcessed = 0;
+
+        foreach ($files as $file) {
+            $this->command->info("Processing file: " . basename($file));
+            try {
+                $processed = $this->processFile($file);
+                $totalProcessed += $processed;
+                $this->command->info("Processed $processed records from " . basename($file));
+            } catch (\Exception $e) {
+                $this->command->error("Error processing file " . basename($file) . ": " . $e->getMessage());
+                // オプション：エラーをログに記録
+                Log::error("Error processing file: " . basename($file) . " - " . $e->getMessage());
+            }
+        }
+
+        $this->command->info("Total processed records: $totalProcessed");
     }
 
-    /**
-     * Run the database seeds.
-     */
-    public function run(): void
+    protected function processFile($file)
     {
-        // Recommended when importing larger CSVs
-        DB::disableQueryLog();
-        // 全データ削除後に再登録する。
-        DB::table($this->table)->truncate();
+        Log::info("Started processing file: " . basename($file));
 
-        parent::run();
+        $csv = Reader::createFromPath($file, 'r');
+
+        // ファイル名から番号を取得
+        $fileNumber = intval(substr(basename($file), 10, 3));
+
+        if ($fileNumber == 0) {
+            // kihonjoho_000.csvの場合はヘッダーあり
+            $csv->setHeaderOffset(0);
+            $header = $csv->getHeader();
+        } else {
+            // それ以外のファイルはヘッダーなし
+            $header = $this->getDefaultHeader();
+            $csv->setHeaderOffset(null);
+        }
+
+        Log::info("File headers: " . implode(', ', $header));
+
+        $records = $csv->getRecords($header);
+
+        $processedCount = 0;
+        foreach ($records as $record) {
+            try {
+                // 空の列を除去
+                $record = array_filter($record, function($value) {
+                    return $value !== '';
+                });
+
+                if (!empty($record['本社所在地'])) {
+                    $data = $this->mapData($record);
+                    DB::table('companies')->insert($data);
+                    $processedCount++;
+                }
+            } catch (\Exception $e) {
+                Log::error("Error processing record in file " . basename($file) . ": " . $e->getMessage());
+                Log::error("Problematic record: " . json_encode($record));
+            }
+        }
+
+        Log::info("Finished processing file: " . basename($file) . ". Processed records: " . $processedCount);
+        return $processedCount;
+    }
+
+    protected function getDefaultHeader()
+    {
+        // CSVファイルの正しいヘッダーをここに記述
+        return [
+            '法人番号',
+            '法人名',
+            '法人名ふりがな',
+            '法人名英語',
+            '郵便番号',
+            '本社所在地',
+            'ステータス',
+            '登記記録の閉鎖等年月日',
+            '登記記録の閉鎖等の事由',
+            '法人代表者名',
+            '法人代表者役職',
+            '資本金',
+            '従業員数',
+            '企業規模詳細(男性)',
+            '企業規模詳細(女性)',
+            '営業品目リスト',
+            '事業概要',
+            '企業ホームページ',
+            '設立年月日',
+            '創業年',
+            '最終更新日',
+            '資格等級'
+        ];
+    }
+
+    protected function mapData($record)
+    {
+        $data = [];
+        foreach ($this->columnMapping as $csvHeader => $dbColumn) {
+            $value = $record[$csvHeader] ?? null;
+            
+            // 空文字列を null に変換
+            if ($value === '') {
+                $value = null;
+            }
+            
+            // 日付形式の変換
+            if ($dbColumn === 'date_of_establishment' && $value) {
+                try {
+                    $value = Carbon::parse($value)->format('Y-m-d');
+                } catch (\Exception $e) {
+                    $this->command->warn("Invalid date for date_of_establishment: {$value}");
+                    $value = null;
+                }
+            }
+            
+            // 資本金の変換
+            if ($dbColumn === 'capital_stock' && $value) {
+                $value = (int) preg_replace('/[^0-9]/', '', $value);
+            }
+            
+            $data[$dbColumn] = $value;
+        }
+
+        $now = Carbon::now();
+        $data['created_at'] = $now;
+        $data['updated_at'] = $now;
+
+        return $data;
     }
 }
