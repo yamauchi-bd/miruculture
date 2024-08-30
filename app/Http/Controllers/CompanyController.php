@@ -62,4 +62,16 @@ class CompanyController extends Controller
     {
         //
     }
+
+    public function search(Request $request)
+    {
+        $query = $request->input('query');
+
+        $companies = Company::where('name', 'LIKE', "%{$query}%")
+            ->select('id', 'name', 'address', 'corporate_number')
+            ->limit(10)
+            ->get();
+
+        return response()->json($companies);
+    }
 }
