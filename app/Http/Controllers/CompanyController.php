@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Company;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 
 class CompanyController extends Controller
 {
@@ -12,7 +13,7 @@ class CompanyController extends Controller
      */
     public function index()
     {
-        //
+        return view('companies.search');
     }
 
     /**
@@ -65,13 +66,22 @@ class CompanyController extends Controller
 
     public function search(Request $request)
     {
-        $query = $request->input('query');
+        try {
+            $query = $request->input('query');
+            Log::info('Search query: ' . $query);
 
-        $companies = Company::where('name', 'LIKE', "%{$query}%")
-            ->select('id', 'name', 'address', 'corporate_number')
-            ->limit(10)
-            ->get();
+            $companies = Company::search($query)
+                ->select('corporate_number', 'company_name', 'location')
+                ->limit(15)
+                ->get();
 
-        return response()->json($companies);
+            Log::info('Search results count: ' . $companies->count());
+
+            return response()->json($companies);
+        } catch (\Exception $e) {
+            Log::error('Company search error: ' . $e->getMessage());
+            Log::error('Stack trace: ' . $e->getTraceAsString());
+            return response()->json(['error' => 'An error occurred while searching.'], 500);
+        }
     }
 }
