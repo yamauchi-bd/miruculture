@@ -69,6 +69,5 @@ Route::get('/companies', function () {
 });
 
 Route::get('/companies/search', [CompanyController::class, 'search'])->name('companies.search');
-Route::get('/companies', [CompanyController::class, 'index'])->name('companies.index');
-
+Route::get('/companies/{corporateNumber}', [CompanyController::class, 'show'])->name('companies.show');
 require __DIR__ . '/auth.php';

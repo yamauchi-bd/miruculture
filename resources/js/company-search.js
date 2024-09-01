@@ -1,56 +1,69 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const form = document.getElementById('search-form');
-    const input = document.getElementById('search-input');
-    const results = document.getElementById('search-results');
+    const searchInput = document.getElementById('company-search');
+    const searchResults = document.getElementById('search-results');
+    const searchButton = document.getElementById('search-button');
 
-    form.addEventListener('submit', function (e) {
+    let debounceTimer;
+
+    searchInput.addEventListener('input', function () {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+            const query = this.value.trim();
+            if (query.length > 1) {
+                fetchCompanies(query);
+            } else {
+                searchResults.innerHTML = '';
+                searchResults.classList.add('hidden');
+            }
+        }, 300);
+    });
+
+    searchButton.addEventListener('click', function (e) {
         e.preventDefault();
-        const query = input.value;
+        const query = searchInput.value.trim();
+        if (query.length > 1) {
+            fetchCompanies(query);
+        }
+    });
 
+    function fetchCompanies(query) {
         fetch(`/companies/search?query=${encodeURIComponent(query)}`)
-            .then(response => {
-                if (!response.ok) {
-                    throw new Error(`HTTP error! status: ${response.status}`);
-                }
-                return response.json();
-            })
+            .then(response => response.json())
             .then(data => {
-                console.log('Parsed data:', data);
-                console.log('Clearing results');
-                results.innerHTML = '';
-                if (data.length === 0) {
-                    results.innerHTML = '<p>検索結果はありません。</p>';
-                } else {
-                    console.log('Creating new table');
-                    const table = document.createElement('table');
-                    table.className = 'table table-striped';
-                    table.innerHTML = `
-                        <thead>
-                            <tr>
-                                <th>会社名</th>
-                                <th>所在地</th>
-                                <th>法人番号</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                        </tbody>
-                    `;
-                    const tbody = table.querySelector('tbody');
-                    data.forEach(company => {
-                        const row = document.createElement('tr');
-                        row.innerHTML = `
-                            <td>${company.company_name}</td>
-                            <td>${company.location}</td>
-                            <td>${company.corporate_number}</td>
-                        `;
-                        tbody.appendChild(row);
-                    });
-                    results.appendChild(table);
-                }
+                displayResults(data);
             })
             .catch(error => {
                 console.error('Error:', error);
-                results.innerHTML = `<p>エラーが発生しました: ${error.message}</p>`;
             });
+    }
+
+    function displayResults(companies) {
+        searchResults.innerHTML = '';
+        if (companies.length === 0) {
+            searchResults.innerHTML = '<p class="p-2">検索結果がありません。</p>';
+        } else {
+            const ul = document.createElement('ul');
+            ul.className = 'divide-y divide-gray-200';
+            companies.forEach(company => {
+                const li = document.createElement('li');
+                li.className = 'p-2 hover:bg-gray-100 cursor-pointer';
+                li.innerHTML = `
+                    <div class="font-medium">${company.company_name}</div>
+                    <div class="text-sm text-gray-500">${company.location}</div>
+                `;
+                li.addEventListener('click', () => {
+                    window.location.href = `/companies/${company.corporate_number}`;
+                });
+                ul.appendChild(li);
+            });
+            searchResults.appendChild(ul);
+        }
+        searchResults.classList.remove('hidden');
+    }
+
+    document.addEventListener('click', function (e) {
+        if (!searchResults.contains(e.target) && e.target !== searchInput) {
+            searchResults.classList.add('hidden');
+        }
     });
 });
