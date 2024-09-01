@@ -1,4 +1,4 @@
-<div class="container">
+{{-- <div class="container">
     <h1 class="mb-4">企業検索</h1>
 
     <div class="row">
@@ -16,4 +16,4 @@
 
     <div id="search-results" class="mt-4"></div>
 </div>
-@vite(['resources/js/app.js'])
+@vite(['resources/js/app.js']) --}}
