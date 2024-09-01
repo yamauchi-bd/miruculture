@@ -6,12 +6,11 @@
           <h1 class="font-manrope font-bold text-3xl leading-snug sm:text-4xl text-center mb-10 text-black">
             あなたの決め手が､誰かの決め手に｡
           </h1>
-          <div
-            class="parent flex flex-row items-center max-w-xl mx-auto justify-center gap-y-4 pr-2 bg-white rounded-md mb-5 relative group transition-all duration-500 border border-transparent hover:border-cyan-500 focus-within:border-cyan-500">
-            <input type="text"
+          <div class="parent flex flex-row items-center max-w-xl mx-auto justify-center gap-y-4 pr-2 bg-white rounded-md mb-5 relative group transition-all duration-500 border border-transparent hover:border-cyan-500 focus-within:border-cyan-500">
+            <input type="text" id="company-search"
               class="block w-full px-6 py-3.5 text-base font-normal shadow-xs text-gray-900 bg-transparent placeholder-gray-400 focus:outline-none leading-normal"
               placeholder="気になる企業を検索する..." required="">
-            <button
+            <button id="search-button"
               class="py-3 px-3 rounded-full bg-cyan-500 text-white text-sm font-medium transition-all duration-300 hover:bg-cyan-600 absolute right-1">
               <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M17 17L21 21" stroke="#ffffff" stroke-width="3" stroke-linecap="round" class="my-path"></path>
@@ -19,6 +18,7 @@
               </svg>
             </button>
           </div>
+          <div id="search-results" class="absolute z-10 bg-white border border-gray-300 rounded-md shadow-lg max-w-xl w-full mt-1 hidden"></div>
   
         </div>
       </div>
@@ -166,4 +166,6 @@
       </div>
     </section>
 
+  
 @include('layouts.footer')
+@vite(['resources/js/app.js'])

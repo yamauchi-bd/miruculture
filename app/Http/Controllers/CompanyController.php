@@ -35,9 +35,10 @@ class CompanyController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Company $company)
+    public function show($corporateNumber)
     {
-        //
+        $company = Company::findOrFail($corporateNumber);
+        return view('companies.show', compact('company'));
     }
 
     /**
@@ -66,22 +67,12 @@ class CompanyController extends Controller
 
     public function search(Request $request)
     {
-        try {
-            $query = $request->input('query');
-            Log::info('Search query: ' . $query);
-
-            $companies = Company::search($query)
-                ->select('corporate_number', 'company_name', 'location')
-                ->limit(15)
-                ->get();
-
-            Log::info('Search results count: ' . $companies->count());
-
-            return response()->json($companies);
-        } catch (\Exception $e) {
-            Log::error('Company search error: ' . $e->getMessage());
-            Log::error('Stack trace: ' . $e->getTraceAsString());
-            return response()->json(['error' => 'An error occurred while searching.'], 500);
-        }
+        $query = $request->input('query');
+        $companies = Company::search($query)
+            ->select('corporate_number', 'company_name', 'location')
+            ->limit(10)
+            ->get();
+    
+        return response()->json($companies);
     }
 }
