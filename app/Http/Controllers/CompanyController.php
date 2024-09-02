@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Company;
+use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 
@@ -38,7 +39,9 @@ class CompanyController extends Controller
     public function show($corporateNumber)
     {
         $company = Company::findOrFail($corporateNumber);
-        return view('companies.show', compact('company'));
+        $posts = Post::where('corporate_number', $corporateNumber)->get(); // 正しいカラム名を使用
+    
+        return view('companies.show', compact('company', 'posts')); // $postsをビューに渡す
     }
 
     /**
