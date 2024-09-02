@@ -78,10 +78,10 @@
                 </label>
 
                 <div class="flex">
-                    <input type="text" id="company_name" name="company_name" required
+                    <input type="text" id="company-search" required
                         class="block w-full px-4 py-2 border border-gray-300 text-base font-normal text-gray-900 bg-white rounded-l-md placeholder-gray-400 focus:outline-none focus:border-2 focus:border-cyan-500"
                         placeholder="投稿する企業を探す...">
-                    <button type="button" id="search_company"
+                    <button type="button" id="search-button"
                         class="px-3 py-2 bg-cyan-500 text-white text-sm font-bold rounded-r-md transition-all hover:bg-cyan-700">
                         <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
                             xmlns="http://www.w3.org/2000/svg">
@@ -94,7 +94,9 @@
                         </svg>
                     </button>
                 </div>
-                <input type="hidden" id="corporate_number" name="corporate_number" value="">
+                <div id="search-results" class="absolute z-10 bg-white border border-gray-300 rounded-md shadow-lg max-w-xl w-full mt-1 hidden"></div>
+                <input type="hidden" id="company_name" name="company_name">
+                <input type="hidden" id="corporate_number" name="corporate_number">
             </div>
 
             <div class="mb-10">
@@ -343,3 +345,4 @@
 <div class="mt-20"></div>
 @include('layouts.footer')
 @vite(['resources/js/posts-create.js'])
+@vite(['resources/js/company-input.js'])
