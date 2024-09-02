@@ -26,14 +26,15 @@ class PostController extends Controller
 
     public function store(Request $request)
     {
+        $currentYear = date('Y');
         $validatedData = $request->validate([
             'company_name' => 'required|string|max:255',
             'corporate_number' => 'nullable|string|max:13',
             'employment_type' => 'required|in:正社員,契約社員,その他',
             'entry_type' => 'required|in:新卒入社,中途入社',
             'status' => 'required|in:在籍中,退職済み',
-            'start_year' => 'required|integer|min:1900|max:' . date('Y'),
-            'end_year' => 'nullable|integer|min:1900|max:' . date('Y'),
+            'start_year' => "required|integer|min:1900|max:$currentYear",
+            'end_year' => "nullable|integer|min:1900|max:$currentYear",
             'current_job_category_id' => 'required|exists:job_categories,id',
             'current_job_subcategory_id' => 'required|exists:job_categories,id',
             'deciding_factor_1' => 'required|string',
@@ -49,14 +50,15 @@ class PostController extends Controller
             'factor_3_satisfaction' => 'nullable|integer|min:1|max:5',
             'factor_3_satisfaction_reason' => 'nullable|string',
         ]);
-
+    
         // ここでバリデーション済みのデータを使用してPostモデルを作成し保存
         $post = new Post($validatedData);
         $post->user_id = Auth::id(); // ログインユーザーのIDを設定
         $post->save();
-
-        // 保存後のリダイレクト
-        return redirect()->route('posts.show', $post)->with('success', '投稿が正常に作成されました。');
+    
+    // 保存後のリダイレクト
+    return redirect()->route('companies.show', ['corporateNumber' => $post->corporate_number])
+                     ->with('success', '投稿が正常に作成されました。');
     }
 
     public function show(Post $post)
@@ -72,16 +74,17 @@ class PostController extends Controller
 
     public function update(Request $request, Post $post)
     {
+        $currentYear = date('Y');
         $validatedData = $request->validate([
             'company_name' => 'required|string|max:255',
             'corporate_number' => 'nullable|string|max:13',
             'employment_type' => 'required|in:正社員,契約社員,その他',
             'entry_type' => 'required|in:新卒入社,中途入社',
             'status' => 'required|in:在籍中,退職済み',
-            'start_year' => 'required|integer|min:1900|max:' . date('Y'),
-            'end_year' => 'nullable|integer|min:1900|max:' . date('Y'),
+            'start_year' => "required|integer|min:1900|max:$currentYear",
+            'end_year' => "nullable|integer|min:1900|max:$currentYear",
             'current_job_category_id' => 'required|exists:job_categories,id',
-            'current_job_subcategory_id' => 'required|exists:job_subcategories,id',
+            'current_job_subcategory_id' => 'required|exists:job_categories,id',
             'deciding_factor_1' => 'required|string',
             'factor_1_detail' => 'required|string',
             'factor_1_satisfaction' => 'required|integer|min:1|max:5',
@@ -95,9 +98,9 @@ class PostController extends Controller
             'factor_3_satisfaction' => 'nullable|required_with:deciding_factor_3|integer|min:1|max:5',
             'factor_3_satisfaction_reason' => 'nullable|required_with:deciding_factor_3|string',
         ]);
-
+    
         $post->update($validatedData);
-
+    
         return redirect()->route('posts.show', $post)->with('success', '投稿が更新されました。');
     }
 
