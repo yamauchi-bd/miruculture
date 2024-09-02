@@ -51,6 +51,7 @@
 </div>
 
 <div class="max-w-7xl mt-12 px-4 md:px-5 md:w-3/5 lg:w-2/5 lg:px-5 mx-auto">
+    <div id="job-categories" data-categories="{{ json_encode($jobCategories->pluck('children', 'id')) }}" style="display: none;"></div>
 
     @if ($errors->any())
         <div class="alert alert-danger">
@@ -102,7 +103,6 @@
                     <x-required-mark />
                     <p id="employment_type-error" class="error-message text-red-500 text-xs" style="display: none;"></p>
                 </label>
-
                 <div class="flex gap-12">
                     <label class="inline-flex items-center">
                         <input type="radio" class="form-radio" name="employment_type" value="正社員" required>
@@ -177,16 +177,15 @@
                             <option value="{{ $year }}">{{ $year }}年</option>
                         @endfor
                     </select>
+                    <p id="end_year-error" class="error-message text-red-500 text-xs" style="display: none;"></p>
                 </div>
             </div>
 
             <div class="mb-10">
-                <label for="job_category_id"
-                    class="flex gap-1 mb-2 items-center text-gray-700 text-sm font-bold leading-relaxed">
+                <label for="job_category" class="flex gap-1 mb-2 items-center text-gray-700 text-sm font-bold leading-relaxed">
                     入社時の職種
                     <x-required-mark />
-                    <p id="current_job_category_id-error" class="error-message text-red-500 text-xs"
-                        style="display: none;"></p>
+                    <p id="job_category-error" class="error-message text-red-500 text-xs" style="display: none;"></p>
                 </label>
                 <select id="job_category" name="current_job_category_id" required
                     class="h-10 w-full px-4 border border-gray-300 text-base font-normal text-gray-900 bg-white rounded-md placeholder-gray-400 focus:outline-none focus:border-2 focus:border-cyan-500">
@@ -202,8 +201,7 @@
                     class="flex gap-1 mb-2 items-center text-gray-700 text-sm font-bold leading-relaxed">
                     詳しい職種
                     <x-required-mark />
-                    <p id="current_job_subcategory_id-error" class="error-message text-red-500 text-xs"
-                        style="display: none;"></p>
+                    <p id="job_subcategory-error" class="error-message text-red-500 text-xs" style="display: none;"></p>
                 </label>
                 <div class="w-full flex gap-4">
                     <select id="job_subcategory" name="current_job_subcategory_id" required
@@ -344,342 +342,4 @@
 
 <div class="mt-20"></div>
 @include('layouts.footer')
-
-<script>
-    // 2番目と3番目の入社の決め手を任意にするためのJavaScript
-    document.addEventListener('DOMContentLoaded', function() {
-        for (let i = 2; i <= 3; i++) {
-            const factor = document.getElementById(`factor_${i}`);
-            const detail = document.getElementById(`factor_${i}_detail`);
-            const satisfaction = document.getElementById(`factor_${i}_satisfaction`);
-            const reason = document.getElementById(`factor_${i}_satisfaction_reason`);
-
-            factor.addEventListener('change', function() {
-                const isSelected = this.value !== '';
-                detail.required = isSelected;
-                satisfaction.required = isSelected;
-                reason.required = isSelected;
-            });
-        }
-    });
-
-    document.addEventListener('DOMContentLoaded', function() {
-        const factorInputs = document.querySelectorAll('.deciding-factor');
-        factorInputs.forEach(input => {
-            input.addEventListener('change', function() {
-                // 同じ名前のラジオボタングループ内のすべてのラベルをリセット
-                document.querySelectorAll(`[name="${this.name}"] + .factor-label`).forEach(
-                    label => {
-                        label.classList.remove('bg-cyan-500', 'text-white',
-                            'border-cyan-500');
-                        label.classList.add('bg-white', 'hover:bg-gray-100',
-                            'text-gray-700', 'border-gray-300');
-                    });
-
-                // 選択されたラジオボタンのラベルにスタイルを適用
-                if (this.checked) {
-                    const label = this.nextElementSibling;
-                    label.classList.remove('bg-white', 'hover:bg-gray-100', 'text-gray-700',
-                        'border-gray-300');
-                    label.classList.add('bg-cyan-500', 'text-white', 'border-cyan-500');
-                }
-            });
-        });
-    });
-
-    //満足度の星に色付け
-    document.addEventListener('DOMContentLoaded', function() {
-        const starContainers = document.querySelectorAll('.flex.items-center');
-        starContainers.forEach(container => {
-            const stars = container.querySelectorAll('svg');
-            const inputs = container.querySelectorAll('input[type="radio"]');
-
-            function colorStars(index) {
-                stars.forEach((star, i) => {
-                    if (i <= index) {
-                        star.classList.add('text-cyan-500');
-                        star.classList.remove('text-gray-300');
-                    } else {
-                        star.classList.remove('text-cyan-500');
-                        star.classList.add('text-gray-300');
-                    }
-                });
-            }
-
-            inputs.forEach((input, index) => {
-                input.addEventListener('change', () => {
-                    colorStars(index);
-                });
-            });
-
-            stars.forEach((star, index) => {
-                star.addEventListener('mouseover', () => {
-                    colorStars(index);
-                });
-
-                star.addEventListener('mouseout', () => {
-                    const checkedInput = container.querySelector(
-                        'input[type="radio"]:checked');
-                    if (checkedInput) {
-                        colorStars(Array.from(inputs).indexOf(checkedInput));
-                    } else {
-                        colorStars(-1);
-                    }
-                });
-
-                star.addEventListener('click', () => {
-                    inputs[index].checked = true;
-                    colorStars(index);
-                });
-            });
-
-            // 初期表示時に選択済みの星に色をつける
-            const checkedInput = container.querySelector('input[type="radio"]:checked');
-            if (checkedInput) {
-                colorStars(Array.from(inputs).indexOf(checkedInput));
-            }
-        });
-    });
-
-    document.addEventListener('DOMContentLoaded', function() {
-        const addFactorButton = document.getElementById('add-factor-button');
-        const factorContainers = document.querySelectorAll('#deciding-factors > div');
-        let currentFactor = 1;
-
-        addFactorButton.addEventListener('click', function() {
-            if (currentFactor < 3) {
-                currentFactor++;
-                factorContainers[currentFactor - 1].classList.remove('hidden');
-
-                if (currentFactor === 3) {
-                    addFactorButton.style.display = 'none';
-                }
-            }
-        });
-    });
-
-    document.addEventListener('DOMContentLoaded', function() {
-        const nextButton = document.getElementById('next-button');
-        const backButton = document.getElementById('back-button');
-        const submitButton = document.getElementById('submit-button');
-        const section1 = document.getElementById('section-1');
-        const section2 = document.getElementById('section-2');
-        const progressBar = document.getElementById('progress-bar');
-        const progressBar2 = document.getElementById('progress-bar-2');
-        const step2 = document.getElementById('step-2');
-
-        nextButton.addEventListener('click', function(e) {
-            e.preventDefault();
-            if (validateSection1()) {
-                // セクション1を非表示にし、セクション2を表示
-                section1.classList.add('hidden');
-                section2.classList.remove('hidden');
-
-                // プログレスバーを更新
-                progressBar.style.width = '100%';
-                progressBar2.style.width = '30%';
-
-                // ステップ2のスタイルを更新
-                step2.classList.remove('bg-white', 'border-2', 'border-gray-300');
-                step2.classList.add('bg-cyan-500');
-                step2.querySelector('span').classList.remove('text-gray-500');
-                step2.querySelector('span').classList.add('text-white');
-
-                // 画面のトップにスクロール
-                window.scrollTo({
-                    top: 0,
-                    behavior: 'smooth'
-                });
-            } else {
-                console.log('フォームのバリデーションに失敗しました');
-            }
-        });
-
-        backButton.addEventListener('click', function() {
-            section2.classList.add('hidden');
-            section1.classList.remove('hidden');
-            progressBar.style.width = '30%';
-            progressBar2.style.width = '0%';
-            step2.classList.add('bg-white', 'border-2', 'border-gray-300');
-            step2.classList.remove('bg-cyan-500');
-            step2.querySelector('span').classList.add('text-gray-500');
-            step2.querySelector('span').classList.remove('text-white');
-        });
-
-        function validateSection1() {
-            const requiredFields = section1.querySelectorAll('input[required], select[required], textarea[required]');
-            let isValid = true;
-
-            requiredFields.forEach(field => {
-                const errorElement = document.getElementById(`${field.name}-error`);
-                if (field.type === 'radio') {
-                    const radioGroup = section1.querySelectorAll(`input[name="${field.name}"]`);
-                    const isChecked = Array.from(radioGroup).some(radio => radio.checked);
-                    if (!isChecked) {
-                        isValid = false;
-                        if (errorElement) {
-                            errorElement.textContent = 'このフィールドは必須です。';
-                            errorElement.style.display = 'block';
-                        }
-                    } else if (errorElement) {
-                        errorElement.style.display = 'none';
-                    }
-                } else if (field.type === 'select-one') {
-                    if (field.value === '') {
-                        isValid = false;
-                        field.classList.add('error');
-                        if (errorElement) {
-                            errorElement.textContent = 'このフィールドは必須です。';
-                            errorElement.style.display = 'block';
-                        }
-                    } else {
-                        field.classList.remove('error');
-                        if (errorElement) {
-                            errorElement.style.display = 'none';
-                        }
-                    }
-                } else if (!field.value.trim()) {
-                    isValid = false;
-                    field.classList.add('error');
-                    if (errorElement) {
-                        errorElement.textContent = 'このフィールドは必須です。';
-                        errorElement.style.display = 'block';
-                    }
-                } else {
-                    field.classList.remove('error');
-                    if (errorElement) {
-                        errorElement.style.display = 'none';
-                    }
-                }
-            });
-
-            return isValid;
-        }
-    });
-</script>
-
-<script>
-    // 法人番号を取得
-    document.addEventListener('DOMContentLoaded', function() {
-        const searchButton = document.getElementById('search_company');
-        const companyNameInput = document.getElementById('company_name');
-        const corporateNumberInput = document.getElementById('corporate_number');
-
-        searchButton.addEventListener('click', function() {
-            const companyName = companyNameInput.value;
-            if (companyName) {
-                // APIリクエストを送信
-                fetch(`/api/search-company?name=${encodeURIComponent(companyName)}`)
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.corporate_number) {
-                            corporateNumberInput.value = data.corporate_number;
-                            companyNameInput.value = data.company_name;
-                            alert('企業情報が見つかりました。');
-                        } else {
-                            alert('企業情報が見つかりませんでした。');
-                        }
-                    })
-                    .catch(error => {
-                        console.error('Error:', error);
-                        alert('検索中にエラーが発生しました。');
-                    });
-            } else {
-                alert('企業名を入力してください。');
-            }
-        });
-
-        // 在籍状況による退職年の表示/非表示の制御
-        const statusRadios = document.querySelectorAll('input[name="status"]');
-        
-        function toggleEndYear() {
-            const endYearSelect = document.getElementById('end_year');
-            if (!endYearSelect) return; // end_year 要素が存在しない場合は処理を中断
-
-            const isCurrentEmployee = document.querySelector('input[name="status"]:checked')?.value === '在籍中';
-            endYearSelect.style.display = isCurrentEmployee ? 'none' : 'inline-block';
-            endYearSelect.disabled = isCurrentEmployee;
-            if (isCurrentEmployee) {
-                endYearSelect.value = '';
-            }
-        }
-
-        statusRadios.forEach(radio => {
-            radio.addEventListener('change', toggleEndYear);
-        });
-
-        // 初期表示時にも実行
-        toggleEndYear();
-    });
-</script>
-
-<script>
-    document.getElementById('job_category').addEventListener('change', function() {
-        const subCategorySelect = document.getElementById('job_subcategory');
-        subCategorySelect.innerHTML = '<option value="">選択してください</option>';
-
-        const selectedCategoryId = this.value;
-        if (selectedCategoryId) {
-            const subCategories = {!! json_encode($jobCategories->pluck('children', 'id')) !!};
-            if (subCategories[selectedCategoryId]) {
-                subCategories[selectedCategoryId].forEach(subCategory => {
-                    const option = document.createElement('option');
-                    option.value = subCategory.id;
-                    option.textContent = subCategory.name;
-                    subCategorySelect.appendChild(option);
-                });
-            }
-        }
-    });
-</script>
-
-<script>
-    // 入社の決め手の重複選択を防ぐ
-    document.addEventListener('DOMContentLoaded', function() {
-        const decidingFactors = document.querySelectorAll('.deciding-factor');
-        const factorGroups = {};
-
-        decidingFactors.forEach(factor => {
-            const groupName = factor.getAttribute('name');
-            if (!factorGroups[groupName]) {
-                factorGroups[groupName] = [];
-            }
-            factorGroups[groupName].push(factor);
-        });
-
-        function updateAvailableOptions() {
-            const selectedValues = new Set();
-
-            // 選択された値を収集
-            Object.values(factorGroups).forEach(group => {
-                group.forEach(factor => {
-                    if (factor.checked) {
-                        selectedValues.add(factor.value);
-                    }
-                });
-            });
-
-            // 各グループの選択可能なオプションを更新
-            Object.values(factorGroups).forEach(group => {
-                group.forEach(factor => {
-                    const label = factor.nextElementSibling;
-                    if (selectedValues.has(factor.value) && !factor.checked) {
-                        factor.disabled = true;
-                        label.classList.add('opacity-50', 'cursor-not-allowed');
-                    } else {
-                        factor.disabled = false;
-                        label.classList.remove('opacity-50', 'cursor-not-allowed');
-                    }
-                });
-            });
-        }
-
-        // 各ラジオボタンの変更イベントにリスナーを追加
-        decidingFactors.forEach(factor => {
-            factor.addEventListener('change', updateAvailableOptions);
-        });
-
-        // 初期状態を設定
-        updateAvailableOptions();
-    });
-</script>
+@vite(['resources/js/posts-create.js'])
