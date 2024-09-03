@@ -140,7 +140,7 @@
                     <a href="#"
                         class="border border-gray-300 shadow-sm rounded-full py-3.5 px-7 w-52 flex justify-center items-center text-gray-900 font-semibold mx-auto transition-all duration-300 hover:bg-gray-100">
                         企業名のトップへ</a>
-                    <a href="#"
+                    <a href="{{ route('posts.create', ['company_id' => $company->id]) }}"
                         class="border border-gray-300 shadow-sm rounded-full py-3.5 px-7 w-52 flex justify-center items-center text-gray-900 font-semibold mx-auto transition-all duration-300 hover:bg-gray-100">
                         決め手を回答する</a>
                     <a href="#"
@@ -156,7 +156,7 @@
 
         <div class="w-full lg:w-1/4">
             <div>
-                <a href="#"
+                <a href="{{ route('posts.create', ['corporate_number' => $company->corporate_number]) }}"
                     class='block py-3 px-7 text-base bg-cyan-500 text-white rounded-xl cursor-pointer font-semibold text-center shadow-xs transition-all duration-500 hover:bg-cyan-700'>決め手を回答する</a>
                 <a href="#"
                     class='mt-4 block py-3 px-7 text-base border border-cyan-500 text-cyan-500 rounded-xl cursor-pointer font-semibold text-center shadow-xs transition-all duration-500 hover:bg-cyan-100'>企業をフォローする</a>

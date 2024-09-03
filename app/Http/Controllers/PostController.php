@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\User;
 use App\Models\Post;
+use App\Models\Company;
 use App\Models\JobCategory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
@@ -18,10 +19,23 @@ class PostController extends Controller
         return view('posts.index', compact('posts'));
     }
 
-    public function create()
+    public function create(Request $request)
     {
+        Log::info('Create method called with corporate_number: ' . $request->corporate_number);
+    
+        $company = null;
+        if ($request->has('corporate_number')) {
+            $company = Company::where('corporate_number', $request->corporate_number)->first();
+            if ($company) {
+                Log::info('Company found: ' . $company->company_name);
+            } else {
+                Log::warning('Company not found for corporate_number: ' . $request->corporate_number);
+            }
+        }
+    
         $jobCategories = JobCategory::whereNull('parent_id')->with('children')->get();
-        return view('posts.create', compact('jobCategories'));
+        
+        return view('posts.create', compact('jobCategories', 'company'));
     }
 
     public function store(Request $request)
