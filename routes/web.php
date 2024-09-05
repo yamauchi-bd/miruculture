@@ -69,5 +69,7 @@ Route::get('/companies', function () {
 });
 
 Route::get('/companies/search', [CompanyController::class, 'search'])->name('companies.search');
-Route::get('/companies/{corporateNumber}', [CompanyController::class, 'show'])->name('companies.show');
+Route::get('/companies/{corporate_number}', [CompanyController::class, 'show'])->name('companies.show');
+Route::get('/companies/{corporate_number}/edit', [CompanyController::class, 'edit'])->name('companies.edit');
+Route::put('/companies/{corporate_number}', [CompanyController::class, 'update'])->name('companies.update');
 require __DIR__ . '/auth.php';
