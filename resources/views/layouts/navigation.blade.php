@@ -77,7 +77,7 @@
                                 </svg>
                             </button>
                             <div id="search-results"
-                                class="absolute z-10 bg-white border border-gray-300 rounded-md shadow-lg w-full mt-1 hidden text-xs">
+                                class="absolute z-10 bg-white border border-gray-300 rounded-md shadow-lg w-full mt-1 hidden text-sm">
                             </div>
                         </div>
                     </div>
