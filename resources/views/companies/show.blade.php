@@ -57,7 +57,7 @@
                             <div
                                 class="group bg-white border border-solid border-gray-300 rounded-2xl p-6 transition-all duration-500 hover:border-cyan-600 shadow-md hover:shadow-lg relative pb-24">
                                 <h6 class="text-gray-900 text-sm font-medium mb-3">
-                                    「{{ $company->company_name }}」への入社の決め手</h6>
+                                    「<a href="{{ route('companies.show', $company) }}" class="text-cyan-600 hover:text-cyan-500 transition duration-150 ease-in-out">{{ $company->company_name }}</a>」への入社の決め手</h6>
                                 @if ($post->decidingFactors && $post->decidingFactors->isNotEmpty())
                                     @foreach ($post->decidingFactors->take(3) as $index => $factor)
                                         <div class="mb-4 last:mb-0">
