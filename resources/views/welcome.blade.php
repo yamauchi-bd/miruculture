@@ -4,7 +4,7 @@
       <div class="w-full max-w-7xl mx-auto px-4 lg:px-8">
         <div class="w-full max-w-4xl mx-auto sm:px-12 mb-10 lg:mb-20">
           <h1 class="font-manrope font-bold text-3xl leading-snug sm:text-4xl text-center mb-10 text-black">
-            あなたの決め手が､誰かの決め手に｡
+            あなたの決め手が､ 誰かの決め手に｡
           </h1>
           <div class="parent flex flex-row items-center max-w-xl mx-auto justify-center gap-y-4 pr-2 bg-white rounded-md mb-5 relative group transition-all duration-500 border border-transparent hover:border-cyan-500 focus-within:border-cyan-500">
             <input type="text" id="company-search"
@@ -28,7 +28,7 @@
     <section class="py-20 ">
       <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div class="mb-16 ">
-          <h2 class="text-xl text-center font-bold text-gray-900 ">注目の入社エントリー</h2>
+          <h2 class="text-xl text-center font-bold text-gray-900 ">最新の入社エントリー</h2>
         </div>
         <!--Slider wrapper-->
   

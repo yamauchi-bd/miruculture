@@ -43,7 +43,7 @@
 
             <div class="flex justify-center mt-12 mb-8">
                 <a href="{{ route('posts.create', ['corporate_number' => $company->corporate_number]) }}"
-                    class='py-4 px-20 text-lg bg-cyan-500 text-white rounded-xl cursor-pointer font-semibold text-center shadow-md transition-all duration-500 hover:bg-cyan-700 hover:shadow-lg'>
+                    class='py-4 px-20 text-lg bg-cyan-500 text-white rounded-xl cursor-pointer font-semibold text-center shadow-lg transition-all duration-300 ease-in-out bg-gradient-to-tl hover:from-red-400 hover:to-cyan-500 hover:shadow-lg transform hover:scale-105'>
                     入社の決め手を投稿する
                     <i class="far fa-plus-square fa-lg ml-2"></i>
                 </a>

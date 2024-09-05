@@ -1,9 +1,9 @@
 document.addEventListener('DOMContentLoaded', function () {
-    const searchInput = document.getElementById('company-search');
-    const searchResults = document.getElementById('search-results');
+    const searchInput = document.getElementById('company-input');
+    const searchResults = document.getElementById('input-results');
     const corporateNumberInput = document.getElementById('corporate_number');
     const companyNameHiddenInput = document.getElementById('company_name');
-    const searchButton = document.getElementById('search-button');
+    const searchButton = document.getElementById('input-button');
 
     let debounceTimer;
 
@@ -51,7 +51,7 @@ document.addEventListener('DOMContentLoaded', function () {
                 li.className = 'p-2 hover:bg-gray-100 cursor-pointer';
                 li.innerHTML = `
                     <div class="font-medium">${company.company_name}</div>
-                    <div class="text-sm text-gray-500">${company.location}</div>
+                    <div class="text-xs text-gray-500">${company.location}</div>
                 `;
                 li.addEventListener('click', () => {
                     searchInput.value = company.company_name;

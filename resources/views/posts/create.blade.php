@@ -39,10 +39,10 @@
 
     <div class="flex text-xs sm:text-sm content-center text-center mt-2">
         <div class="w-1/4">
-            在籍情報の入力&nbsp;&nbsp;&nbsp;&nbsp;
+            企業･在籍情報&nbsp;&nbsp;&nbsp;&nbsp;
         </div>
         <div class="w-1/2">
-            決め手の投稿
+            入社の決め手
         </div>
         <div class="w-1/4">
             &nbsp;&nbsp;&nbsp;&nbsp;投稿の完了
@@ -76,13 +76,13 @@
                     <p id="company_name-error" class="error-message text-red-500 text-xs" style="display: none;">
                     </p>
                 </label>
-
-                <div class="flex">
-                    <input type="text" id="company-search" required
+            
+                <div class="flex relative">
+                    <input type="text" id="company-input" required
                         class="block w-full px-4 py-2 border border-gray-300 text-base font-normal text-gray-900 bg-white rounded-l-md placeholder-gray-400 focus:outline-none focus:border-2 focus:border-cyan-500"
                         placeholder="投稿する企業を探す..."
                         value="{{ $company ? $company->company_name : '' }}" {{ $company ? 'readonly' : '' }}>
-                    <button type="button" id="search-button"
+                    <button type="button" id="input-button"
                         class="px-3 py-2 bg-cyan-500 text-white text-sm font-bold rounded-r-md transition-all hover:bg-cyan-700"
                         {{ $company ? 'disabled' : '' }}>
                         <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
@@ -95,8 +95,8 @@
                                 stroke="#ffffff" stroke-width="3" class="my-path"></path>
                         </svg>
                     </button>
+                    <div id="input-results" class="absolute z-10 bg-white border border-gray-300 rounded-md shadow-lg w-full left-0 top-full mt-1 text-sm hidden"></div>
                 </div>
-                <div id="search-results" class="absolute z-10 bg-white border border-gray-300 rounded-md shadow-lg max-w-xl w-full mt-1 hidden"></div>
                 <input type="hidden" id="company_name" name="company_name" value="{{ $company ? $company->company_name : '' }}">
                 <input type="hidden" id="corporate_number" name="corporate_number" value="{{ $company ? $company->corporate_number : '' }}">
             </div>
