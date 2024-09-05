@@ -3,33 +3,51 @@
 <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 sm:py-12 md:py-16 lg:py-24">
     <div
         class="py-10 lg:py-16 flex flex-col justify-center gap-x-16 gap-y-5 xl:gap-28 lg:flex-row lg:justify-between mx-auto max-w-full">
-        <div class="w-full lg:w-3/4">
+        <div class="w-full">
             <section class="relative">
-                <div class="w-full lg:max-w-4xl max-md:px-3">
-                    <h2 class="font-manrope font-semibold text-2xl leading-9 text-black mb-12">
+                <div class="w-full">
+                    <h2 class="font-manrope font-semibold text-2xl leading-9 text-black ml-6 mb-6">
                         {{ $company->company_name }}
-                    </h2>
-
-                    <p class="font-normal text-lg leading-8 text-gray-900 mb-8">
-                        {{ $company->business_summary }}
-                    </p>
-
-                    <h3 class="font-manrope font-semibold text-xl leading-9 text-black mb-2">ミッション</h3>
-                    <p class="font-normal text-lg leading-8 text-gray-900 mb-8">
-                        {{ $company->company_mission }}
-                    </p>
-
-                    <h3 class="font-manrope font-semibold text-xl leading-9 text-black mb-2">ビジョン</h3>
-                    <p class="font-normal text-lg leading-8 text-gray-900 mb-8">
-                        {{ $company->company_vision }}
-                    </p>
-
-                    <h3 class="font-manrope font-semibold text-xl leading-9 text-black mb-2">バリュー</h3>
-                    <p class="font-normal text-lg leading-8 text-gray-900 mb-8">
-                        {{ $company->company_values }}
-                    </p>
+                    <a href="{{ route('companies.edit', $company) }}" class="inline-flex items-center px-4 py-2 text-xs font-medium rounded-md text-gray-500">
+                        <svg class="mr-2 -ml-1 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                        </svg>
+                        企業データを追加・編集する
+                    </a>
+                </h2>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-8">
+                        <div class="bg-white p-4 md:p-6">
+                            <div class="flex items-center mb-4">
+                                <div class="w-1 h-8 bg-cyan-500 mr-3"></div>
+                                <h3 class="text-xl font-semibold text-black">ミッション</h3>
+                            </div>
+                            <p class="text-gray-800">{{ $company->company_mission }}</p>
+                        </div>
+                        <div class="bg-white p-4 md:p-6">
+                            <div class="flex items-center mb-4">
+                                <div class="w-1 h-8 bg-cyan-500 mr-3"></div>
+                                <h3 class="text-xl font-semibold text-black">ビジョン</h3>
+                            </div>
+                            <p class="text-gray-800">{{ $company->company_vision }}</p>
+                        </div>
+                        <div class="bg-white p-4 md:p-6">
+                            <div class="flex items-center mb-4">
+                                <div class="w-1 h-8 bg-cyan-500 mr-3"></div>
+                                <h3 class="text-xl font-semibold text-black">バリュー</h3>
+                            </div>
+                            <p class="text-gray-800">{{ $company->company_values }}</p>
+                        </div>
+                    </div>
                 </div>
             </section>
+
+            <div class="flex justify-center mt-12 mb-8">
+                <a href="{{ route('posts.create', ['corporate_number' => $company->corporate_number]) }}"
+                    class='py-4 px-20 text-lg bg-cyan-500 text-white rounded-xl cursor-pointer font-semibold text-center shadow-md transition-all duration-500 hover:bg-cyan-700 hover:shadow-lg'>
+                    入社の決め手を投稿する
+                    <i class="far fa-plus-square fa-lg ml-2"></i>
+                </a>
+            </div>
 
 
             <section class="py-12">
@@ -38,7 +56,8 @@
                         @foreach ($posts as $post)
                             <div
                                 class="group bg-white border border-solid border-gray-300 rounded-2xl p-6 transition-all duration-500 hover:border-cyan-600 shadow-md hover:shadow-lg relative pb-24">
-                                <h6 class="text-gray-900 text-sm font-medium mb-3">「社名」への入社の決め手</h6>
+                                <h6 class="text-gray-900 text-sm font-medium mb-3">
+                                    「{{ $company->company_name }}」への入社の決め手</h6>
                                 @if ($post->decidingFactors && $post->decidingFactors->isNotEmpty())
                                     @foreach ($post->decidingFactors->take(3) as $index => $factor)
                                         <div class="mb-4 last:mb-0">
@@ -92,17 +111,13 @@
                         @endforeach
                     </div>
 
-                    {{-- <div class="mt-10">
-                            {{ $posts->links() }}
-                        </div>
-
                     <!-- モーダル -->
-                    {{-- <div id="detailModal" class="fixed z-10 inset-0 overflow-y-auto hidden"
+                    <div id="detailModal" class="fixed z-10 inset-0 overflow-y-auto hidden"
                         aria-labelledby="modal-title" role="dialog" aria-modal="true">
                         <div
                             class="flex items-end justify-center min-h-screen pt-4 px-4 pb-20 text-center sm:block sm:p-0">
-                            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity"
-                                aria-hidden="true"></div>
+                            <div class="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" aria-hidden="true">
+                            </div>
                             <span class="hidden sm:inline-block sm:align-middle sm:h-screen"
                                 aria-hidden="true">&#8203;</span>
                             <div
@@ -129,143 +144,177 @@
                             </div>
                         </div>
                     </div>
-                </div> --}}
                 </div>
             </section>
-
-
-
-            <section class="py-12 lg:py-20 ">
-                <div class="flex mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-                    <a href="#"
-                        class="border border-gray-300 shadow-sm rounded-full py-3.5 px-7 w-52 flex justify-center items-center text-gray-900 font-semibold mx-auto transition-all duration-300 hover:bg-gray-100">
-                        企業名のトップへ</a>
-                    <a href="{{ route('posts.create', ['company_id' => $company->id]) }}"
-                        class="border border-gray-300 shadow-sm rounded-full py-3.5 px-7 w-52 flex justify-center items-center text-gray-900 font-semibold mx-auto transition-all duration-300 hover:bg-gray-100">
-                        決め手を回答する</a>
-                    <a href="#"
-                        class="border border-gray-300 shadow-sm rounded-full py-3.5 px-7 w-52 flex justify-center items-center text-gray-900 font-semibold mx-auto transition-all duration-300 hover:bg-gray-100">
-                        企業をフォローする</a>
-                </div>
-            </section>
-
-        </div>
-
-
-
-
-        <div class="w-full lg:w-1/4">
-            <div>
-                <a href="{{ route('posts.create', ['corporate_number' => $company->corporate_number]) }}"
-                    class='block py-3 px-7 text-base bg-cyan-500 text-white rounded-xl cursor-pointer font-semibold text-center shadow-xs transition-all duration-500 hover:bg-cyan-700'>決め手を回答する</a>
-                <a href="#"
-                    class='mt-4 block py-3 px-7 text-base border border-cyan-500 text-cyan-500 rounded-xl cursor-pointer font-semibold text-center shadow-xs transition-all duration-500 hover:bg-cyan-100'>企業をフォローする</a>
-            </div>
-
-            <div class="mt-4 flex flex-col">
-                <div class=" overflow-x-auto">
-                    <div class="min-w-full inline-block align-middle">
-                        <div class="img w-full mb-2">
-                            <img src="https://pagedone.io/asset/uploads/1702355938.png" alt="Blog tailwind page">
-                        </div>
-                        <div class="overflow-hidden border border-gray-300">
-                            <table class="min-w-full rounded-xl">
-                                <tbody class="divide-y divide-gray-300">
-                                    @if ($company->industry)
-                                        <tr>
-                                            <th
-                                                class="p-2 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">
-                                                業界</th>
-                                            <td
-                                                class="p-2 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">
-                                                {{ $company->industry }}</td>
-                                        </tr>
-                                    @endif
-                                    @if ($company->company_url)
-                                        <tr>
-                                            <th
-                                                class="p-2 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">
-                                                URL</th>
-                                            <td
-                                                class="p-2 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">
-                                                <a href="{{ $company->company_url }}"
-                                                    class="text-blue-500 hover:text-blue-700">{{ $company->company_url }}</a>
-                                            </td>
-                                        </tr>
-                                    @endif
-                                    @if ($company->location)
-                                        <tr>
-                                            <th
-                                                class="p-2 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">
-                                                所在地</th>
-                                            <td
-                                                class="p-2 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">
-                                                {{ $company->location }}</td>
-                                        </tr>
-                                    @endif
-                                    @if ($company->employee_number)
-                                        <tr>
-                                            <th
-                                                class="p-2 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">
-                                                従業員数</th>
-                                            <td
-                                                class="p-2 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">
-                                                {{ number_format($company->employee_number) }} 人</td>
-                                        </tr>
-                                    @endif
-                                    @if ($company->date_of_establishment)
-                                        <tr>
-                                            <th
-                                                class="p-2 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">
-                                                設立年</th>
-                                            <td
-                                                class="p-2 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">
-                                                {{ \Carbon\Carbon::parse($company->date_of_establishment)->format('Y') }}
-                                                年
-                                            </td>
-                                        </tr>
-                                    @endif
-                                    @if ($company->capital_stock)
-                                        <tr>
-                                            <th
-                                                class="p-2 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">
-                                                資本金</th>
-                                            <td
-                                                class="p-2 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">
-                                                {{ number_format($company->capital_stock / 1000000) }} 百万円</td>
-                                        </tr>
-                                    @endif
-                                    @if ($company->representative_name)
-                                        <tr>
-                                            <th
-                                                class="p-2 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">
-                                                代表者</th>
-                                            <td
-                                                class="p-2 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">
-                                                {{ $company->representative_name }}</td>
-                                        </tr>
-                                    @endif
-                                    @if ($company->listing_status)
-                                        <tr>
-                                            <th
-                                                class="p-2 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">
-                                                上場区分</th>
-                                            <td
-                                                class="p-2 whitespace-nowrap text-sm leading-6 font-medium text-gray-900">
-                                                {{ $company->listing_status }}</td>
-                                        </tr>
-                                    @endif
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
         </div>
     </div>
 </div>
+
+{{-- 企業情報 --}}
+<section class="py-16 bg-gray-50">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-2xl font-bold text-gray-900 mb-12 text-center">企業データ</h2>
+        <div class="bg-white shadow-lg rounded-3xl overflow-hidden">
+            <div class="px-6 py-8 border-b border-gray-200">
+                <h3 class="text-xl font-semibold text-gray-800">{{ $company->company_name }}</h3>
+            </div>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 p-6">
+                @if ($company->business_summary)
+                    <div class="flex items-start space-x-4 col-span-full">
+                        <div class="flex-shrink-0 mt-1">
+                            <svg class="w-6 h-6 text-cyan-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z">
+                                </path>
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-gray-500 pb-2">事業概要</p>
+                            <p class="text-base text-gray-900">
+                                {{ str_replace(["\r\n", "\r", "\n"], '　', e($company->business_summary)) }}</p>
+                        </div>
+                    </div>
+                @endif
+                @if ($company->company_url)
+                    <div class="flex items-center space-x-4">
+                        <div class="flex-shrink-0">
+                            <svg class="w-6 h-6 text-cyan-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9">
+                                </path>
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-gray-500">ウェブサイト</p>
+                            <a href="{{ $company->company_url }}"
+                                class="text-base text-cyan-600 hover:text-cyan-800 transition duration-150 ease-in-out">{{ $company->company_url }}</a>
+                        </div>
+                    </div>
+                @endif
+                @if ($company->location)
+                    <div class="flex items-center space-x-4">
+                        <div class="flex-shrink-0">
+                            <svg class="w-6 h-6 text-cyan-500" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z">
+                                </path>
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M15 11a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-gray-500">所在地</p>
+                            <p class="text-base text-gray-900">{{ $company->location }}</p>
+                        </div>
+                    </div>
+                @endif
+                @if ($company->employee_number)
+                    <div class="flex items-center space-x-4">
+                        <div class="flex-shrink-0">
+                            <svg class="w-6 h-6 text-cyan-500" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z">
+                                </path>
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-gray-500">従業員数</p>
+                            <p class="text-base text-gray-900">{{ number_format($company->employee_number) }} 人</p>
+                        </div>
+                    </div>
+                @endif
+                @if ($company->date_of_establishment)
+                    <div class="flex items-center space-x-4">
+                        <div class="flex-shrink-0">
+                            <svg class="w-6 h-6 text-cyan-500" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z">
+                                </path>
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-gray-500">設立年</p>
+                            <p class="text-base text-gray-900">
+                                {{ \Carbon\Carbon::parse($company->date_of_establishment)->format('Y') }} 年</p>
+                        </div>
+                    </div>
+                @endif
+                @if ($company->capital_stock)
+                    <div class="flex items-center space-x-4">
+                        <div class="flex-shrink-0">
+                            <svg class="w-6 h-6 text-cyan-500" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z">
+                                </path>
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-gray-500">資本金</p>
+                            <p class="text-base text-gray-900">{{ number_format($company->capital_stock / 1000000) }}
+                                百万円</p>
+                        </div>
+                    </div>
+                @endif
+                @if ($company->representative_name)
+                    <div class="flex items-center space-x-4">
+                        <div class="flex-shrink-0">
+                            <svg class="w-6 h-6 text-cyan-500" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z">
+                                </path>
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-gray-500">代表者</p>
+                            <p class="text-base text-gray-900">{{ $company->representative_name }}</p>
+                        </div>
+                    </div>
+                @endif
+                @if ($company->industry)
+                    <div class="flex items-center space-x-4">
+                        <div class="flex-shrink-0">
+                            <svg class="w-6 h-6 text-cyan-500" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4">
+                                </path>
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-gray-500">業界</p>
+                            <p class="text-base text-gray-900">{{ $company->industry->name }}</p>
+                        </div>
+                    </div>
+                @endif
+                @if ($company->listing_status)
+                    <div class="flex items-center space-x-4">
+                        <div class="flex-shrink-0">
+                            <svg class="w-6 h-6 text-cyan-500" fill="none" stroke="currentColor"
+                                viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z">
+                                </path>
+                            </svg>
+                        </div>
+                        <div>
+                            <p class="text-sm font-medium text-gray-500">上場区分</p>
+                            <p class="text-base text-gray-900">{{ $company->listing_status }}</p>
+                        </div>
+                    </div>
+                @endif
+            </div>
+        </div>
+    </div>
 </section>
 
-@include('layouts.footer');
+@include('layouts.footer')
 
 <script src="https://cdn.jsdelivr.net/npm/pagedone@1.1.2/src/js/pagedone.js"></script>
+@vite(['resources/js/posts-modal.js'])
