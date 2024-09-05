@@ -39,10 +39,10 @@
 
     <div class="flex text-xs sm:text-sm content-center text-center mt-2">
         <div class="w-1/4">
-            在籍情報の入力&nbsp;&nbsp;&nbsp;&nbsp;
+            企業･在籍情報&nbsp;&nbsp;&nbsp;&nbsp;
         </div>
         <div class="w-1/2">
-            決め手の投稿
+            入社の決め手
         </div>
         <div class="w-1/4">
             &nbsp;&nbsp;&nbsp;&nbsp;投稿の完了

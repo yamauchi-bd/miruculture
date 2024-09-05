@@ -8,11 +8,24 @@
     <link rel="stylesheet" href=" https://cdn.jsdelivr.net/npm/pagedone@1.1.2/src/css/pagedone.css ">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <link href="https://unpkg.com/tailwindcss@0.3.0/dist/tailwind.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+        integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
     @vite(['resources/css/style.css'])
+    @vite(['resources/js/app.js'])
 
     <script src="https://cdn.tailwindcss.com"></script>
-    <script>tailwind.config = {theme: {extend: {boxShadow: {'inner-cyan': 'inset 0 0 0 2px #06b6d4',},},},}</script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    boxShadow: {
+                        'inner-cyan': 'inset 0 0 0 2px #06b6d4',
+                    },
+                },
+            },
+        }
+    </script>
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
     <script src="https://unpkg.com/@material-tailwind/html@latest/scripts/script-name.js"></script>
     <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
@@ -25,30 +38,48 @@
         <!-- Primary Navigation Menu -->
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
-                <div class="flex">
-
+                <div class="flex items-center">
                     <!-- Logo -->
                     <div class="shrink-0 flex items-center">
                         <a href="{{ route('welcome') }}">
                             <x-application-logo
-                                class="block h-9 w-auto fill-current text-gray-800 dark:text-gray-200" />
+                                class="block h-6 w-auto sm:h-9 fill-current text-gray-800 dark:text-gray-200" />
                         </a>
                     </div>
 
                     <!-- Navigation Links -->
-                    <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                        <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                            {{ __('Dashboard') }}
-                        </x-nav-link>
-                        <x-nav-link :href="route('careers.index')" :active="request()->routeIs('careers.index')">
+                    <div class="hidden space-x-8 md:space-x-4 lg:space-x-8 sm:-my-px sm:ms-10 sm:flex">
+                        <x-nav-link :href="route('careers.index')" :active="request()->routeIs('careers.index')" class="text-sm md:text-xs lg:text-sm">
                             {{ __('キャリア一覧') }}
                         </x-nav-link>
-                        <x-nav-link :href="route('careers.create')" :active="request()->routeIs('careers.create')">
+                        <x-nav-link :href="route('careers.create')" :active="request()->routeIs('careers.create')" class="text-sm md:text-xs lg:text-sm">
                             {{ __('キャリア作成') }}
                         </x-nav-link>
-                        <x-nav-link :href="route('posts.create')" :active="request()->routeIs('careers.create')">
+                        <x-nav-link :href="route('posts.create')" :active="request()->routeIs('posts.create')" class="text-sm md:text-xs lg:text-sm">
                             {{ __('決め手投稿') }}
                         </x-nav-link>
+                    </div>
+                    <!-- 検索バーを追加（スマートフォンサイズでも表示） -->
+                    <div class="flex items-center ms-4">
+                        <div class="relative">
+                            <input type="text" id="company-search"
+                                class="block w-40 sm:w-64 lg:w-80 px-4 py-2 text-xs sm:text-sm font-normal shadow-xs text-gray-900 bg-white border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent pr-12"
+                                placeholder="気になる企業を検索する..." required="">
+                            <button id="search-button"
+                                class="absolute right-1 top-1/2 transform -translate-y-1/2 p-1.5 sm:p-2 rounded-full bg-cyan-500 text-white text-xs sm:text-sm font-medium transition-all duration-300 hover:bg-cyan-600">
+                                <svg width="16px" height="16px" class="w-3 h-3 sm:w-4 sm:h-4" viewBox="0 0 24 24"
+                                    fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M17 17L21 21" stroke="#ffffff" stroke-width="3" stroke-linecap="round"
+                                        class="my-path"></path>
+                                    <path
+                                        d="M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z"
+                                        stroke="#ffffff" stroke-width="3" class="my-path"></path>
+                                </svg>
+                            </button>
+                            <div id="search-results"
+                                class="absolute z-10 bg-white border border-gray-300 rounded-md shadow-lg w-full mt-1 hidden text-xs">
+                            </div>
+                        </div>
                     </div>
                 </div>
 
@@ -58,8 +89,15 @@
                         <x-dropdown align="right" width="48" class="z-50">
                             <x-slot name="trigger">
                                 <button
-                                    class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-gray-700 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
-                                    <div>{{ str()->limit(Auth::user()->email, 6) }}</div>
+                                    class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 dark:text-gray-400 bg-white dark:bg-gray-800 hover:text-cyan-500 dark:hover:text-gray-300 focus:outline-none transition ease-in-out duration-150">
+                                    <div>
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-8 w-8" viewBox="0 0 20 20"
+                                            fill="currentColor">
+                                            <path fill-rule="evenodd"
+                                                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z"
+                                                clip-rule="evenodd" />
+                                        </svg>
+                                    </div>
 
                                     <div class="ms-1">
                                         <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg"
@@ -92,11 +130,11 @@
                 @else
                     <div class="hidden sm:flex sm:items-center sm:ms-6">
                         <a href="{{ route('register') }}"
-                            class="bg-white shadow-inner-cyan text-cyan-500 rounded-full cursor-pointer font-semibold text-center transition-all duration-500 py-2 px-4 text-sm hover:bg-cyan-50 mr-2">
+                            class="bg-white shadow-inner-cyan text-cyan-500 rounded-full cursor-pointer font-semibold text-center transition-all duration-500 py-2 px-4 text-sm md:text-xs lg:text-sm hover:bg-cyan-50 mr-2">
                             ユーザー登録
                         </a>
                         <a href="{{ route('login') }}"
-                            class="bg-cyan-500 text-white rounded-full cursor-pointer font-semibold text-center shadow-xs transition-all duration-500 py-2 px-4 text-sm hover:bg-cyan-700">
+                            class="bg-cyan-500 text-white rounded-full cursor-pointer font-semibold text-center shadow-xs transition-all duration-500 py-2 px-4 text-sm md:text-xs lg:text-sm hover:bg-cyan-700">
                             ログイン
                         </a>
                     </div>
@@ -123,16 +161,13 @@
         <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
             @auth
                 <div class="pt-2 pb-3 space-y-1">
-                    <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
-                    </x-responsive-nav-link>
                     <x-responsive-nav-link :href="route('careers.index')" :active="request()->routeIs('careers.index')">
                         {{ __('キャリア一覧') }}
                     </x-responsive-nav-link>
                     <x-responsive-nav-link :href="route('careers.create')" :active="request()->routeIs('careers.create')">
                         {{ __('キャリア作成') }}
                     </x-responsive-nav-link>
-                    <x-responsive-nav-link :href="route('posts.create')" :active="request()->routeIs('careers.create')">
+                    <x-responsive-nav-link :href="route('posts.create')" :active="request()->routeIs('posts.create')">
                         {{ __('決め手投稿') }}
                     </x-responsive-nav-link>
                 </div>
@@ -140,7 +175,9 @@
                 <!-- Responsive Settings Options -->
                 <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
                     <div class="px-4">
-                        <div class="font-medium text-sm text-gray-500"><div>{{ str()->limit(Auth::user()->email, 6) }}</div></div>
+                        <div class="font-medium text-sm text-gray-500">
+                            <div>{{ str()->limit(Auth::user()->email, 6) }}</div>
+                        </div>
                     </div>
 
                     <div class="mt-3 space-y-1">
@@ -164,11 +201,11 @@
                 <div class="pt-4 pb-1 border-t border-gray-200 dark:border-gray-600">
                     <div class="space-y-1">
                         <x-responsive-nav-link :href="route('register')"
-                            class="block w-full px-4 py-2 text-left text-sm leading-5 text-indigo-600 hover:bg-indigo-100 focus:outline-none focus:bg-indigo-100 transition duration-150 ease-in-out">
+                            class="block w-full px-4 py-2 text-left text-sm leading-5 text-cyan-600 hover:bg-cyan-100 focus:outline-none focus:bg-cyan-100 transition duration-150 ease-in-out">
                             {{ __('ユーザー登録') }}
                         </x-responsive-nav-link>
                         <x-responsive-nav-link :href="route('login')"
-                            class="block w-full px-4 py-2 text-left text-sm leading-5 text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:bg-indigo-700 transition duration-150 ease-in-out">
+                            class="block w-full px-4 py-2 text-left text-sm leading-5 text-white bg-cyan-600 hover:bg-cyan-700 focus:outline-none focus:bg-cyan-700 transition duration-150 ease-in-out">
                             {{ __('ログイン') }}
                         </x-responsive-nav-link>
                     </div>

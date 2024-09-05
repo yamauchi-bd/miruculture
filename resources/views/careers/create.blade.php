@@ -1,10 +1,10 @@
 @include('layouts.navigation')
 
-<section class="lg:py-24 md:py-12 sm:py-4 relative">
+<section class="sm:py-12 md:py-16 lg:py-24 relative">
     <div class="max-w-3xl lg:w-1/2 px-4 md:px-5 lg:px-5 mx-auto">
         <div class="w-full flex-col justify-center items-center lg:gap-14 md:gap-10 gap-8 inline-flex">
             <div class="w-full flex-col justify-center items-center gap-6 flex">
-                <h4 class="text-gray-900 text-xl font-semibold leading-loose self-start">基本情報の登録</h4>
+                <h4 class="text-gray-900 text-xl font-semibold leading-loose self-start">ユーザー情報の登録</h4>
 
                 <div class="w-full justify-center items-center gap-8 flex sm:flex-row flex-col">
                     <form method="POST" action="{{ route('careers.store') }}" class="w-full">
