@@ -77,12 +77,12 @@
                             <option value="グロース" {{ $company->listing_status == 'グロース' ? 'selected' : '' }}>グロース</option>
                         </select>
                     </div>
-
-                <div class="mt-8 flex justify-end space-x-4">
-                    <a href="{{ route('companies.show', $company->corporate_number) }}" class="px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500">戻る</a>
-                    <button type="submit" class="px-6 py-2 bg-cyan-500 text-white rounded-md hover:bg-cyan-600 transition-colors focus:outline-none focus:ring-2 focus:ring-cyan-500">更新</button>
-                </div>
             </form>
+        </div>
+
+        <div class="mt-8 mb-12 flex justify-center space-x-4">
+            <a href="{{ route('companies.show', $company->corporate_number) }}" class="px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500 shadow-md">戻る</a>
+            <button type="submit" form="edit-company-form" class="px-6 py-2 bg-cyan-500 text-white rounded-md hover:bg-cyan-600 transition-colors focus:outline-none focus:ring-2 focus:ring-cyan-500 shadow-md">更新</button>
         </div>
     </div>
 </section>
