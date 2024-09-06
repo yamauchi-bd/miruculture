@@ -22,7 +22,7 @@ class PostController extends Controller
     public function create(Request $request)
     {
         Log::info('Create method called with corporate_number: ' . $request->corporate_number);
-    
+
         $company = null;
         if ($request->has('corporate_number')) {
             $company = Company::where('corporate_number', $request->corporate_number)->first();
@@ -32,9 +32,9 @@ class PostController extends Controller
                 Log::warning('Company not found for corporate_number: ' . $request->corporate_number);
             }
         }
-    
+
         $jobCategories = JobCategory::whereNull('parent_id')->with('children')->get();
-        
+
         return view('posts.create', compact('jobCategories', 'company'));
     }
 
@@ -64,15 +64,15 @@ class PostController extends Controller
             'factor_3_satisfaction' => 'nullable|integer|min:1|max:5',
             'factor_3_satisfaction_reason' => 'nullable|string',
         ]);
-    
+
         // ここでバリデーション済みのデータを使用してPostモデルを作成し保存
         $post = new Post($validatedData);
         $post->user_id = Auth::id(); // ログインユーザーのIDを設定
         $post->save();
-    
-    // 保存後のリダイレクト
-    return redirect()->route('companies.show', ['corporateNumber' => $post->corporate_number])
-                     ->with('success', '投稿が正常に作成されました。');
+
+        // 保存後のリダイレクト
+        return redirect()->route('companies.show', ['corporate_number' => $post->corporate_number])
+            ->with('success', '投稿が正常に作成されました。');
     }
 
     public function show(Post $post)
@@ -112,9 +112,9 @@ class PostController extends Controller
             'factor_3_satisfaction' => 'nullable|required_with:deciding_factor_3|integer|min:1|max:5',
             'factor_3_satisfaction_reason' => 'nullable|required_with:deciding_factor_3|string',
         ]);
-    
+
         $post->update($validatedData);
-    
+
         return redirect()->route('posts.show', $post)->with('success', '投稿が更新されました。');
     }
 
