@@ -49,12 +49,6 @@
 
                     <!-- Navigation Links -->
                     <div class="hidden space-x-8 md:space-x-4 lg:space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                        <x-nav-link :href="route('careers.index')" :active="request()->routeIs('careers.index')" class="text-sm md:text-xs lg:text-sm">
-                            {{ __('キャリア一覧') }}
-                        </x-nav-link>
-                        <x-nav-link :href="route('careers.create')" :active="request()->routeIs('careers.create')" class="text-sm md:text-xs lg:text-sm">
-                            {{ __('キャリア作成') }}
-                        </x-nav-link>
                         <x-nav-link :href="route('posts.create')" :active="request()->routeIs('posts.create')" class="text-sm md:text-xs lg:text-sm">
                             {{ __('決め手投稿') }}
                         </x-nav-link>
@@ -161,12 +155,6 @@
         <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
             @auth
                 <div class="pt-2 pb-3 space-y-1">
-                    <x-responsive-nav-link :href="route('careers.index')" :active="request()->routeIs('careers.index')">
-                        {{ __('キャリア一覧') }}
-                    </x-responsive-nav-link>
-                    <x-responsive-nav-link :href="route('careers.create')" :active="request()->routeIs('careers.create')">
-                        {{ __('キャリア作成') }}
-                    </x-responsive-nav-link>
                     <x-responsive-nav-link :href="route('posts.create')" :active="request()->routeIs('posts.create')">
                         {{ __('決め手投稿') }}
                     </x-responsive-nav-link>
