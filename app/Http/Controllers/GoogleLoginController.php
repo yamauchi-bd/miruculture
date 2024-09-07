@@ -25,7 +25,7 @@ class GoogleLoginController extends Controller
 
             Auth::login($user);
 
-            return redirect()->route('posts.create');
+            return redirect()->route('welcome');
         } catch (Exception $e) {
             Log::error($e);
             throw $e;

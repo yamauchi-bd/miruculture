@@ -29,7 +29,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // キャリア関連
     // Route::resource('careers', CareerController::class);
     // Route::get('/career', [CareerController::class, 'show'])->name('career.show');
-    // Route::get('/career/edit', [CareerController::class, 'edit'])->name('career.edit');
+    Route::get('/career/edit', [CareerController::class, 'edit'])->name('career.edit');
     // Route::put('/career', [CareerController::class, 'update'])->name('career.update');
     
     // 投稿関連

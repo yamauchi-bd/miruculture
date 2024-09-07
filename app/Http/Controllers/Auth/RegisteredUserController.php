@@ -43,6 +43,6 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect(route('careers.create', absolute: false));
+        return redirect(route('posts.create', absolute: false));
     }
 }

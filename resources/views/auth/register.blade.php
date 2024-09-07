@@ -61,7 +61,7 @@
             </div>
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
             <p class="mt-4 text-left text-sm text-gray-500">※<a href="#"
-                    class="text-indigo-500 transition duration-100 hover:text-indigo-600 active:text-indigo-700">利用規約･個人情報の取り扱い</a>に同意のうえご登録ください。
+                    class="text-cyan-500 transition duration-100 hover:text-cyan-600 active:text-cyan-700">利用規約･個人情報の取り扱い</a>に同意のうえご登録ください。
             </p>
         </div>
 
@@ -75,7 +75,7 @@
             <p class="text-sm text-gray-600 dark:text-gray-400">
                 登録がお済みの方は
             </p>
-            <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
+            <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 dark:focus:ring-offset-gray-800"
                 href="{{ route('login') }}"> {{ __('ログイン') }}
             </a>
         </div>
