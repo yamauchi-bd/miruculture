@@ -41,7 +41,7 @@
                 <div class="flex items-center">
                     <!-- Logo -->
                     <div class="shrink-0 flex items-center">
-                        <a href="{{ route('welcome') }}">
+                        <a href="/">
                             <x-application-logo
                                 class="block h-6 w-auto sm:h-9 fill-current text-gray-800 dark:text-gray-200" />
                         </a>
