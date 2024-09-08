@@ -165,7 +165,7 @@
 
     <div id="student-fields" class="mt-4" style="{{ $career->career_status_id == 2 ? '' : 'display: none;' }}">
         <div>
-            <x-input-label for="college_type_id" :value="__('学校種別')" />
+            <x-input-label for="college_type_id" :value="__('学校タイプ')" />
             <select id="college_type_id" name="college_type_id"
                 class="mt-1 block w-full border-gray-300 focus:border-cyan-500 focus:ring-cyan-500 rounded-md shadow-sm">
                 @foreach ($collegeTypes as $type)
@@ -183,7 +183,43 @@
                 :value="old('college_name', $career->college_name)" />
         </div>
 
-        <!-- 他の学生向けフィールドも同様に追加 -->
+        <div class="mt-4">
+            <x-input-label for="college_faculty" :value="__('学部')" />
+            <x-text-input id="college_faculty" name="college_faculty" type="text" class="mt-1 block w-full"
+                :value="old('college_faculty', $career->college_faculty)" />
+        </div>
+
+        <div class="mt-4">
+            <x-input-label for="college_department" :value="__('学科')" />
+            <x-text-input id="college_department" name="college_department" type="text" class="mt-1 block w-full"
+                :value="old('college_department', $career->college_department)" />
+        </div>
+
+        <div class="flex space-x-4 mt-4">
+            <div class="flex-1">
+                <x-input-label for="graduation_year" :value="__('卒業予定年')" />
+                <select id="graduation_year" name="graduation_year" class="mt-1 block w-full border-gray-300 focus:border-cyan-500 focus:ring-cyan-500 rounded-md shadow-sm">
+                    @for ($year = date('Y'); $year <= date('Y') + 10; $year++)
+                        <option value="{{ $year }}" {{ old('graduation_year', $career->graduation_year) == $year ? 'selected' : '' }}>
+                            {{ $year }}
+                        </option>
+                    @endfor
+                </select>
+            </div>
+    
+            <div class="flex-1">
+                <x-input-label for="graduation_month" :value="__('卒業予定月')" />
+                <select id="graduation_month" name="graduation_month" class="mt-1 block w-full border-gray-300 focus:border-cyan-500 focus:ring-cyan-500 rounded-md shadow-sm">
+                    @for ($month = 1; $month <= 12; $month++)
+                        <option value="{{ $month }}" {{ old('graduation_month', $career->graduation_month) == $month ? 'selected' : '' }}>
+                            {{ $month }}
+                        </option>
+                    @endfor
+                </select>
+            </div>
+        </div>
+
+
     </div>
 
     <div class="mt-6 flex justify-end">
