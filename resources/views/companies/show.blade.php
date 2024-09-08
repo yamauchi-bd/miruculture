@@ -158,7 +158,7 @@
                         </div>
                         <div>
                             <p class="text-sm font-medium text-gray-500">ウェブサイト</p>
-                            <a href="{{ $company->company_url }}"
+                            <a href="{{ $company->company_url }}" target="_blank" rel="noopener noreferrer"
                                 class="text-base text-cyan-600 hover:text-cyan-800 transition duration-150 ease-in-out">{{ $company->company_url }}</a>
                         </div>
                     </div>

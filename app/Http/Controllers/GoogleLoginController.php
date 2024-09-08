@@ -25,7 +25,8 @@ class GoogleLoginController extends Controller
 
             Auth::login($user);
 
-            return redirect()->route('welcome');
+            // 'home' ルートにリダイレクト
+            return redirect()->route('home');
         } catch (Exception $e) {
             Log::error($e);
             throw $e;

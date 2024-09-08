@@ -12,11 +12,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
 
 // 基本ルート
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
-
-Route::get('/', [WelcomeController::class, 'index']);
+Route::get('/', [WelcomeController::class, 'index'])->name('home');
 
 // Route::get('/dashboard', function () {
 //     return view('dashboard');

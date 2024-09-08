@@ -6,7 +6,7 @@
             <div class="px-6 py-8 border-b border-gray-200">
                 <h3 class="text-xl font-semibold text-gray-800">「{{ $company->company_name }}」の企業データを編集</h3>
             </div>
-            <form action="{{ route('companies.update', $company->corporate_number) }}" method="POST" class="p-6">
+            <form action="{{ route('companies.update', $company->corporate_number) }}" method="POST" class="p-6" id="edit-company-form">
                 @csrf
                 @method('PUT')
 
@@ -20,6 +20,24 @@
                         <label for="business_summary" class="text-sm font-medium text-gray-700">事業概要</label>
                         <textarea name="business_summary" id="business_summary" rows="5" 
                                   class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-cyan-500 focus:border-cyan-500">{{ old('business_summary', $company->business_summary) }}</textarea>
+                    </div>
+
+                    <div class="space-y-2 col-span-1 md:col-span-2">
+                        <label for="company_mission" class="text-sm font-medium text-gray-700">ミッション</label>
+                        <textarea name="company_mission" id="company_mission" rows="3" 
+                                  class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-cyan-500 focus:border-cyan-500">{{ old('company_mission', $company->company_mission) }}</textarea>
+                    </div>
+
+                    <div class="space-y-2 col-span-1 md:col-span-2">
+                        <label for="company_vision" class="text-sm font-medium text-gray-700">ビジョン</label>
+                        <textarea name="company_vision" id="company_vision" rows="3" 
+                                  class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-cyan-500 focus:border-cyan-500">{{ old('company_vision', $company->company_vision) }}</textarea>
+                    </div>
+
+                    <div class="space-y-2 col-span-1 md:col-span-2">
+                        <label for="company_values" class="text-sm font-medium text-gray-700">バリュー</label>
+                        <textarea name="company_values" id="company_values" rows="3" 
+                                  class="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-cyan-500 focus:border-cyan-500">{{ old('company_values', $company->company_values) }}</textarea>
                     </div>
 
                     <div class="space-y-2">
@@ -77,6 +95,7 @@
                             <option value="グロース" {{ $company->listing_status == 'グロース' ? 'selected' : '' }}>グロース</option>
                         </select>
                     </div>
+                </div>
             </form>
         </div>
 
