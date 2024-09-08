@@ -34,7 +34,7 @@
                     </p>
 
                     @if (session('status') === 'verification-link-sent')
-                        <p class="mt-2 font-medium text-sm text-green-600 dark:text-green-400">
+                        <p class="mt-2 font-medium text-sm text-cyan-600 dark:text-cyan-400">
                             {{ __('新しい確認リンクがあなたのメールアドレスに送信されました。') }}
                         </p>
                     @endif

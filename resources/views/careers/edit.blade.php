@@ -34,7 +34,7 @@
     <div class="mt-4">
         <x-input-label for="gender_id" :value="__('性別')" />
         <select id="gender_id" name="gender_id"
-            class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
+            class="mt-1 block w-full border-gray-300 focus:border-cyan-500 focus:ring-cyan-500 rounded-md shadow-sm"
             required>
             @foreach ($genders as $gender)
                 <option value="{{ $gender->id }}"
@@ -48,7 +48,7 @@
     <div class="mt-4">
         <x-input-label for="prefecture_id" :value="__('都道府県')" />
         <select id="prefecture_id" name="prefecture_id"
-            class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
+            class="mt-1 block w-full border-gray-300 focus:border-cyan-500 focus:ring-cyan-500 rounded-md shadow-sm"
             required>
             @foreach ($prefectures as $prefecture)
                 <option value="{{ $prefecture->id }}"
@@ -62,7 +62,7 @@
     <div class="mt-4">
         <x-input-label for="career_status_id" :value="__('現在のキャリア')" />
         <select id="career_status_id" name="career_status_id"
-            class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm"
+            class="mt-1 block w-full border-gray-300 focus:border-cyan-500 focus:ring-cyan-500 rounded-md shadow-sm"
             required>
             @foreach ($careerStatuses as $status)
                 <option value="{{ $status->id }}"
@@ -78,7 +78,7 @@
         <div>
             <x-input-label for="current_industry_id" :value="__('現在の業界')" />
             <select id="current_industry_id" name="current_industry_id"
-                class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                class="mt-1 block w-full border-gray-300 focus:border-cyan-500 focus:ring-cyan-500 rounded-md shadow-sm">
                 @foreach ($industries as $industry)
                     <option value="{{ $industry->id }}"
                         {{ old('current_industry_id', $career->current_industry_id) == $industry->id ? 'selected' : '' }}>
@@ -91,7 +91,7 @@
         <div class="mt-4">
             <x-input-label for="current_job_category_id" :value="__('現在の職種')" />
             <select id="current_job_category_id" name="current_job_category_id"
-                class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                class="mt-1 block w-full border-gray-300 focus:border-cyan-500 focus:ring-cyan-500 rounded-md shadow-sm">
                 @foreach ($jobCategories as $category)
                     <option value="{{ $category->id }}"
                         {{ old('current_job_category_id', $career->current_job_category_id) == $category->id ? 'selected' : '' }}>
@@ -104,7 +104,7 @@
         <div class="mt-4">
             <x-input-label for="current_job_subcategory_id" :value="__('現在の職種（小カテゴリー）')" />
             <select id="current_job_subcategory_id" name="current_job_subcategory_id"
-                class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                class="mt-1 block w-full border-gray-300 focus:border-cyan-500 focus:ring-cyan-500 rounded-md shadow-sm">
                 @foreach ($jobSubcategories as $subcategory)
                     <option value="{{ $subcategory->id }}"
                         {{ old('current_job_subcategory_id', $career->current_job_subcategory_id) == $subcategory->id ? 'selected' : '' }}>
@@ -117,7 +117,7 @@
         <div class="mt-4">
             <x-input-label for="current_job_years_id" :value="__('経験年数')" />
             <select id="current_job_years_id" name="current_job_years_id"
-                class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                class="mt-1 block w-full border-gray-300 focus:border-cyan-500 focus:ring-cyan-500 rounded-md shadow-sm">
                 @foreach ($jobYears as $jobYear)
                     <option value="{{ $jobYear->id }}"
                         {{ old('current_job_years_id', $career->current_job_years_id) == $jobYear->id ? 'selected' : '' }}>
@@ -130,7 +130,7 @@
         <div class="mt-4">
             <x-input-label for="annual_income_id" :value="__('年収')" />
             <select id="annual_income_id" name="annual_income_id"
-                class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                class="mt-1 block w-full border-gray-300 focus:border-cyan-500 focus:ring-cyan-500 rounded-md shadow-sm">
                 @foreach ($annualIncomes as $income)
                     <option value="{{ $income->id }}"
                         {{ old('annual_income_id', $career->annual_income_id) == $income->id ? 'selected' : '' }}>
@@ -143,7 +143,7 @@
         <div class="mt-4">
             <x-input-label for="job_change_motivation_id" :value="__('転職の意欲')" />
             <select id="job_change_motivation_id" name="job_change_motivation_id"
-                class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                class="mt-1 block w-full border-gray-300 focus:border-cyan-500 focus:ring-cyan-500 rounded-md shadow-sm">
                 @foreach ($jobChangeMotivations as $motivation)
                     <option value="{{ $motivation->id }}">{{ $motivation->name }}</option>
                 @endforeach
@@ -153,7 +153,7 @@
         <div class="mt-4">
             <x-input-label for="side_job_motivation_id" :value="__('副業の意欲')" />
             <select id="side_job_motivation_id" name="side_job_motivation_id"
-                class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                class="mt-1 block w-full border-gray-300 focus:border-cyan-500 focus:ring-cyan-500 rounded-md shadow-sm">
                 @foreach ($sideJobMotivations as $motivation)
                     <option value="{{ $motivation->id }}">{{ $motivation->name }}</option>
                 @endforeach
@@ -166,7 +166,7 @@
         <div>
             <x-input-label for="college_type_id" :value="__('学校種別')" />
             <select id="college_type_id" name="college_type_id"
-                class="mt-1 block w-full border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 rounded-md shadow-sm">
+                class="mt-1 block w-full border-gray-300 focus:border-cyan-500 focus:ring-cyan-500 rounded-md shadow-sm">
                 @foreach ($collegeTypes as $type)
                     <option value="{{ $type->id }}"
                         {{ old('college_type_id', $career->college_type_id) == $type->id ? 'selected' : '' }}>

@@ -104,7 +104,7 @@
                     </div>
                 @endif
             </div>
-            <x-primary-button id="editButton">{{ __('変更する') }}</x-primary-button>
+            <x-primary-button id="editButton" class="mt-8">{{ __('変更する') }}</x-primary-button>
         </div>
     @endif
 </div>
