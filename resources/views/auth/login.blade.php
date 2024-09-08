@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Route;
 
 @include('layouts.navigation')
 
-<div class="container mx-auto px-4 sm:px-6 lg:px-8 lg:py-24 max-w-md">    <!-- Session Status -->
+<div class="container mx-auto px-4 sm:px-6 lg:px-8 lg:py-24 max-w-md">
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
     <form method="POST" action="{{ route('login') }}" class="mt-8 space-y-6">

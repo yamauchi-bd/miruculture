@@ -75,7 +75,7 @@
     </div>
 
     <div id="working-fields" class="mt-4" style="{{ in_array($career->career_status_id, [1, 9]) ? '' : 'display: none;' }}">
-        <div class="flex space-x-4">
+        
             <div class="flex-1">
                 <x-input-label for="current_industry_id" :value="__('現在の業界')" />
                 <select id="current_industry_id" name="current_industry_id" class="mt-1 block w-full border-gray-300 focus:border-cyan-500 focus:ring-cyan-500 rounded-md shadow-sm">
@@ -86,18 +86,6 @@
                     @endforeach
                 </select>
             </div>
-
-            <div class="flex-1">
-                <x-input-label for="current_job_years_id" :value="__('経験年数')" />
-                <select id="current_job_years_id" name="current_job_years_id" class="mt-1 block w-full border-gray-300 focus:border-cyan-500 focus:ring-cyan-500 rounded-md shadow-sm">
-                    @foreach ($jobYears as $jobYear)
-                        <option value="{{ $jobYear->id }}" {{ old('current_job_years_id', $career->current_job_years_id) == $jobYear->id ? 'selected' : '' }}>
-                            {{ $jobYear->name }}
-                        </option>
-                    @endforeach
-                </select>
-            </div>
-        </div>
 
         <div class="flex space-x-4 mt-4">
             <div class="flex-1">
@@ -124,6 +112,17 @@
 
         <div class="flex space-x-4 mt-4">
             <div class="flex-1">
+                <x-input-label for="current_job_years_id" :value="__('経験年数')" />
+                <select id="current_job_years_id" name="current_job_years_id" class="mt-1 block w-full border-gray-300 focus:border-cyan-500 focus:ring-cyan-500 rounded-md shadow-sm">
+                    @foreach ($jobYears as $jobYear)
+                        <option value="{{ $jobYear->id }}" {{ old('current_job_years_id', $career->current_job_years_id) == $jobYear->id ? 'selected' : '' }}>
+                            {{ $jobYear->name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div class="flex-1">
                 <x-input-label for="annual_income_id" :value="__('年収')" />
                 <select id="annual_income_id" name="annual_income_id" class="mt-1 block w-full border-gray-300 focus:border-cyan-500 focus:ring-cyan-500 rounded-md shadow-sm">
                     @foreach ($annualIncomes as $income)
@@ -132,10 +131,6 @@
                         </option>
                     @endforeach
                 </select>
-            </div>
-
-            <div class="flex-1">
-                <!-- この部分は空白のままにして、レイアウトのバランスを取ります -->
             </div>
         </div>
 

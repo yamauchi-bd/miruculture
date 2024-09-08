@@ -27,8 +27,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
     
     // キャリア関連
-    // Route::resource('careers', CareerController::class);
-    Route::get('/careers/{career}', [CareerController::class, 'show'])->name('careers.show');
+    Route::post('/careers', [CareerController::class, 'store'])->name('careers.store');
+    Route::get('/careers/create', [CareerController::class, 'create'])->name('careers.create');
     Route::get('/careers/{career}/edit', [CareerController::class, 'edit'])->name('careers.edit');
     Route::put('/careers/{career}', [CareerController::class, 'update'])->name('careers.update');
     
