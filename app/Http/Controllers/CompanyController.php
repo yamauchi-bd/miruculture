@@ -40,7 +40,9 @@ class CompanyController extends Controller
     public function show($corporateNumber)
     {
         $company = Company::with('industry')->where('corporate_number', $corporateNumber)->firstOrFail();
-        $posts = Post::where('corporate_number', $corporateNumber)->get();
+        $posts = Post::where('corporate_number', $corporateNumber)
+                     ->orderBy('created_at', 'desc')
+                     ->get();
     
         return view('companies.show', compact('company', 'posts'));
     }
