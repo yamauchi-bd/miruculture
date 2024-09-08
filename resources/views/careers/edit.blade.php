@@ -23,19 +23,19 @@
     <div class="flex space-x-4 mt-4">
         <div class="flex-1">
             <x-input-label for="last_name_kana" :value="__('セイ')" />
-            <x-text-input id="last_name_kana" name="last_name_kana" type="text" class="mt-1 block w-full" :value="old('last_name_kana', $career->last_name_kana)" required />
+            <x-text-input id="last_name_kana" name="last_name_kana" type="text" class="mt-1 block w-full" :value="old('last_name_kana', $career->last_name_kana)" required pattern="^[ァ-ヶー]+$" title="カタカナで入力ください" />
         </div>
-
+    
         <div class="flex-1">
             <x-input-label for="first_name_kana" :value="__('メイ')" />
-            <x-text-input id="first_name_kana" name="first_name_kana" type="text" class="mt-1 block w-full" :value="old('first_name_kana', $career->first_name_kana)" required />
+            <x-text-input id="first_name_kana" name="first_name_kana" type="text" class="mt-1 block w-full" :value="old('first_name_kana', $career->first_name_kana)" required pattern="^[ァ-ヶー]+$" title="カタカナで入力ください" />
         </div>
     </div>
 
     <div class="flex space-x-4 mt-4">
         <div class="flex-1">
             <x-input-label for="birth_date" :value="__('生年月日')" />
-            <x-text-input id="birth_date" name="birth_date" type="date" class="mt-1 block w-full" :value="old('birth_date', $career->birth_date->format('Y-m-d'))" required />
+            <x-text-input id="birth_date" name="birth_date" type="date" class="mt-1 block w-full" :value="old('birth_date', $career->birth_date->format('Y-m-d'))" required max="{{ date('Y-m-d') }}" />
         </div>
 
         <div class="flex-1">
@@ -188,7 +188,7 @@
             <x-text-input id="college_faculty" name="college_faculty" type="text" class="mt-1 block w-full"
                 :value="old('college_faculty', $career->college_faculty)" />
         </div>
-
+    
         <div class="mt-4">
             <x-input-label for="college_department" :value="__('学科')" />
             <x-text-input id="college_department" name="college_department" type="text" class="mt-1 block w-full"
