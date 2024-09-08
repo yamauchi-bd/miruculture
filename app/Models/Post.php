@@ -64,4 +64,9 @@ class Post extends Model
         }
         return $factors;
     }
+
+    public function company()
+    {
+        return $this->belongsTo(Company::class, 'corporate_number', 'corporate_number');
+    }
 }
