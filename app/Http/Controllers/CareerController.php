@@ -115,7 +115,7 @@ class CareerController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show()
+    public function show(Career $career)
     {
         Log::info('Show method called');
         $user = Auth::user();
@@ -137,7 +137,7 @@ class CareerController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit()
+    public function edit(Career $career)
     {
         $user = Auth::user();
         $career = $user->career;
@@ -179,26 +179,26 @@ class CareerController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request)
+    public function update(Request $request, Career $career)
     {
         $user = Auth::user();
         $career = $user->career;
-
+    
         if (!$career) {
             return redirect()->route('careers.create')->with('info', 'キャリア情報がまだ登録されていません。新しく作成してください。');
         }
-
+    
         $baseRules = [
             'last_name' => 'required|string|max:255',
             'first_name' => 'required|string|max:255',
-            'last_name_kana' => 'required|string|max:255',
-            'first_name_kana' => 'required|string|max:255',
+            'last_name_kana' => 'required|string|max:255|regex:/^[ァ-ヶー]+$/u',
+            'first_name_kana' => 'required|string|max:255|regex:/^[ァ-ヶー]+$/u',
             'birth_date' => 'required|date',
             'gender_id' => 'required|exists:genders,id',
             'prefecture_id' => 'required|exists:prefectures,id',
             'career_status_id' => 'required|exists:career_statuses,id',
         ];
-
+    
         $conditionalRules = [
             'current_industry_id' => 'required_if:career_status_id,1,3|exists:industries,id',
             'current_job_category_id' => 'required_if:career_status_id,1,3|exists:job_categories,id',
@@ -207,22 +207,43 @@ class CareerController extends Controller
             'annual_income_id' => 'required_if:career_status_id,1,3|exists:annual_incomes,id',
             'job_change_motivation_id' => 'required_if:career_status_id,1,3|exists:job_motivations,id',
             'side_job_motivation_id' => 'required_if:career_status_id,1,3|exists:job_motivations,id',
-            'college_name' => 'nullable|string|max:255',
+            'college_type_id' => 'required_if:career_status_id,2|exists:college_types,id',
+            'college_name' => 'required_if:career_status_id,2|nullable|string|max:255',
             'college_faculty' => 'nullable|string|max:255',
             'college_department' => 'nullable|string|max:255',
             'graduation_year' => 'required_if:career_status_id,2|nullable|integer|min:' . date('Y') . '|max:' . (date('Y') + 10),
             'graduation_month' => 'required_if:career_status_id,2|nullable|integer|min:1|max:12',
         ];
-
-        $validatedData = $request->validate(array_merge($baseRules, $conditionalRules));
-
-        $career->update($validatedData);
-
-        if ($request->ajax()) {
-            return response()->json(['success' => true]);
+    
+        try {
+            $validatedData = $request->validate(array_merge($baseRules, $conditionalRules));
+    
+            $career->update($validatedData);
+    
+            Log::info('Career updated successfully:', $career->toArray());
+    
+            if ($request->ajax()) {
+                return response()->json([
+                    'success' => true, 
+                    'message' => 'キャリア情報が更新されました。',
+                    'redirect' => route('profile.edit')
+                ]);
+            }
+    
+            return redirect()->route('profile.edit')->with('success', 'キャリア情報が更新されました。');
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            Log::error('Validation failed:', $e->errors());
+            if ($request->ajax()) {
+                return response()->json(['success' => false, 'errors' => $e->errors()], 422);
+            }
+            return back()->withErrors($e->errors())->withInput();
+        } catch (\Exception $e) {
+            Log::error('Error in update method: ' . $e->getMessage());
+            if ($request->ajax()) {
+                return response()->json(['success' => false, 'message' => 'エラーが発生しました。もう一度お試しください。'], 500);
+            }
+            return back()->with('error', 'エラーが発生しました。もう一度お試しください。')->withInput();
         }
-
-        return redirect()->route('careers.show')->with('success', 'キャリア情報が更新されました。');
     }
 
     /**

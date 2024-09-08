@@ -28,7 +28,7 @@
 </section>
 
 
-<section class="">
+<section class="mb-36">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div class="mb-16 ">
             <h2 class="text-xl text-center font-bold text-gray-900 ">最新の入社エントリー</h2>

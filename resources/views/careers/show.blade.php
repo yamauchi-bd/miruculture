@@ -5,7 +5,7 @@
         </h2>
     </header>
 
-    {{-- <form method="post" action="{{ route('career.update') }}" class="mt-6 space-y-6"> --}}
+    {{-- <form method="post" action="{{ route('careers.update') }}" class="mt-6 space-y-6"> --}}
 
 <div class="container">
     
@@ -104,7 +104,7 @@
                     </div>
                 @endif
             </div>
-            <x-primary-button id="editButton">{{ __('変更する') }}</x-primary-button>
+            <x-primary-button id="editButton" class="mt-8">{{ __('変更する') }}</x-primary-button>
         </div>
     @endif
 </div>
@@ -119,7 +119,7 @@
 
 <script>
     document.getElementById('editButton').addEventListener('click', function() {
-        fetch('{{ route("career.edit", $career->id) }}')
+        fetch('{{ route("careers.edit", $career) }}')
             .then(response => response.text())
             .then(html => {
                 document.getElementById('editContent').innerHTML = html;

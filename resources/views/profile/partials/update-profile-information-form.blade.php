@@ -1,7 +1,7 @@
 <section>
     <header>
-        <h2 class="text-lg font-medium text-gray-900 dark:text-gray-100">
-            {{ __('ログイン情報') }}
+        <h2 class="text-lg font-bold text-gray-900 dark:text-gray-100">
+            {{ __('メールアドレス') }}
         </h2>
     </header>
 
@@ -14,7 +14,7 @@
         @method('patch')
 
         <div>
-            <x-input-label for="current_email" :value="__('登録メールアドレス（ID）')" />
+            <x-input-label for="current_email" :value="__('現在のメールアドレス（ID）')" />
             <x-text-input id="current_email" name="current_email" type="email" class="mt-1 block w-full" :value="$user->email" disabled />
         </div>
 
@@ -34,7 +34,7 @@
                     </p>
 
                     @if (session('status') === 'verification-link-sent')
-                        <p class="mt-2 font-medium text-sm text-green-600 dark:text-green-400">
+                        <p class="mt-2 font-medium text-sm text-cyan-600 dark:text-cyan-400">
                             {{ __('新しい確認リンクがあなたのメールアドレスに送信されました。') }}
                         </p>
                     @endif
@@ -42,7 +42,7 @@
             @endif
         </div>
 
-        <div class="flex items-center gap-4">
+        <div class="flex items-center gap-4 justify-end">
             <x-primary-button>{{ __('変更する') }}</x-primary-button>
 
             @if (session('status') === 'profile-updated')

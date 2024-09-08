@@ -1,16 +1,15 @@
 @include('layouts.navigation')
 
-
-<x-guest-layout>
-    <form method="POST" action="{{ route('register') }}">
+<div class="container mx-auto px-4 sm:px-6 lg:px-8 lg:py-24 max-w-md">
+    <form method="POST" action="{{ route('register') }}" class="mt-8 space-y-6">
         @csrf
 
-        <div class="flex justify-center mt-5 mb-10">
-            <p class="text-xl font-bold">無料ユーザー登録（１分）</p>
+        <div class="text-center">
+            <h2 class="text-2xl font-bold mb-12">無料ユーザー登録（１分）</h2>
         </div>
 
         <a href="{{ route('login.google') }}"
-            class="flex items-center justify-center w-full pr-10 gap-2 rounded-lg border mt-4 border-gray-300 bg-white px-8 py-3 text-center text-sm font-semibold text-gray-800 outline-none ring-gray-300 transition duration-100 hover:bg-gray-100 focus-visible:ring active:bg-gray-200 md:text-base">
+            class="flex items-center justify-center w-full gap-2 rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm font-semibold text-gray-800 outline-none ring-gray-300 transition duration-100 hover:bg-gray-100 focus-visible:ring active:bg-gray-200 sm:text-base">
             <svg class="h-5 w-5 shrink-0" width="24" height="24" viewBox="0 0 24 24" fill="none"
                 xmlns="http://www.w3.org/2000/svg">
                 <path
@@ -26,27 +25,27 @@
                     d="M12.2549 4.75C14.0249 4.75 15.6049 5.36 16.8549 6.55L20.2749 3.13C18.2049 1.19 15.4949 0 12.2549 0C7.56492 0 3.51492 2.7 1.54492 6.62L5.52492 9.71C6.47492 6.86 9.12492 4.75 12.2549 4.75Z"
                     fill="#EA4335" />
             </svg>
-            Googleで登録する
+            <span>Googleで登録する</span>
         </a>
 
-        <div class="relative flex items-center justify-center mt-8 mb-6">
+        <div class="relative flex items-center justify-center">
             <span class="absolute inset-x-0 h-px bg-gray-300"></span>
             <span class="relative bg-white px-4 text-sm text-gray-400">または</span>
         </div>
 
         <!-- Email Address -->
-        <div class="mt-4">
-            <x-input-label for="email" :value="__('メールアドレス')" />
-            <x-text-input id="email" class="block mt-1 w-full" type="email" name="email" :value="old('email')"
+        <div>
+            <x-input-label for="email" :value="__('メールアドレス')" class="mb-1" />
+            <x-text-input id="email" class="block w-full" type="email" name="email" :value="old('email')"
                 required autocomplete="email" />
             <x-input-error :messages="$errors->get('email')" class="mt-2" />
         </div>
 
         <!-- Password -->
-        <div class="mt-4">
-            <x-input-label for="password" :value="__('パスワード（8文字以上の英数字）')" />
+        <div>
+            <x-input-label for="password" :value="__('パスワード（8文字以上の英数字）')" class="mb-1" />
             <div class="relative">
-                <x-text-input id="password" class="block mt-1 w-full pr-10" type="password" name="password" required
+                <x-text-input id="password" class="block w-full pr-10" type="password" name="password" required
                     autocomplete="new-password" />
 
                 <button type="button" id="togglePassword"
@@ -60,29 +59,26 @@
                 </button>
             </div>
             <x-input-error :messages="$errors->get('password')" class="mt-2" />
-            <p class="mt-4 text-left text-sm text-gray-500">※<a href="#"
-                    class="text-indigo-500 transition duration-100 hover:text-indigo-600 active:text-indigo-700">利用規約･個人情報の取り扱い</a>に同意のうえご登録ください。
+            <p class="mt-2 text-xs text-gray-500">※<a href="#"
+                    class="text-cyan-500 transition duration-100 hover:text-cyan-600 active:text-cyan-700">利用規約･個人情報の取り扱い</a>に同意のうえご登録ください。
             </p>
         </div>
 
-        <div class="flex items-center justify-center mt-4 py-4">
-            <x-primary-button class="ms-4">
+        <div>
+            <x-primary-button class="w-full justify-center py-3">
                 {{ __('メールアドレスで登録する') }}
             </x-primary-button>
         </div>
   
-        <div class="flex justify-center items-center rounded-b-lg">
-            <p class="text-sm text-gray-600 dark:text-gray-400">
+        <div class="text-center text-sm text-gray-600 dark:text-gray-400">
+            <p>
                 登録がお済みの方は
+                <a class="underline text-cyan-500 hover:text-cyan-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500"
+                    href="{{ route('login') }}">{{ __('ログイン') }}</a>
             </p>
-            <a class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500 dark:focus:ring-offset-gray-800"
-                href="{{ route('login') }}"> {{ __('ログイン') }}
-            </a>
         </div>
     </form>
-
-
-</x-guest-layout>
+</div>
 
 <script>
     document.getElementById('togglePassword').addEventListener('click', function() {

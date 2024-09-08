@@ -28,9 +28,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     
     // キャリア関連
     // Route::resource('careers', CareerController::class);
-    // Route::get('/career', [CareerController::class, 'show'])->name('career.show');
-    // Route::get('/career/edit', [CareerController::class, 'edit'])->name('career.edit');
-    // Route::put('/career', [CareerController::class, 'update'])->name('career.update');
+    Route::get('/careers/{career}', [CareerController::class, 'show'])->name('careers.show');
+    Route::get('/careers/{career}/edit', [CareerController::class, 'edit'])->name('careers.edit');
+    Route::put('/careers/{career}', [CareerController::class, 'update'])->name('careers.update');
     
     // 投稿関連
     Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
