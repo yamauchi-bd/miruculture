@@ -5,6 +5,7 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\GoogleLoginController;
 use App\Http\Controllers\CareerController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\WelcomeController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Auth;
@@ -13,7 +14,9 @@ use Illuminate\Http\Request;
 // 基本ルート
 Route::get('/', function () {
     return view('welcome');
-})->name('welcome');
+})->name('home');
+
+Route::get('/', [WelcomeController::class, 'index']);
 
 // Route::get('/dashboard', function () {
 //     return view('dashboard');
