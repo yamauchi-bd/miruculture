@@ -115,7 +115,7 @@ class CareerController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show()
+    public function show(Career $career)
     {
         Log::info('Show method called');
         $user = Auth::user();
@@ -137,7 +137,7 @@ class CareerController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit()
+    public function edit(Career $career)
     {
         $user = Auth::user();
         $career = $user->career;

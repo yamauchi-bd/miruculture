@@ -5,7 +5,7 @@
         </h2>
     </header>
 
-    {{-- <form method="post" action="{{ route('career.update') }}" class="mt-6 space-y-6"> --}}
+    {{-- <form method="post" action="{{ route('careers.update') }}" class="mt-6 space-y-6"> --}}
 
 <div class="container">
     
@@ -119,7 +119,7 @@
 
 <script>
     document.getElementById('editButton').addEventListener('click', function() {
-        fetch('{{ route("career.edit", $career->id) }}')
+        fetch('{{ route("careers.edit", $career) }}')
             .then(response => response.text())
             .then(html => {
                 document.getElementById('editContent').innerHTML = html;
