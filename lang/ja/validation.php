@@ -122,7 +122,7 @@ return [
         'mixed' => ':attributeは少なくとも大文字と小文字を1つずつ含まなければなりません。',
         'numbers' => ':attributeは少なくとも1つの数字を含まなければなりません。',
         'symbols' => ':attributeは少なくとも1つの記号を含まなければなりません。',
-        'uncompromised' => '指定された:attributeは、データリークに現れています。別の:attributeを選択してください。',
+        'uncompromised' => 'このパスワードは漏洩している可能性があります。別のパスワードを選択してください。',
     ],
     'present' => ':attributeフィールドが存在しなければなりません。',
     'present_if' => ':otherが:valueの場合、:attributeフィールドが存在しなければなりません。',
