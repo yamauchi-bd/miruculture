@@ -6,6 +6,7 @@ use App\Http\Controllers\GoogleLoginController;
 use App\Http\Controllers\CareerController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\WelcomeController;
+use App\Http\Controllers\RegisterController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Auth;
@@ -68,6 +69,12 @@ Route::post('/email/verification-notification', function (Request $request) {
 Route::get('/email/change/{token}', [ProfileController::class, 'confirmEmailChange'])
     ->middleware(['auth'])
     ->name('email.change.confirm');
+
+//メールアドレス4桁コード認証
+Route::post('/register/request', [RegisterController::class, 'request'])->name('register.request');
+Route::get('/register/verify', [RegisterController::class, 'showVerificationForm'])->name('register.verify');
+Route::post('/register/verify', [RegisterController::class, 'verify']);
+Route::post('/register/resend-code', [RegisterController::class, 'resendCode'])->name('register.resend-code');
 
 // 企業情報関連
 // Route::get('/companies', function () {
