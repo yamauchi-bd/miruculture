@@ -38,13 +38,20 @@ class RegisterController extends Controller
         // 確認メールの送信
         Mail::to($user->email)->send(new VerificationCode($verificationCode));
 
+        // セッションにメールアドレスを保存
+        session(['registration_email' => $user->email]);
+
         return redirect()->route('register.verify')
-            ->with('message', '確認コードを記載したメールを送信しました。');
+            ->with('message', '認証コードを記載したメールを送信しました。');
     }
 
     public function showVerificationForm()
     {
-        return view('auth.verify');
+        $email = session('registration_email');
+        if (!$email) {
+            return redirect()->route('register')->with('error', '登録プロセスを最初からやり直してください。');
+        }
+        return view('auth.verify', ['email' => $email]);
     }
 
     public function register(Request $request)
@@ -75,7 +82,7 @@ class RegisterController extends Controller
             ->first();
 
         if (!$user) {
-            return back()->withErrors(['verification_code' => '無効な確認コードです。']);
+            return back()->withErrors(['verification_code' => '無効な認証コードです。']);
         }
 
         $user->email_verified_at = now();

@@ -36,7 +36,7 @@ class RegisterController extends Controller
         return back()->withErrors(['email' => 'メールの送信に失敗しました。']);
     }
 
-    return redirect()->route('register.verify')->with('message', '確認コードを記載したメールを送信しました。');
+    return redirect()->route('register.verify')->with('message', '認証コードを記載したメールを送信しました。');
     }
 
     public function showVerificationForm()
