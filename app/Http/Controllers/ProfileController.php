@@ -10,6 +10,15 @@ use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Str;
 use Illuminate\View\View;
 use App\Models\User;
+use App\Models\Gender;
+use App\Models\Prefecture;
+use App\Models\CareerStatus;
+use App\Models\Industry;
+use App\Models\JobCategory;
+use App\Models\JobYear;
+use App\Models\AnnualIncome;
+use App\Models\JobMotivation;
+use App\Models\CollegeType;
 
 class ProfileController extends Controller
 {
@@ -24,6 +33,16 @@ class ProfileController extends Controller
         return view('profile.edit', [
             'user' => $user,
             'career' => $career,
+            'genders' => Gender::all(),
+            'prefectures' => Prefecture::all(),
+            'careerStatuses' => CareerStatus::all(),
+            'industries' => Industry::all(),
+            'jobCategories' => JobCategory::whereNull('parent_id')->with('children')->get(),
+            'jobYears' => JobYear::all(),
+            'annualIncomes' => AnnualIncome::all(),
+            'jobChangeMotivations' => JobMotivation::change()->get(),
+            'sideJobMotivations' => JobMotivation::side()->get(),
+            'collegeTypes' => CollegeType::all(),
         ]);
     }
 

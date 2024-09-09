@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\Rules;
+use Illuminate\Validation\Rules\Password;
 use Illuminate\View\View;
 
 class RegisteredUserController extends Controller
@@ -31,7 +32,7 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', Rules\Password::defaults()],
+            'password' => ['required', 'string', Password::defaults(), 'password_rules'],
         ]);
 
         $user = User::create([
@@ -43,6 +44,6 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect(route('careers.create', absolute: false));
+        return redirect(route('posts.create', absolute: false));
     }
 }

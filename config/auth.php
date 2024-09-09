@@ -99,6 +99,15 @@ return [
         ],
     ],
 
+    'password_rules' => [
+        'min' => 8,
+        'letters' => true,
+        'numbers' => true,
+        'mixed' => false,
+        'symbols' => false,
+        'uncompromised' => true,
+    ],
+
     /*
     |--------------------------------------------------------------------------
     | Password Confirmation Timeout

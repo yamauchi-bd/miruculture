@@ -4,10 +4,12 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Notifications\EmailChangeNotification;
+use App\Models\Post;
 
 class User extends Authenticatable
 {
@@ -21,6 +23,8 @@ class User extends Authenticatable
     protected $fillable = [
         'email',
         'password',
+        'google_id',
+        'verification_code',
     ];
 
     /**
@@ -54,5 +58,10 @@ class User extends Authenticatable
     public function sendEmailChangeNotification()
     {
         $this->notify(new EmailChangeNotification($this->email_change_token));
+    }
+
+    public function posts(): HasMany
+    {
+        return $this->hasMany(Post::class);
     }
 }
