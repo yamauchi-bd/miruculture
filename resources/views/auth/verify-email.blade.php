@@ -1,31 +1,35 @@
-<x-guest-layout>
-    <div class="mb-4 text-sm text-gray-600 dark:text-gray-400">
-        {{ __('Thanks for signing up! Before getting started, could you verify your email address by clicking on the link we just emailed to you? If you didn\'t receive the email, we will gladly send you another.') }}
-    </div>
+@include('layouts.navigation')
 
-    @if (session('status') == 'verification-link-sent')
-        <div class="mb-4 font-medium text-sm text-green-600 dark:text-green-400">
-            {{ __('A new verification link has been sent to the email address you provided during registration.') }}
+<div class="container mx-auto px-4 sm:px-6 lg:px-8 lg:py-24 max-w-md">
+    <form method="POST" action="{{ route('register.verify') }}" class="mt-8 space-y-6">
+        @csrf
+
+        <div class="text-center">
+            <h2 class="text-2xl font-bold mb-12">メールアドレスの認証</h2>
         </div>
-    @endif
 
-    <div class="mt-4 flex items-center justify-between">
-        <form method="POST" action="{{ route('verification.send') }}">
-            @csrf
+        <div>
+            <x-input-label for="verification_code" :value="__('認証コード')" class="mb-1" />
+            <x-text-input id="verification_code" class="block w-full" type="text" name="verification_code" required autofocus />
+            <p class="mt-2 text-sm text-gray-500">メールアドレスに送信された4桁のコードを入力してください。</p>
+            <x-input-error :messages="$errors->get('verification_code')" class="mt-2" />
+        </div>
 
-            <div>
-                <x-primary-button>
-                    {{ __('Resend Verification Email') }}
-                </x-primary-button>
-            </div>
-        </form>
+        <div>
+            <x-primary-button class="w-full justify-center py-3">
+                {{ __('認証コードを確認') }}
+            </x-primary-button>
+        </div>
 
-        <form method="POST" action="{{ route('logout') }}">
-            @csrf
+        <div class="text-center text-sm text-gray-600 dark:text-gray-400">
+            <p>
+                コードが届かない場合は
+                <a class="underline text-cyan-500 hover:text-cyan-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500"
+                    href="{{ route('register.resend-code') }}">{{ __('再送信') }}</a>
+                してください。
+            </p>
+        </div>
+    </form>
+</div>
 
-            <button type="submit" class="underline text-sm text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-gray-100 rounded-md focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500 dark:focus:ring-offset-gray-800">
-                {{ __('Log Out') }}
-            </button>
-        </form>
-    </div>
-</x-guest-layout>
+@include('layouts.footer')
