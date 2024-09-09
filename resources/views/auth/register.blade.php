@@ -46,7 +46,7 @@
             <x-input-label for="password" :value="__('パスワード（8文字以上の英数字）')" class="mb-1" />
             <div class="relative">
                 <x-text-input id="password" class="block w-full pr-10" type="password" name="password" required
-                    autocomplete="new-password" />
+                    autocomplete="new-password" pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$" />
 
                 <button type="button" id="togglePassword"
                     class="absolute inset-y-0 right-0 pr-3 flex items-center focus:outline-none">
@@ -69,6 +69,8 @@
                 {{ __('メールアドレスで登録する') }}
             </x-primary-button>
         </div>
+
+        
   
         <div class="text-center text-sm text-gray-600 dark:text-gray-400">
             <p>
