@@ -184,15 +184,15 @@
         </div>
 
         <div class="mt-4">
-            <x-input-label for="college_faculty" :value="__('学部')" />
+            <x-input-label for="college_faculty" :value="__('学部（任意）')" />
             <x-text-input id="college_faculty" name="college_faculty" type="text" class="mt-1 block w-full"
-                :value="old('college_faculty', $career->college_faculty)" />
+                :value="old('college_faculty', $career->college_faculty)" :required="false" />
         </div>
     
         <div class="mt-4">
-            <x-input-label for="college_department" :value="__('学科')" />
+            <x-input-label for="college_department" :value="__('学科（任意）')" />
             <x-text-input id="college_department" name="college_department" type="text" class="mt-1 block w-full"
-                :value="old('college_department', $career->college_department)" />
+                :value="old('college_department', $career->college_department)" :required="false" />
         </div>
 
         <div class="flex space-x-4 mt-4">
@@ -265,6 +265,11 @@
             var fields = container.querySelectorAll('input, select, textarea');
             fields.forEach(function(field) {
                 field.disabled = false;
+                if (field.id !== 'college_faculty' && field.id !== 'college_department') {
+                    field.required = true;
+                } else {
+                    field.required = false;
+                }
             });
         }
 
@@ -344,6 +349,13 @@ $(document).ready(function() {
                 }
             }
         });
+    });
+
+    $('#career-form').on('submit', function(e) {
+        var careerStatus = $('#career_status_id').val();
+        if (careerStatus === '2') { // 学生の場合
+            $('#college_faculty, #college_department').prop('required', false);
+        }
     });
 });
 </script>
