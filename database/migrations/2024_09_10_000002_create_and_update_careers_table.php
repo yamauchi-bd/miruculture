@@ -6,9 +6,6 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
         Schema::create('careers', function (Blueprint $table) {
@@ -37,26 +34,14 @@ return new class extends Migration
             $table->string('college_name')->nullable();
             $table->string('college_faculty')->nullable();
             $table->string('college_department')->nullable();
-            $table->integer('graduation_years')->nullable();
+            $table->integer('graduation_year')->nullable();
             $table->integer('graduation_month')->nullable();
             $table->timestamps();
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::dropIfExists('careers');
-        Schema::dropIfExists('college_types');
-        Schema::dropIfExists('annual_incomes');
-        Schema::dropIfExists('job_years');
-        Schema::dropIfExists('job_categories');
-        Schema::dropIfExists('industries');
-        Schema::dropIfExists('job_motivations');
-        Schema::dropIfExists('career_statuses');
-        Schema::dropIfExists('prefectures');
-        Schema::dropIfExists('genders');
     }
 };
