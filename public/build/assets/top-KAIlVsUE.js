@@ -1,0 +1,1 @@
+new Swiper(".mySwiper",{slidesPerView:1,spaceBetween:32,loop:!0,centeredSlides:!0,pagination:{el:".swiper-pagination",clickable:!0},autoplay:{delay:2500,disableOnInteraction:!1},breakpoints:{640:{slidesPerView:1,spaceBetween:32},768:{slidesPerView:2,spaceBetween:32},1024:{slidesPerView:3,spaceBetween:32}}});
