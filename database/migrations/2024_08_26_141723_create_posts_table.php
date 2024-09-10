@@ -42,7 +42,7 @@ return new class extends Migration
             $table->timestamps();
 
             // インデックスと制約
-            $table->unique(['user_id', 'corporate_number']);
+            $table->index('user_id');
             $table->index('company_name');
             $table->index('corporate_number');
         });

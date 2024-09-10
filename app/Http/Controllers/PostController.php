@@ -65,9 +65,9 @@ class PostController extends Controller
             'factor_3_satisfaction_reason' => 'nullable|string',
         ]);
 
-        // ここでバリデーション済みのデータを使用してPostモデルを作成し保存
+        // 新しい投稿を作成
         $post = new Post($validatedData);
-        $post->user_id = Auth::id(); // ログインユーザーのIDを設定
+        $post->user_id = Auth::id();
         $post->save();
 
         // 保存後のリダイレクト

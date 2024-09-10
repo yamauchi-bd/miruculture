@@ -260,7 +260,7 @@
                 class="flex gap-1 items-center text-gray-600 text-sm font-medium leading-relaxed">
                 学部
             </label>
-            <x-text-input id="college_faculty" name="college_faculty" type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm h-10" :value="old('college_faculty')" />
+            <x-text-input id="college_faculty" name="college_faculty" type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm h-10" :value="old('college_faculty')" :required="false" />
         </div>
 
         <!-- 学科 -->
@@ -269,7 +269,7 @@
                 class="flex gap-1 items-center text-gray-600 text-sm font-medium leading-relaxed">
                 学科
             </label>
-            <x-text-input id="college_department" name="college_department" type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm h-10" :value="old('college_department')" />
+            <x-text-input id="college_department" name="college_department" type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm h-10" :value="old('college_department')" :required="false" />
         </div>
 
         <!-- 卒業予定日 -->
@@ -324,7 +324,11 @@
                 workingFields.style.display = 'none';
                 studentFields.style.display = 'block';
                 workingInputs.forEach(input => input.removeAttribute('required'));
-                studentInputs.forEach(input => input.setAttribute('required', ''));
+                studentInputs.forEach(input => {
+                    if (input.id !== 'college_faculty' && input.id !== 'college_department') {
+                        input.setAttribute('required', '');
+                    }
+                });
             } else {
                 workingFields.style.display = 'none';
                 studentFields.style.display = 'none';
@@ -348,6 +352,16 @@
                 option.textContent = subCategory.name;
                 subCategorySelect.appendChild(option);
             });
+        }
+    });
+
+    document.querySelector('form').addEventListener('submit', function(e) {
+        const careerStatus = document.querySelector('input[name="career_status_id"]:checked');
+        if (careerStatus && careerStatus.value === '2') {
+            const facultyInput = document.getElementById('college_faculty');
+            const departmentInput = document.getElementById('college_department');
+            facultyInput.removeAttribute('required');
+            departmentInput.removeAttribute('required');
         }
     });
 </script>
