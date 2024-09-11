@@ -1,6 +1,6 @@
 {
   "resources/css/app.css": {
-    "file": "assets/app-DItu-fS0.css",
+    "file": "assets/app-CEab7blT.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
@@ -10,15 +10,36 @@
     "isEntry": true
   },
   "resources/js/app.js": {
-    "file": "assets/app-CGoH_twI.js",
+    "file": "assets/app-BG79boYI.js",
     "name": "app",
     "src": "resources/js/app.js",
+    "isEntry": true,
+    "imports": [
+      "resources/js/company-search.js"
+    ]
+  },
+  "resources/js/company-input.js": {
+    "file": "assets/company-input-H2gGiJ2Q.js",
+    "name": "company-input",
+    "src": "resources/js/company-input.js",
+    "isEntry": true
+  },
+  "resources/js/company-search.js": {
+    "file": "assets/company-search-B-4kzqLu.js",
+    "name": "company-search",
+    "src": "resources/js/company-search.js",
     "isEntry": true
   },
   "resources/js/posts-create.js": {
     "file": "assets/posts-create-C0XYmPUr.js",
     "name": "posts-create",
     "src": "resources/js/posts-create.js",
+    "isEntry": true
+  },
+  "resources/js/posts-modal.js": {
+    "file": "assets/posts-modal-EV9Krrfx.js",
+    "name": "posts-modal",
+    "src": "resources/js/posts-modal.js",
     "isEntry": true
   },
   "resources/js/top.js": {
