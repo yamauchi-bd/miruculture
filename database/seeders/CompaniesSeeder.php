@@ -23,43 +23,30 @@ class CompaniesSeeder extends Seeder
         '法人代表者名' => 'representative_name',
     ];
 
-    protected $processedFiles = [];
-    protected $processedFilesPath;
-
-    public function __construct()
-    {
-        $this->processedFilesPath = storage_path('app/processed_files.json');
-    }
-
     public function run($specificFile = null)
     {
         ini_set('memory_limit', '256M');
         ini_set('max_execution_time', 300);
 
-        $this->loadProcessedFiles();
-
         $files = $specificFile 
             ? [storage_path('app/company_data/' . $specificFile)]
             : glob(storage_path('app/company_data/*.csv'));
 
-        foreach ($files as $file) {
-            if (in_array(basename($file), $this->processedFiles)) {
-                $this->command->info("Skipping already processed file: " . basename($file));
-                continue;
-            }
+        $totalProcessed = 0;
 
+        foreach ($files as $file) {
             $this->command->info("Processing file: " . basename($file));
             try {
                 $processed = $this->processFile($file);
-                $this->markFileAsProcessed(basename($file));
+                $totalProcessed += $processed;
                 $this->command->info("Processed $processed records from " . basename($file));
             } catch (\Exception $e) {
                 $this->command->error("Error processing file " . basename($file) . ": " . $e->getMessage());
                 Log::error("Error processing file: " . basename($file) . " - " . $e->getMessage());
             }
-
-            $this->saveProcessedFiles();
         }
+
+        $this->command->info("Total processed records: $totalProcessed");
     }
 
     protected function processFile($file)
@@ -67,16 +54,28 @@ class CompaniesSeeder extends Seeder
         Log::info("Started processing file: " . basename($file) . ". Memory usage: " . $this->getMemoryUsage());
 
         $csv = Reader::createFromPath($file, 'r');
+
+        // ファイル名から番号を取得
         $fileNumber = intval(substr(basename($file), 10, 3));
-        $header = $fileNumber == 0 ? $csv->getHeader() : $this->getDefaultHeader();
-        $csv->setHeaderOffset($fileNumber == 0 ? 0 : null);
+
+        if ($fileNumber == 0) {
+            // kihonjoho_000.csvの場合はヘッダーあり
+            $csv->setHeaderOffset(0);
+            $header = $csv->getHeader();
+        } else {
+            // それ以外のファイルはヘッダーなし
+            $header = $this->getDefaultHeader();
+            $csv->setHeaderOffset(null);
+        }
+
+        Log::info("File headers: " . implode(', ', $header));
 
         $processedCount = 0;
-        $chunkSize = 100;
+        $batchSize = 100;
         $offset = 0;
 
         while (true) {
-            $stmt = (new Statement())->offset($offset)->limit($chunkSize);
+            $stmt = (new Statement())->offset($offset)->limit($batchSize);
             $records = $stmt->process($csv, $header);
 
             if ($records->count() == 0) {
@@ -85,10 +84,20 @@ class CompaniesSeeder extends Seeder
 
             $batch = [];
             foreach ($records as $record) {
-                if (!empty($record['本社所在地'])) {
-                    $data = $this->mapData($record);
-                    $batch[] = $data;
-                    $processedCount++;
+                try {
+                    // 空の列を除去
+                    $record = array_filter($record, function($value) {
+                        return $value !== '';
+                    });
+
+                    if (!empty($record['本社所在地'])) {
+                        $data = $this->mapData($record);
+                        $batch[] = $data;
+                        $processedCount++;
+                    }
+                } catch (\Exception $e) {
+                    Log::error("Error processing record in file " . basename($file) . ": " . $e->getMessage());
+                    Log::error("Problematic record: " . json_encode($record));
                 }
             }
 
@@ -96,7 +105,7 @@ class CompaniesSeeder extends Seeder
                 DB::table('companies')->insert($batch);
             }
 
-            $offset += $chunkSize;
+            $offset += $batchSize;
             $this->command->info("Processed $processedCount records. Memory usage: " . $this->getMemoryUsage());
             gc_collect_cycles();
         }
@@ -108,23 +117,6 @@ class CompaniesSeeder extends Seeder
     protected function getMemoryUsage()
     {
         return round(memory_get_usage(true) / 1048576, 2) . ' MB';
-    }
-
-    protected function loadProcessedFiles()
-    {
-        if (file_exists($this->processedFilesPath)) {
-            $this->processedFiles = json_decode(file_get_contents($this->processedFilesPath), true) ?? [];
-        }
-    }
-
-    protected function markFileAsProcessed($filename)
-    {
-        $this->processedFiles[] = $filename;
-    }
-
-    protected function saveProcessedFiles()
-    {
-        file_put_contents($this->processedFilesPath, json_encode($this->processedFiles));
     }
 
     protected function getDefaultHeader()
