@@ -23,85 +23,108 @@ class CompaniesSeeder extends Seeder
         '法人代表者名' => 'representative_name',
     ];
 
-    public function run()
+    protected $processedFiles = [];
+    protected $processedFilesPath;
+
+    public function __construct()
     {
-        $files = glob(storage_path('app/company_data/*.csv'));
-        $totalProcessed = 0;
+        $this->processedFilesPath = storage_path('app/processed_files.json');
+    }
+
+    public function run($specificFile = null)
+    {
+        ini_set('memory_limit', '256M');
+        ini_set('max_execution_time', 300);
+
+        $this->loadProcessedFiles();
+
+        $files = $specificFile 
+            ? [storage_path('app/company_data/' . $specificFile)]
+            : glob(storage_path('app/company_data/*.csv'));
 
         foreach ($files as $file) {
+            if (in_array(basename($file), $this->processedFiles)) {
+                $this->command->info("Skipping already processed file: " . basename($file));
+                continue;
+            }
+
             $this->command->info("Processing file: " . basename($file));
             try {
                 $processed = $this->processFile($file);
-                $totalProcessed += $processed;
+                $this->markFileAsProcessed(basename($file));
                 $this->command->info("Processed $processed records from " . basename($file));
             } catch (\Exception $e) {
                 $this->command->error("Error processing file " . basename($file) . ": " . $e->getMessage());
-                // オプション：エラーをログに記録
                 Log::error("Error processing file: " . basename($file) . " - " . $e->getMessage());
             }
-        }
 
-        $this->command->info("Total processed records: $totalProcessed");
+            $this->saveProcessedFiles();
+        }
     }
 
     protected function processFile($file)
     {
-        Log::info("Started processing file: " . basename($file));
+        Log::info("Started processing file: " . basename($file) . ". Memory usage: " . $this->getMemoryUsage());
 
         $csv = Reader::createFromPath($file, 'r');
-
-        // ファイル名から番号を取得
         $fileNumber = intval(substr(basename($file), 10, 3));
+        $header = $fileNumber == 0 ? $csv->getHeader() : $this->getDefaultHeader();
+        $csv->setHeaderOffset($fileNumber == 0 ? 0 : null);
 
-        if ($fileNumber == 0) {
-            // kihonjoho_000.csvの場合はヘッダーあり
-            $csv->setHeaderOffset(0);
-            $header = $csv->getHeader();
-        } else {
-            // それ以外のファイルはヘッダーなし
-            $header = $this->getDefaultHeader();
-            $csv->setHeaderOffset(null);
-        }
-
-        Log::info("File headers: " . implode(', ', $header));
-
-        $records = $csv->getRecords($header);
-
-        $batchSize = 1000; // 一度に処理するレコード数
-        $batch = [];
         $processedCount = 0;
+        $chunkSize = 100;
+        $offset = 0;
 
-        foreach ($records as $record) {
-            try {
-                // 空の列を除去
-                $record = array_filter($record, function($value) {
-                    return $value !== '';
-                });
+        while (true) {
+            $stmt = (new Statement())->offset($offset)->limit($chunkSize);
+            $records = $stmt->process($csv, $header);
 
+            if ($records->count() == 0) {
+                break;
+            }
+
+            $batch = [];
+            foreach ($records as $record) {
                 if (!empty($record['本社所在地'])) {
                     $data = $this->mapData($record);
                     $batch[] = $data;
                     $processedCount++;
-
-                    if (count($batch) >= $batchSize) {
-                        DB::table('companies')->insert($batch);
-                        $batch = [];
-                        $this->command->info("Processed $processedCount records");
-                    }
                 }
-            } catch (\Exception $e) {
-                Log::error("Error processing record in file " . basename($file) . ": " . $e->getMessage());
-                Log::error("Problematic record: " . json_encode($record));
             }
+
+            if (!empty($batch)) {
+                DB::table('companies')->insert($batch);
+            }
+
+            $offset += $chunkSize;
+            $this->command->info("Processed $processedCount records. Memory usage: " . $this->getMemoryUsage());
+            gc_collect_cycles();
         }
 
-        // 残りのバッチを挿入
-        if (!empty($batch)) {
-            DB::table('companies')->insert($batch);
-        }
-
-        Log::info("Finished processing file: " . basename($file) . ". Processed records: " . $processedCount);
+        Log::info("Finished processing file: " . basename($file) . ". Processed records: " . $processedCount . ". Memory usage: " . $this->getMemoryUsage());
         return $processedCount;
+    }
+
+    protected function getMemoryUsage()
+    {
+        return round(memory_get_usage(true) / 1048576, 2) . ' MB';
+    }
+
+    protected function loadProcessedFiles()
+    {
+        if (file_exists($this->processedFilesPath)) {
+            $this->processedFiles = json_decode(file_get_contents($this->processedFilesPath), true) ?? [];
+        }
+    }
+
+    protected function markFileAsProcessed($filename)
+    {
+        $this->processedFiles[] = $filename;
+    }
+
+    protected function saveProcessedFiles()
+    {
+        file_put_contents($this->processedFilesPath, json_encode($this->processedFiles));
     }
 
     protected function getDefaultHeader()
