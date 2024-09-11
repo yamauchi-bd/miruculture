@@ -24,6 +24,12 @@ class CompaniesSeeder extends Seeder
     ];
 
     protected $processedFiles = [];
+    protected $processedFilesPath;
+
+    public function __construct()
+    {
+        $this->processedFilesPath = storage_path('app/processed_files.json');
+    }
 
     public function run()
     {
@@ -33,30 +39,31 @@ class CompaniesSeeder extends Seeder
         $totalProcessed = 0;
         
         foreach ($files as $file) {
-            if (in_array(basename($file), $this->processedFiles)) {
-                $this->command->info("Skipping already processed file: " . basename($file));
+            $fileName = basename($file);
+            if (in_array($fileName, $this->processedFiles)) {
+                $this->command->info("Skipping already processed file: " . $fileName);
                 continue;
             }
 
             try {
                 $processed = $this->processFile($file);
                 $totalProcessed += $processed;
-                $this->command->info("Processed $processed records from " . basename($file));
+                $this->command->info("Processed $processed records from " . $fileName);
+                $this->markFileAsProcessed($fileName);
+                $this->saveProcessedFiles();
             } catch (\Exception $e) {
-                $this->command->error("Error processing file " . basename($file) . ": " . $e->getMessage());
-                // オプション：エラーをログに記録
-                Log::error("Error processing file: " . basename($file) . " - " . $e->getMessage());
+                $this->command->error("Error processing file " . $fileName . ": " . $e->getMessage());
+                Log::error("Error processing file: " . $fileName . " - " . $e->getMessage());
             }
         }
 
-        $this->saveProcessedFiles();
+        $this->command->info("Total processed records: " . $totalProcessed);
     }
 
     protected function loadProcessedFiles()
     {
-        $path = storage_path('app/processed_files.json');
-        if (file_exists($path)) {
-            $this->processedFiles = json_decode(file_get_contents($path), true);
+        if (file_exists($this->processedFilesPath)) {
+            $this->processedFiles = json_decode(file_get_contents($this->processedFilesPath), true);
         }
     }
 
@@ -67,8 +74,7 @@ class CompaniesSeeder extends Seeder
 
     protected function saveProcessedFiles()
     {
-        $path = storage_path('app/processed_files.json');
-        file_put_contents($path, json_encode($this->processedFiles));
+        file_put_contents($this->processedFilesPath, json_encode($this->processedFiles));
     }
 
     protected function processFile($file)
@@ -76,89 +82,48 @@ class CompaniesSeeder extends Seeder
         Log::info("Started processing file: " . basename($file));
 
         $csv = Reader::createFromPath($file, 'r');
+        $csv->setHeaderOffset(0);
 
-        // ファイル名から番号を取得
-        $fileNumber = intval(substr(basename($file), 10, 3));
-
-        if ($fileNumber == 0) {
-            // kihonjoho_000.csvの場合はヘッダーあり
-            $csv->setHeaderOffset(0);
-            $header = $csv->getHeader();
-        } else {
-            // それ以外のファイルはヘッダーなし
-            $header = $this->getDefaultHeader();
-            $csv->setHeaderOffset(null);
-        }
-
+        $header = $csv->getHeader();
         Log::info("File headers: " . implode(', ', $header));
 
-        $records = $csv->getRecords($header);
-
-        $batchSize = 50;
-        $batch = [];
         $processedCount = 0;
+        $offset = 0;
+        $limit = 1000;
 
-        foreach ($records as $record) {
-            try {
-                // 空の列を除去
-                $record = array_filter($record, function($value) {
-                    return $value !== '';
-                });
+        do {
+            $records = (new Statement())
+                ->offset($offset)
+                ->limit($limit)
+                ->process($csv);
 
-                if (!empty($record['本社所在地'])) {
-                    $data = $this->mapData($record);
-                    $batch[] = $data;
-                    $processedCount++;
+            $batch = [];
+            foreach ($records as $record) {
+                try {
+                    $record = array_filter($record, function($value) {
+                        return $value !== '';
+                    });
 
-                    if (count($batch) >= $batchSize) {
-                        DB::table('companies')->insert($batch);
-                        $batch = [];
-                        $this->command->info("Processed $processedCount records from " . basename($file));
-                        sleep(1); // 1秒待機
+                    if (!empty($record['本社所在地'])) {
+                        $data = $this->mapData($record);
+                        $batch[] = $data;
+                        $processedCount++;
                     }
+                } catch (\Exception $e) {
+                    Log::error("Error processing record in file " . basename($file) . ": " . $e->getMessage());
+                    Log::error("Problematic record: " . json_encode($record));
                 }
-            } catch (\Exception $e) {
-                Log::error("Error processing record in file " . basename($file) . ": " . $e->getMessage());
-                Log::error("Problematic record: " . json_encode($record));
             }
-        }
 
-        // 残りのバッチを挿入
-        if (!empty($batch)) {
-            DB::table('companies')->insert($batch);
-        }
+            if (!empty($batch)) {
+                DB::table('companies')->insert($batch);
+            }
+
+            $offset += $limit;
+        } while ($records->count() > 0);
 
         Log::info("Finished processing file: " . basename($file) . ". Processed records: " . $processedCount);
         return $processedCount;
-    }
-
-    protected function getDefaultHeader()
-    {
-        // CSVファイルの正しいヘッダーをここに記述
-        return [
-            '法人番号',
-            '法人名',
-            '法人名ふりがな',
-            '法人名英語',
-            '郵便番号',
-            '本社所在地',
-            'ステータス',
-            '登記記録の閉鎖等年月日',
-            '登記記録の閉鎖等の事由',
-            '法人代表者名',
-            '法人代表者役職',
-            '資本金',
-            '従業員数',
-            '企業規模詳細(男性)',
-            '企業規模詳細(女性)',
-            '営業品目リスト',
-            '事業概要',
-            '企業ホームページ',
-            '設立年月日',
-            '創業年',
-            '最終更新日',
-            '資格等級'
-        ];
     }
 
     protected function mapData($record)
@@ -167,12 +132,10 @@ class CompaniesSeeder extends Seeder
         foreach ($this->columnMapping as $csvHeader => $dbColumn) {
             $value = $record[$csvHeader] ?? null;
             
-            // 空文字列を null に変換
             if ($value === '') {
                 $value = null;
             }
             
-            // 日付形式の変換
             if ($dbColumn === 'date_of_establishment' && $value) {
                 try {
                     $value = Carbon::parse($value)->format('Y-m-d');
@@ -182,7 +145,6 @@ class CompaniesSeeder extends Seeder
                 }
             }
             
-            // 資本金の変換
             if ($dbColumn === 'capital_stock' && $value) {
                 $value = (int) preg_replace('/[^0-9]/', '', $value);
             }
