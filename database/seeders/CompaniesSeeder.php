@@ -23,13 +23,21 @@ class CompaniesSeeder extends Seeder
         '法人代表者名' => 'representative_name',
     ];
 
+    protected $processedFiles = [];
+
     public function run()
     {
+        $this->loadProcessedFiles();
+
         $files = glob(storage_path('app/company_data/*.csv'));
         $totalProcessed = 0;
-
+        
         foreach ($files as $file) {
-            $this->command->info("Processing file: " . basename($file));
+            if (in_array(basename($file), $this->processedFiles)) {
+                $this->command->info("Skipping already processed file: " . basename($file));
+                continue;
+            }
+
             try {
                 $processed = $this->processFile($file);
                 $totalProcessed += $processed;
@@ -41,7 +49,26 @@ class CompaniesSeeder extends Seeder
             }
         }
 
-        $this->command->info("Total processed records: $totalProcessed");
+        $this->saveProcessedFiles();
+    }
+
+    protected function loadProcessedFiles()
+    {
+        $path = storage_path('app/processed_files.json');
+        if (file_exists($path)) {
+            $this->processedFiles = json_decode(file_get_contents($path), true);
+        }
+    }
+
+    protected function markFileAsProcessed($filename)
+    {
+        $this->processedFiles[] = $filename;
+    }
+
+    protected function saveProcessedFiles()
+    {
+        $path = storage_path('app/processed_files.json');
+        file_put_contents($path, json_encode($this->processedFiles));
     }
 
     protected function processFile($file)
@@ -67,7 +94,7 @@ class CompaniesSeeder extends Seeder
 
         $records = $csv->getRecords($header);
 
-        $batchSize = 1000; // 一度に処理するレコード数
+        $batchSize = 50;
         $batch = [];
         $processedCount = 0;
 
@@ -86,7 +113,8 @@ class CompaniesSeeder extends Seeder
                     if (count($batch) >= $batchSize) {
                         DB::table('companies')->insert($batch);
                         $batch = [];
-                        $this->command->info("Processed $processedCount records");
+                        $this->command->info("Processed $processedCount records from " . basename($file));
+                        sleep(1); // 1秒待機
                     }
                 }
             } catch (\Exception $e) {
