@@ -33,24 +33,25 @@ class CompaniesSeeder extends Seeder
 
     public function run()
     {
-        $this->loadProcessedFiles();
+        $lastProcessedFile = $this->loadLastProcessedFile();
+        $startFileNumber = $lastProcessedFile ? intval(substr($lastProcessedFile, 10, 3)) + 1 : 0;
 
-        $files = glob(storage_path('app/company_data/*.csv'));
         $totalProcessed = 0;
         
-        foreach ($files as $file) {
-            $fileName = basename($file);
-            if (in_array($fileName, $this->processedFiles)) {
-                $this->command->info("Skipping already processed file: " . $fileName);
+        for ($i = $startFileNumber; $i <= 55; $i++) {
+            $fileName = sprintf("kihonjoho_%03d.csv", $i);
+            $filePath = storage_path("app/company_data/{$fileName}");
+            
+            if (!file_exists($filePath)) {
+                $this->command->info("File not found: " . $fileName);
                 continue;
             }
 
             try {
-                $processed = $this->processFile($file);
+                $processed = $this->processFile($filePath);
                 $totalProcessed += $processed;
                 $this->command->info("Processed $processed records from " . $fileName);
-                $this->markFileAsProcessed($fileName);
-                $this->saveProcessedFiles();
+                $this->saveLastProcessedFile($fileName);
             } catch (\Exception $e) {
                 $this->command->error("Error processing file " . $fileName . ": " . $e->getMessage());
                 Log::error("Error processing file: " . $fileName . " - " . $e->getMessage());
@@ -60,21 +61,17 @@ class CompaniesSeeder extends Seeder
         $this->command->info("Total processed records: " . $totalProcessed);
     }
 
-    protected function loadProcessedFiles()
+    protected function loadLastProcessedFile()
     {
         if (file_exists($this->processedFilesPath)) {
-            $this->processedFiles = json_decode(file_get_contents($this->processedFilesPath), true);
+            return file_get_contents($this->processedFilesPath);
         }
+        return null;
     }
 
-    protected function markFileAsProcessed($filename)
+    protected function saveLastProcessedFile($fileName)
     {
-        $this->processedFiles[] = $filename;
-    }
-
-    protected function saveProcessedFiles()
-    {
-        file_put_contents($this->processedFilesPath, json_encode($this->processedFiles));
+        file_put_contents($this->processedFilesPath, $fileName);
     }
 
     protected function processFile($file)
