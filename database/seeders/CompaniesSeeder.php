@@ -67,7 +67,10 @@ class CompaniesSeeder extends Seeder
 
         $records = $csv->getRecords($header);
 
+        $batchSize = 1000; // 一度に処理するレコード数
+        $batch = [];
         $processedCount = 0;
+
         foreach ($records as $record) {
             try {
                 // 空の列を除去
@@ -77,13 +80,24 @@ class CompaniesSeeder extends Seeder
 
                 if (!empty($record['本社所在地'])) {
                     $data = $this->mapData($record);
-                    DB::table('companies')->insert($data);
+                    $batch[] = $data;
                     $processedCount++;
+
+                    if (count($batch) >= $batchSize) {
+                        DB::table('companies')->insert($batch);
+                        $batch = [];
+                        $this->command->info("Processed $processedCount records");
+                    }
                 }
             } catch (\Exception $e) {
                 Log::error("Error processing record in file " . basename($file) . ": " . $e->getMessage());
                 Log::error("Problematic record: " . json_encode($record));
             }
+        }
+
+        // 残りのバッチを挿入
+        if (!empty($batch)) {
+            DB::table('companies')->insert($batch);
         }
 
         Log::info("Finished processing file: " . basename($file) . ". Processed records: " . $processedCount);
