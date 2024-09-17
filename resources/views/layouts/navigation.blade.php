@@ -16,6 +16,9 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
+        window.appUrl = "{{ config('app.url') }}";
+    </script>
+    <script>
         tailwind.config = {
             theme: {
                 extend: {
@@ -201,9 +204,5 @@
             @endauth
         </div>
     </nav>
-
-    <script>
-        var appUrl = "{{ config('app.url') }}";
-    </script>
 
 </body>

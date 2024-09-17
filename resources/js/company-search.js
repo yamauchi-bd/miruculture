@@ -26,9 +26,19 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
+    console.log('appUrl:', window.appUrl); // デバッグ用
+
     function fetchCompanies(query) {
-        fetch(`${appUrl}/companies/search?query=${encodeURIComponent(query)}`)
-            .then(response => response.json())
+        const url = `${window.appUrl}/companies/search?query=${encodeURIComponent(query)}`;
+        console.log('Fetching from:', url); // デバッグ用
+    
+        fetch(url)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
             .then(data => {
                 displayResults(data);
             })
