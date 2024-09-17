@@ -429,7 +429,7 @@ function setupCompanySearch() {
             searchTerm = companyInput.value.trim();
         }
         if (searchTerm.length >= 2) {
-            fetch(`/api/companies/search?query=${encodeURIComponent(searchTerm)}`)
+            fetch(`/api/companies/search?term=${encodeURIComponent(searchTerm)}`)
                 .then(response => response.json())
                 .then(displayCompanyResults);
         }

@@ -101,30 +101,12 @@ class CompanyController extends Controller
 
     public function search(Request $request)
     {
-        try {
-            $query = $request->input('query');
-
-            // クエリの長さをチェック
-            if (strlen($query) < 2) {
-                return response()->json(['error' => '検索クエリは2文字以上である必要があります。'], 400);
-            }
-
-            $companies = Company::where('company_name', 'LIKE', "%{$query}%")
-                ->select('corporate_number', 'company_name', 'location')
-                ->limit(10)
-                ->get();
-
-            // APIリクエストとウェブリクエストを区別
-            if ($request->expectsJson()) {
-                return response()->json($companies);
-            }
-
-            // ウェブリクエストの場合はビューを返す
-            return view('companies.search', compact('companies'));
-
-        } catch (\Exception $e) {
-            \Log::error('Company search error: ' . $e->getMessage());
-            return response()->json(['error' => '検索中にエラーが発生しました。'], 500);
-        }
+        $query = $request->input('query');
+        $companies = Company::search($query)
+            ->select('corporate_number', 'company_name', 'location')
+            ->limit(10)
+            ->get();
+    
+        return response()->json($companies);
     }
 }

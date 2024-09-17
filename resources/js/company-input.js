@@ -29,7 +29,7 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     function fetchCompanies(query) {
-        fetch(`/api/companies/search?query=${encodeURIComponent(query)}`)
+        fetch(`/companies/search?query=${encodeURIComponent(query)}`)
             .then(response => response.json())
             .then(data => {
                 displayResults(data);
