@@ -55,3 +55,8 @@
         </div>
       </div>
     </nav>
+    <script>
+      var appUrl = "{{ config('app.url') }}";
+  </script>
+</body>
+</html>

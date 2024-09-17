@@ -27,13 +27,15 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     function fetchCompanies(query) {
-        fetch(`/companies/search?query=${encodeURIComponent(query)}`)
+        fetch(`${appUrl}/companies/search?query=${encodeURIComponent(query)}`)
             .then(response => response.json())
             .then(data => {
                 displayResults(data);
             })
             .catch(error => {
                 console.error('Error:', error);
+                searchResults.innerHTML = '<p class="p-2 text-red-500">検索中にエラーが発生しました。</p>';
+                searchResults.classList.remove('hidden');
             });
     }
 
