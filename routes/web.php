@@ -86,7 +86,4 @@ Route::get('/companies/{corporate_number}', [CompanyController::class, 'show'])-
 Route::get('/companies/{corporate_number}/edit', [CompanyController::class, 'edit'])->name('companies.edit');
 Route::put('/companies/{corporate_number}', [CompanyController::class, 'update'])->name('companies.update');
 
-// 企業検索のAPIルートを追加
-Route::get('/api/companies/search', [CompanyController::class, 'search']);
-
 require __DIR__ . '/auth.php';
