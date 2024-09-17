@@ -16,7 +16,7 @@
 
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-        window.appUrl = "{{ config('app.url') }}";
+        window.appUrl = "{{ rtrim(config('app.url'), '/') }}";
     </script>
     <script>
         tailwind.config = {
