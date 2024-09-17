@@ -15,12 +15,6 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // 在籍状況と年の選択の設定
     setupYearSelection();
-
-    // 企業名検索の設定
-    setupCompanySearch();
-
-    // その他のイベントリスナー
-    setupMiscEventListeners();
 });
 
 function setupJobCategories() {
@@ -392,71 +386,4 @@ function setupYearSelection() {
     // 初期状態の設定
     updateEndYearOptions();
     toggleEndYear();
-}
-
-function setupCompanySearch() {
-    const companyInput = document.getElementById('company-input');
-    const inputResults = document.getElementById('input-results');
-    const inputButton = document.getElementById('input-button');
-    const companyNameInput = document.getElementById('company_name');
-    const corporateNumberInput = document.getElementById('corporate_number');
-
-    let debounceTimer;
-
-    companyInput.addEventListener('input', debounceCompanySearch);
-    inputButton.addEventListener('click', performCompanySearch);
-
-    document.addEventListener('click', function(e) {
-        if (!companyInput.contains(e.target) && !inputResults.contains(e.target)) {
-            inputResults.classList.add('hidden');
-        }
-    });
-
-    function debounceCompanySearch() {
-        clearTimeout(debounceTimer);
-        debounceTimer = setTimeout(() => {
-            const searchTerm = this.value.trim();
-            if (searchTerm.length >= 2) {
-                performCompanySearch(searchTerm);
-            } else {
-                inputResults.classList.add('hidden');
-            }
-        }, 300);
-    }
-
-    function performCompanySearch(searchTerm) {
-        if (typeof searchTerm !== 'string') {
-            searchTerm = companyInput.value.trim();
-        }
-        if (searchTerm.length >= 2) {
-            fetch(`/api/companies/search?term=${encodeURIComponent(searchTerm)}`)
-                .then(response => response.json())
-                .then(displayCompanyResults);
-        }
-    }
-
-    function displayCompanyResults(data) {
-        inputResults.innerHTML = '';
-        data.forEach(company => {
-            const div = document.createElement('div');
-            div.textContent = company.company_name;
-            div.classList.add('p-2', 'hover:bg-gray-100', 'cursor-pointer');
-            div.addEventListener('click', () => selectCompany(company));
-            inputResults.appendChild(div);
-        });
-        inputResults.classList.remove('hidden');
-    }
-
-    function selectCompany(company) {
-        companyInput.value = company.company_name;
-        companyNameInput.value = company.company_name;
-        corporateNumberInput.value = company.corporate_number;
-        inputResults.classList.add('hidden');
-        companyInput.setAttribute('readonly', true);
-        inputButton.setAttribute('disabled', true);
-    }
-}
-
-function setupMiscEventListeners() {
-    // その他のイベントリスナーの設定
 }

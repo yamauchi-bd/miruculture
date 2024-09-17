@@ -103,8 +103,9 @@ class CompanyController extends Controller
     {
         $query = $request->input('query');
         $companies = Company::search($query)
-            ->select('corporate_number', 'company_name', 'location')
-            ->limit(10)
+            ->select('corporate_number', 'company_name', 'location',) // 'employee_number'
+            // ->orderBy('employee_number', 'desc')
+            ->limit(12)
             ->get();
     
         return response()->json($companies);

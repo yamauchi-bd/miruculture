@@ -346,5 +346,5 @@
 
 <div class="mt-20"></div>
 @include('layouts.footer')
-@vite(['resources/js/posts-create.js'])
 @vite(['resources/js/company-input.js'])
+@vite(['resources/js/posts-create.js'])
