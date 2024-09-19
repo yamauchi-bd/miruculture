@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const searchInput = document.getElementById('company-search');
     const searchResults = document.getElementById('search-results');
     const searchButton = document.getElementById('search-button');
+    const searchForm = document.querySelector('form');
 
     let debounceTimer;
 
@@ -19,21 +20,34 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     searchButton.addEventListener('click', function (e) {
-        e.preventDefault();
-        const query = searchInput.value.trim();
-        if (query.length > 1) {
-            fetchCompanies(query);
+        if (searchInput.value.trim().length <= 1) {
+            e.preventDefault();
+        }
+    });
+
+    searchForm.addEventListener('submit', function (e) {
+        if (searchInput.value.trim().length <= 1) {
+            e.preventDefault();
         }
     });
 
     function fetchCompanies(query) {
-        fetch(`/companies/search?query=${encodeURIComponent(query)}`)
-            .then(response => response.json())
+        const url = `/companies/suggest?query=${encodeURIComponent(query)}`;
+    
+        fetch(url)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
             .then(data => {
                 displayResults(data);
             })
             .catch(error => {
                 console.error('Error:', error);
+                searchResults.innerHTML = '<p class="p-2 text-red-500">検索中にエラーが発生しました。</p>';
+                searchResults.classList.remove('hidden');
             });
     }
 
@@ -49,10 +63,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 li.className = 'p-2 hover:bg-gray-100 cursor-pointer';
                 li.innerHTML = `
                     <div class="font-medium">${company.company_name}</div>
-                    <div class="text-xs text-gray-500">${company.location}</div>
+                    <div class="text-xs text-gray-500">${company.location || ''}</div>
                 `;
                 li.addEventListener('click', () => {
-                    window.location.href = `/companies/${company.corporate_number}`;
+                    searchInput.value = company.company_name;
+                    searchResults.classList.add('hidden');
                 });
                 ul.appendChild(li);
             });
