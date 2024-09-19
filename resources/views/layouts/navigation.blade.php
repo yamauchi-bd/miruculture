@@ -59,23 +59,23 @@
                     <!-- 検索バーを追加（スマートフォンサイズでも表示） -->
                     <div class="flex items-center ms-4">
                         <div class="relative">
-                            <form action="{{ route('companies.search') }}" method="GET">
-                                <input type="text" id="company-search" name="query"
-                                    class="block w-40 sm:w-64 lg:w-80 px-4 py-2 text-xs sm:text-sm font-normal shadow-xs text-gray-900 bg-white border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent pr-12"
-                                    placeholder="気になる企業を検索する..." required>
-                                <button type="submit" id="search-button"
-                                    class="absolute right-1 top-1/2 transform -translate-y-1/2 p-1.5 sm:p-2 rounded-full bg-cyan-500 text-white text-xs sm:text-sm font-medium transition-all duration-300 hover:bg-cyan-600">
-                                    <svg width="16px" height="16px" class="w-3 h-3 sm:w-4 sm:h-4" viewBox="0 0 24 24"
-                                        fill="none" xmlns="http://www.w3.org/2000/svg">
-                                        <path d="M17 17L21 21" stroke="#ffffff" stroke-width="3" stroke-linecap="round"
-                                            class="my-path"></path>
-                                        <path
-                                            d="M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z"
-                                            stroke="#ffffff" stroke-width="3" class="my-path"></path>
-                                    </svg>
-                                </button>
-                            </form>
-                            <div id="search-results" class="absolute z-10 bg-white border border-gray-300 rounded-md shadow-lg w-full mt-1 hidden"></div>
+                            <input type="text" id="company-search"
+                                class="block w-40 sm:w-64 lg:w-80 px-4 py-2 text-xs sm:text-sm font-normal shadow-xs text-gray-900 bg-white border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent pr-12"
+                                placeholder="気になる企業を検索する..." required="">
+                            <button id="search-button"
+                                class="absolute right-1 top-1/2 transform -translate-y-1/2 p-1.5 sm:p-2 rounded-full bg-cyan-500 text-white text-xs sm:text-sm font-medium transition-all duration-300 hover:bg-cyan-600">
+                                <svg width="16px" height="16px" class="w-3 h-3 sm:w-4 sm:h-4" viewBox="0 0 24 24"
+                                    fill="none" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M17 17L21 21" stroke="#ffffff" stroke-width="3" stroke-linecap="round"
+                                        class="my-path"></path>
+                                    <path
+                                        d="M19 11C19 15.4183 15.4183 19 11 19C6.58172 19 3 15.4183 3 11C3 6.58172 6.58172 3 11 3C15.4183 3 19 6.58172 19 11Z"
+                                        stroke="#ffffff" stroke-width="3" class="my-path"></path>
+                                </svg>
+                            </button>
+                            <div id="search-results"
+                                class="absolute z-10 bg-white border border-gray-300 rounded-md shadow-lg w-full mt-1 hidden text-sm">
+                            </div>
                         </div>
                     </div>
                 </div>
