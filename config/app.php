@@ -53,7 +53,7 @@ return [
     */
 
     // 'url' => env('APP_URL', 'http://localhost'),
-    'url' => env('APP_URL', 'https://yamauchi-bd.sakura.ne.jp/vivivision'),
+    'url' => env('APP_URL', 'https://vivivision.jp/vivivision'),
 
     /*
     |--------------------------------------------------------------------------
