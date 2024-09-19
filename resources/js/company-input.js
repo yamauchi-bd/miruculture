@@ -29,7 +29,11 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     function fetchCompanies(query) {
-        fetch(`/companies/search?query=${encodeURIComponent(query)}`)
+        // URLの構築方法を修正
+        const url = `${window.appUrl}/companies/search?query=${encodeURIComponent(query)}`;
+        console.log('Fetching from:', url); // デバッグ用
+
+        fetch(url)
             .then(response => response.json())
             .then(data => {
                 displayResults(data);
