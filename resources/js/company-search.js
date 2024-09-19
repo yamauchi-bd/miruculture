@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', function () {
     const searchInput = document.getElementById('company-search');
     const searchResults = document.getElementById('search-results');
     const searchButton = document.getElementById('search-button');
+    const searchForm = document.querySelector('form');
 
     let debounceTimer;
 
@@ -19,18 +20,19 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     searchButton.addEventListener('click', function (e) {
-        e.preventDefault();
-        const query = searchInput.value.trim();
-        if (query.length > 1) {
-            fetchCompanies(query);
+        if (searchInput.value.trim().length <= 1) {
+            e.preventDefault();
         }
     });
 
-    console.log('appUrl:', window.appUrl); // デバッグ用
+    searchForm.addEventListener('submit', function (e) {
+        if (searchInput.value.trim().length <= 1) {
+            e.preventDefault();
+        }
+    });
 
     function fetchCompanies(query) {
-        const url = `${window.appUrl}/companies/search?query=${encodeURIComponent(query)}`;
-        console.log('Fetching from:', url); // デバッグ用
+        const url = `/companies/suggest?query=${encodeURIComponent(query)}`;
     
         fetch(url)
             .then(response => {
@@ -61,11 +63,11 @@ document.addEventListener('DOMContentLoaded', function () {
                 li.className = 'p-2 hover:bg-gray-100 cursor-pointer';
                 li.innerHTML = `
                     <div class="font-medium">${company.company_name}</div>
-                    <div class="text-xs text-gray-500">${company.location}</div>
+                    <div class="text-xs text-gray-500">${company.location || ''}</div>
                 `;
                 li.addEventListener('click', () => {
-                    // window.appUrlを使用して完全なURLを構築
-                    window.location.href = `${window.appUrl}/companies/${company.corporate_number}`;
+                    searchInput.value = company.company_name;
+                    searchResults.classList.add('hidden');
                 });
                 ul.appendChild(li);
             });

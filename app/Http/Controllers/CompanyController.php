@@ -103,7 +103,18 @@ class CompanyController extends Controller
     {
         $query = $request->input('query');
         $companies = Company::search($query)
-            ->select('corporate_number', 'company_name', 'location', 'employee_number',)
+            ->with('industry')
+            ->orderBy('employee_number', 'desc')
+            ->paginate(20);
+    
+        return view('companies.search-results', compact('companies', 'query'));
+    }
+    
+    public function suggest(Request $request)
+    {
+        $query = $request->input('query');
+        $companies = Company::search($query)
+            ->select('corporate_number', 'company_name', 'location', 'employee_number')
             ->orderBy('employee_number', 'desc')
             ->limit(12)
             ->get();
