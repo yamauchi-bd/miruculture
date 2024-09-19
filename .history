@@ -1,0 +1,200 @@
+#+1726030087
+ls -l storage/app
+#+1726030111
+mkdir storage/app/company_data
+#+1726030119
+ls -l storage/app
+#+1726030608
+pwd
+#+1726030609
+ls -l storage/app/company_data
+#+1726030619
+chmod 644 storage/app/company_data/*.csv
+#+1726030631
+cat database/seeders/CompaniesSeeder.php
+#+1726030788
+vi database/seeders/CompaniesSeeder.php
+#+1726030876
+cd
+#+1726030882
+pwd
+#+1726030886
+cd vivivision
+#+1726030888
+pwd
+#+1726030896
+git pull origin develop
+#+1726030920
+php artisan db:seed --class=CompaniesSeeder
+#+1726035028
+git pull origin develop
+#+1726035055
+php artisan db:seed --class=CompaniesSeeder
+#+1726035150
+ls -l storage/app/processed_files.json
+#+1726035194
+pwd
+#+1726035292
+php artisan companies:process kihonjoho_047.csv
+#+1726035319
+git pull origin main
+#+1726035823
+git pull origin develop
+#+1726035849
+php artisan db:seed --class=CompaniesSeeder
+#+1726037618
+git pull --no-rebase
+#+1726038133
+git pull origin main
+#+1726038180
+pwd
+#+1726038191
+php artisan db:seed --class=CompaniesSeeder
+#+1726038468
+git pull origin main
+#+1726038484
+php artisan db:seed --class=CompaniesSeeder
+#+1726038703
+git pull origin main
+#+1726038712
+php artisan db:seed --class=CompaniesSeeder
+#+1726038778
+git pull origin main
+#+1726038794
+php artisan db:seed --class=CompaniesSeeder
+#+1726039091
+pwd
+#+1726051066
+pwd
+#+1726051073
+cd vivivision
+#+1726051074
+pwd
+#+1726051083
+php artisan db:seed --class=CompaniesSeeder
+#+1726051459
+pwd
+#+1726051467
+php artisan db:seed --class=CompaniesSeeder
+#+1726051779
+pwd
+#+1726051784
+php artisan db:seed --class=CompaniesSeeder
+#+1726052273
+pwd
+#+1726052277
+php artisan db:seed --class=CompaniesSeeder
+#+1726052745
+pwd
+#+1726052748
+php artisan db:seed --class=CompaniesSeeder
+#+1726053093
+php artisan db:seed --class=CompaniesSeeder
+#+1726053566
+php artisan db:seed --class=CompaniesSeeder
+#+1726053877
+php artisan db:seed --class=CompaniesSeeder
+#+1726053927
+pwd
+#+1726053932
+php artisan db:seed --class=CompaniesSeeder
+#+1726548136
+git pull origin main
+#+1726548294
+pwd
+#+1726548300
+cd vivivision
+#+1726548303
+pwd
+#+1726548308
+git pull origin main
+#+1726549035
+pwd
+#+1726549039
+git pull origin main
+#+1726549142
+git pull origin develop
+#+1726549227
+git pull origin develop
+#+1726549485
+git push origin main
+#+1726549508
+git pull origin develop
+#+1726549678
+git branch
+#+1726549747
+git branch -r
+#+1726549782
+git fetch origin develop:develop
+#+1726550311
+pwd
+#+1726550962
+sail artisan cache:clear
+#+1726551068
+pwd
+#+1726553599
+pwd
+#+1726553617
+git pull origin develop
+#+1726553682
+git pull origin main
+#+1726553689
+pwd
+#+1726553693
+npm run dev
+#+1726553732
+node --version
+#+1726553865
+git pull origin main
+#+1726554025
+git pull origin main
+#+1726554047
+git pull origin develop
+#+1726554081
+pwd
+#+1726555494
+npm run build
+#+1726555712
+git pull origin main
+#+1726555839
+git pull origin main
+#+1726556297
+git status
+#+1726556310
+git add .
+#+1726556329
+git commit -m "env"
+#+1726556343
+git push origin main
+#+1726556360
+pwd
+#+1726556366
+git pull origin main
+#+1726556996
+git status
+#+1726557126
+git pull origin main
+#+1726557401
+php artisan cache:clear
+#+1726557402
+php artisan config:clear
+#+1726557402
+php artisan route:clear
+#+1726557406
+php artisan view:clear
+#+1726557542
+git pull origin main
+#+1726557556
+php artisan cache:clear
+#+1726557556
+php artisan config:clear
+#+1726557557
+php artisan route:clear
+#+1726557559
+php artisan view:clear
+#+1726558191
+npm run build
+#+1726558262
+git pull origin main
+#+1726558478
+git pull origin main
