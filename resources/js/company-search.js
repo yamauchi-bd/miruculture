@@ -64,7 +64,8 @@ document.addEventListener('DOMContentLoaded', function () {
                     <div class="text-xs text-gray-500">${company.location}</div>
                 `;
                 li.addEventListener('click', () => {
-                    window.location.href = `/companies/${company.corporate_number}`;
+                    // window.appUrlを使用して完全なURLを構築
+                    window.location.href = `${window.appUrl}/companies/${company.corporate_number}`;
                 });
                 ul.appendChild(li);
             });
