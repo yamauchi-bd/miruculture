@@ -32,7 +32,9 @@ class Company extends Model
     public function scopeSearch($query, $searchTerm)
     {
         return $query->where('company_name', 'LIKE', "%{$searchTerm}%")
-            ->select('corporate_number', 'company_name', 'location');
+            ->select('corporate_number', 'company_name', 'location', 'employee_number')
+            ->orderBy('employee_number', 'desc')
+            ->limit(15);
     }
 
     public function industry()

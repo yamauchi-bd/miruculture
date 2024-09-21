@@ -7,6 +7,7 @@ use App\Models\Industry;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Cache;
 
 class CompanyController extends Controller
 {
@@ -102,11 +103,10 @@ class CompanyController extends Controller
     public function search(Request $request)
     {
         $query = $request->input('query');
-        $companies = Company::search($query)
-            ->select('corporate_number', 'company_name', 'location', 'employee_number',)
-            ->orderBy('employee_number', 'desc')
-            ->limit(12)
-            ->get();
+        
+        $companies = Cache::remember("company_search:{$query}", now()->addMinutes(60), function () use ($query) {
+            return Company::search($query)->get();
+        });
     
         return response()->json($companies);
     }

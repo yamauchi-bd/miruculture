@@ -28,10 +28,10 @@ document.addEventListener('DOMContentLoaded', function () {
         }
     });
 
-   function fetchCompanies(query) {
-        // URLの構築方法を修正
+    function fetchCompanies(query) {
         const url = `${window.appUrl}/companies/search?query=${encodeURIComponent(query)}`;
-        console.log('Fetching from:', url); // デバッグ用
+        
+        showLoading();
 
         fetch(url)
             .then(response => response.json())
@@ -40,7 +40,28 @@ document.addEventListener('DOMContentLoaded', function () {
             })
             .catch(error => {
                 console.error('Error:', error);
+                searchResults.innerHTML = '<p class="p-2 text-red-500">検索中にエラーが発生しました。</p>';
+            })
+            .finally(() => {
+                hideLoading();
             });
+    }
+
+    function showLoading() {
+        const loader = document.createElement('div');
+        loader.id = 'search-loader';
+        loader.className = 'text-center p-3';
+        loader.innerHTML = '<div class="inline-block animate-spin rounded-full h-6 w-6 border-t-2 border-b-2 border-cyan-500"></div>';
+        searchResults.innerHTML = '';
+        searchResults.appendChild(loader);
+        searchResults.classList.remove('hidden');
+    }
+
+    function hideLoading() {
+        const loader = document.getElementById('search-loader');
+        if (loader) {
+            loader.remove();
+        }
     }
 
     function displayResults(companies) {
