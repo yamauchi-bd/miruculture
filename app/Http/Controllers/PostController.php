@@ -77,7 +77,17 @@ class PostController extends Controller
 
     public function show(Post $post)
     {
-        return view('posts.show', compact('post'));
+        return response()->json([
+            'company_name' => $post->company->company_name,
+            'deciding_factors' => $post->decidingFactors->map(function ($factor) {
+                return [
+                    'factor' => $factor->factor,
+                    'detail' => $factor->detail,
+                    'satisfaction' => $factor->satisfaction,
+                    'satisfaction_reason' => $factor->satisfaction_reason,
+                ];
+            }),
+        ]);
     }
 
     public function edit(Post $post)

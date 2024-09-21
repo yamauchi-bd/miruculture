@@ -14,13 +14,13 @@
             <div class="flex justify-center mt-20">
                 @auth
                     <a href="{{ route('posts.create') }}"
-                        class='py-4 px-20 text-lg bg-cyan-500 text-white rounded-xl cursor-pointer font-semibold text-center shadow-lg transition-all duration-300 ease-in-out bg-gradient-to-tl hover:from-red-400 hover:to-cyan-500 hover:shadow-lg transform hover:scale-105'>
+                        class='py-4 px-20 text-lg bg-cyan-500 text-white rounded-full cursor-pointer font-semibold text-center shadow-lg transition-all duration-200 ease-in-out bg-gradient-to-tl hover:from-red-400 hover:to-cyan-500 hover:shadow-lg transform hover:scale-105'>
                         入社の決め手を投稿する
                         <i class="far fa-plus-square fa-lg ml-2"></i>
                     </a>
                 @else
                     <a href="{{ route('register') }}"
-                        class='py-4 px-20 text-lg bg-cyan-500 text-white rounded-xl cursor-pointer font-semibold text-center shadow-lg transition-all duration-300 ease-in-out bg-gradient-to-tl hover:from-red-400 hover:to-cyan-500 hover:shadow-lg transform hover:scale-105'>
+                        class='py-4 px-20 text-lg bg-cyan-500 text-white rounded-full cursor-pointer font-semibold text-center shadow-lg transition-all duration-200 ease-in-out hover:shadow-lg transform hover:scale-105'>
                         入社の決め手を投稿する
                         <i class="far fa-plus-square fa-lg ml-2"></i>
                     </a>
@@ -34,21 +34,25 @@
 
 <section class="mb-36">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div class="mb-16 ">
-            <h2 class="text-xl text-center font-bold text-gray-900 ">最新の入社エントリー</h2>
+        <div class="mb-10 flex justify-center">
+            <h2 class="text-xl font-bold text-gray-900 relative inline-block pb-3">
+                最新の入社エントリ
+                <span class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-2/5 h-1 bg-cyan-500"></span>
+            </h2>
         </div>
-        <!--Slider wrapper-->
+        
 
+        <!--Slider wrapper-->
         <div class="swiper mySwiper">
             <div class="swiper-wrapper w-max">
                 @foreach ($latestPosts as $post)
                     @if ($post->corporate_number)
                         <div class="swiper-slide">
-                            <div class="group bg-white border-2 border-solid border-gray-300 rounded-xl p-6 transition-all duration-500 w-full mx-auto hover:border-cyan-500 hover:border-3 hover:shadow-md slide_active:border-cyan-600">
+                            <div class="group bg-white border-2 border-solid border-gray-300 mt-2 rounded-xl p-6 transition-all duration-300 hover:border-cyan-500 hover:shadow-lg relative h-[350px] flex flex-col cursor-pointer transform hover:-translate-y-1">
                                 <h6 class="text-gray-900 text-sm font-medium mb-3">
                                     「<a href="{{ route('companies.show', ['corporate_number' => $post->corporate_number]) }}" class="text-cyan-600 hover:text-cyan-500 transition duration-150 ease-in-out">{{ $post->company_name }}</a>」への入社の決め手
                                 </h6>
-                                <div class="mb-4">
+                                <div class="mb-4 flex-grow overflow-y-auto">
                                     @foreach ($post->decidingFactors as $index => $factor)
                                         @if ($index < 3)
                                             <div class="mb-2">
@@ -78,7 +82,7 @@
                                                     </div>
                                                 </div>
                                                 <p class="text-sm text-gray-600">
-                                                    {{ Str::limit($factor->detail, 10) }}</p>
+                                                    {{ Str::limit($factor->detail, 20) }}</p>
                                             </div>
                                         @endif
                                     @endforeach

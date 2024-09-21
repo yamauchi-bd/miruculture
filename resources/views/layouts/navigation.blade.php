@@ -5,39 +5,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="stylesheet" href=" https://cdn.jsdelivr.net/npm/pagedone@1.1.2/src/css/pagedone.css ">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
-    <link href="https://unpkg.com/tailwindcss@0.3.0/dist/tailwind.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
         integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
         crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script>window.appUrl = "{{ rtrim(config('app.url'), '/') }}";</script>
     @vite(['resources/css/style.css'])
     @vite(['resources/js/app.js'])
-
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        window.appUrl = "{{ rtrim(config('app.url'), '/') }}";
-    </script>
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    boxShadow: {
-                        'inner-cyan': 'inset 0 0 0 2px #06b6d4',
-                    },
-                },
-            },
-        }
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
-    <script src="https://unpkg.com/@material-tailwind/html@latest/scripts/script-name.js"></script>
-    <script defer src="https://unpkg.com/alpinejs@3.x.x/dist/cdn.min.js"></script>
+    @vite(['resources/css/app.css'])
     <title>vivivision</title>
 </head>
 
 <body>
 
-    <nav x-data="{ open: false }" class="py-2 lg:fixed transition-all top-0 left-0 z-50 duration-500 w-full bg-white">
+    <nav x-data="{ open: false }" class="lg:fixed transition-all top-0 left-0 z-50 duration-500 w-full bg-white">
         <!-- Primary Navigation Menu -->
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div class="flex justify-between h-16">
@@ -51,11 +32,6 @@
                     </div>
 
                     <!-- Navigation Links -->
-                    <div class="hidden space-x-8 md:space-x-4 lg:space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                        <x-nav-link :href="route('posts.create')" :active="request()->routeIs('posts.create')" class="text-sm md:text-xs lg:text-sm">
-                            {{ __('決め手投稿') }}
-                        </x-nav-link>
-                    </div>
                     <!-- 検索バーを追加（スマートフォンサイズでも表示） -->
                     <div class="flex items-center ms-4">
                         <div class="relative">
@@ -203,6 +179,7 @@
                 </div>
             @endauth
         </div>
+        <div class="border-b border-gray-200"></div>
     </nav>
 
 </body>
