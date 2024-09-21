@@ -18,7 +18,7 @@
         <div class="flex-1 flex flex-col items-center">
             <div id="step-2"
                 class="w-10 h-10 bg-white border-2 border-grey-light mx-auto rounded-full text-lg text-white flex items-center">
-                <span class="text-grey-darker text-center w-full">2</span>
+                <span class="text-gray-300 text-center w-full">2</span>
             </div>
         </div>
 
@@ -32,7 +32,7 @@
         <div class="flex-1 flex flex-col items-center">
             <div
                 class="w-10 h-10 bg-white border-2 border-grey-light mx-auto rounded-full text-lg text-white flex items-center">
-                <span class="text-grey-darker text-center w-full">3</span>
+                <span class="text-gray-300 text-center w-full">3</span>
             </div>
         </div>
     </div>
@@ -53,7 +53,7 @@
 <div class="max-w-7xl mt-12 px-4 md:px-5 md:w-3/5 lg:w-2/5 lg:px-5 mx-auto">
     <div id="job-categories" data-categories="{{ json_encode($jobCategories->pluck('children', 'id')) }}" style="display: none;"></div>
 
-    @if ($errors->any())
+    {{-- @if ($errors->any())
         <div class="alert alert-danger">
             <ul>
                 @foreach ($errors->all() as $error)
@@ -61,7 +61,7 @@
                 @endforeach
             </ul>
         </div>
-    @endif
+    @endif --}}
 
     <form action="{{ route('posts.store') }}" method="POST">
         @csrf
@@ -79,11 +79,11 @@
             
                 <div class="flex relative">
                     <input type="text" id="company-input" required
-                        class="block w-full px-4 py-2 border border-gray-300 text-base font-normal text-gray-900 bg-white rounded-l-md placeholder-gray-400 focus:outline-none focus:border-2 focus:border-cyan-500"
+                        class="block w-full px-4 py-2 pr-12 border border-gray-300 text-base font-normal text-gray-900 bg-white rounded-md placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
                         placeholder="投稿する企業を探す..."
                         value="{{ $company ? $company->company_name : '' }}" {{ $company ? 'readonly' : '' }}>
-                    <button type="button" id="input-button"
-                        class="px-3 py-2 bg-cyan-500 text-white text-sm font-bold rounded-r-md transition-all hover:bg-cyan-700"
+                        <button type="button" id="input-button"
+                        class="absolute right-0 top-0 h-full px-3 bg-cyan-500 text-white text-sm font-bold rounded-r-md transition-all hover:bg-cyan-700 flex items-center justify-center"
                         {{ $company ? 'disabled' : '' }}>
                         <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
                             xmlns="http://www.w3.org/2000/svg">
@@ -167,7 +167,7 @@
                 </label>
                 <div class="flex items-center">
                     <select id="start_year" name="start_year" required
-                        class="h-10 w-1/3 px-4 border border-gray-300 text-base font-normal text-gray-900 bg-white rounded-md placeholder-gray-400 focus:outline-none focus:border-2 focus:border-cyan-500">
+                        class="h-10 w-1/3 px-4 border border-gray-300 text-base font-normal text-gray-900 bg-white rounded-md placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent">
                         <option value="">入社年</option>
                         @for ($year = date('Y'); $year >= date('Y') - 50; $year--)
                             <option value="{{ $year }}">{{ $year }}年</option>
@@ -175,7 +175,7 @@
                     </select>
                     <span class="mx-2">〜</span>
                     <select id="end_year" name="end_year"
-                        class="h-10 w-1/3 px-4 border border-gray-300 text-base font-normal text-gray-900 bg-white rounded-md placeholder-gray-400 focus:outline-none focus:border-2 focus:border-cyan-500">
+                        class="h-10 w-1/3 px-4 border border-gray-300 text-base font-normal text-gray-900 bg-white rounded-md placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent">
                         <option value="" selected disabled>退職年</option>
                         @for ($year = date('Y'); $year >= date('Y') - 50; $year--)
                             <option value="{{ $year }}">{{ $year }}年</option>
@@ -192,7 +192,7 @@
                     <p id="job_category-error" class="error-message text-red-500 text-xs" style="display: none;"></p>
                 </label>
                 <select id="job_category" name="current_job_category_id" required
-                    class="h-10 w-full px-4 border border-gray-300 text-base font-normal text-gray-900 bg-white rounded-md placeholder-gray-400 focus:outline-none focus:border-2 focus:border-cyan-500">
+                    class="h-10 w-full px-4 border border-gray-300 text-base font-normal text-gray-900 bg-white rounded-md placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent">
                     <option value="">選択してください</option>
                     @foreach ($jobCategories as $category)
                         <option value="{{ $category->id }}">{{ $category->name }}</option>
@@ -209,7 +209,7 @@
                 </label>
                 <div class="w-full flex gap-4">
                     <select id="job_subcategory" name="current_job_subcategory_id" required
-                        class="h-10 w-full px-4 border border-gray-300 text-base font-normal text-gray-900 bg-white rounded-md placeholder-gray-400 focus:outline-none focus:border-2 focus:border-cyan-500">
+                        class="h-10 w-full px-4 border border-gray-300 text-base font-normal text-gray-900 bg-white rounded-md placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent">
                         <option value="">選択してください</option>
                         <!-- 大カテゴリー選択後にJavaScriptで動的に追加 -->
                     </select>
@@ -261,7 +261,7 @@
                                     <x-required-mark />
                                 </label>
                                 <textarea id="factor_{{ $i }}_detail" name="factor_{{ $i }}_detail"
-                                    class="block w-full px-4 py-2 border border-gray-300 text-base font-normal text-gray-900 bg-white rounded-md placeholder-gray-400 focus:outline-none focus:border-2 focus:border-cyan-500"
+                                    class="block w-full px-4 py-2 border border-gray-300 text-base font-normal text-gray-900 bg-white rounded-md placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
                                     rows="3" {{ $i == 1 ? 'required' : '' }}></textarea>
                             </div>
 
@@ -298,7 +298,7 @@
                                     <x-required-mark />
                                 </label>
                                 <textarea id="factor_{{ $i }}_satisfaction_reason"
-                                    class="block w-full px-4 py-2 border border-gray-300 text-base font-normal text-gray-900 bg-white rounded-md placeholder-gray-400 focus:outline-none focus:border-2 focus:border-cyan-500"
+                                    class="block w-full px-4 py-2 border border-gray-300 text-base font-normal text-gray-900 bg-white rounded-md placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
                                     name="factor_{{ $i }}_satisfaction_reason" rows="3" {{ $i == 1 ? 'required' : '' }}></textarea>
                             </div>
                         </div>
