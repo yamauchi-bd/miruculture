@@ -59,8 +59,8 @@ class PostController extends Controller
             'factor_2_detail' => 'nullable|string|min:100',
             'factor_2_satisfaction' => 'nullable|integer|min:1|max:5',
             'factor_2_satisfaction_reason' => 'nullable|string|min:100',
-            'deciding_factor_3' => 'nullable|string|min:100',
-            'factor_3_detail' => 'nullable|string',
+            'deciding_factor_3' => 'nullable|string',
+            'factor_3_detail' => 'nullable|string|min:100',
             'factor_3_satisfaction' => 'nullable|integer|min:1|max:5',
             'factor_3_satisfaction_reason' => 'nullable|string|min:100',
         ]);
