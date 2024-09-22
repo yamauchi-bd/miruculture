@@ -4,13 +4,10 @@
 
 @include('layouts.navigation')
 
-<section class="relative py-8 lg:py-14 lg:pt-40 lg:pb-16">
+<section class="relative py-8 lg:py-14 lg:pt-40 lg:pb-16 bg-cover" style="background-image: url('{{ asset('items/top-background.jpg') }}'); background-position: center 100%;">
     <div class="w-full max-w-7xl mx-auto px-4 lg:px-8">
-        <div class="w-full max-w-4xl mx-auto sm:px-12 mb-6 lg:mb-20">
-            {{-- <h1 class="font-bold text-lg sm:text-xl lg:text-3xl leading-snug text-center mb-6 lg:mb-10 text-gray-900">
-                入社エントリ プラットフォーム
-            </h1> --}}
-            <h2 class="text-sm font-semibold sm:text-sm md:text-base lg:text-lg leading-relaxed sm:leading-loose tracking-wide sm:tracking-wider text-center mb-4 sm:mb-6 md:mb-8 lg:mb-10 text-gray-800">
+        <div class="w-full max-w-4xl mx-auto sm:px-12 mb-10 lg:mb-20">
+            <h2 class="text-xs font-semibold sm:text-sm md:text-base lg:text-lg leading-relaxed sm:leading-loose tracking-wide sm:tracking-wider text-center mb-4 mt-6 sm:mb-6 md:mb-8 lg:mb-10 sm:mt-10 lg:mt-10 text-gray-800">
                 匿名の入社エントリを投稿して<br>企業カルチャーを可視化していきましょう！
             </h2>
 
@@ -31,6 +28,7 @@
     </div>
 </section>
 
+<div class="h-10 md:h-10 lg:h-10"></div>
 
 <section class="mb-16 sm:mb-24 md:mb-32 lg:mb-36 xl:mb-40">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
