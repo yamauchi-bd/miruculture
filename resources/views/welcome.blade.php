@@ -4,39 +4,41 @@
 
 @include('layouts.navigation')
 
-<section class="relative py-14 lg:pt-44 lg:pb-16">
+<section class="relative py-8 lg:py-14 lg:pt-40 lg:pb-16">
     <div class="w-full max-w-7xl mx-auto px-4 lg:px-8">
-        <div class="w-full max-w-4xl mx-auto sm:px-12 mb-10 lg:mb-20">
-            <h1 class="font-manrope font-bold text-2xl leading-snug lg:text-2xl sm:text-xl text-center mb-10 text-black">
-                あなたの決め手が､ 誰かの決め手に｡
-            </h1>
+        <div class="w-full max-w-4xl mx-auto sm:px-12 mb-6 lg:mb-20">
+            {{-- <h1 class="font-bold text-lg sm:text-xl lg:text-3xl leading-snug text-center mb-6 lg:mb-10 text-gray-900">
+                入社エントリ プラットフォーム
+            </h1> --}}
+            <h2 class="text-xs font-semibold sm:text-sm md:text-base lg:text-base leading-relaxed sm:leading-loose tracking-wide sm:tracking-wider text-center mb-4 sm:mb-6 md:mb-8 lg:mb-10 text-gray-800">
+                匿名の入社エントリを投稿して<br>企業カルチャーを可視化していきましょう！
+            </h2>
 
-            <div class="flex justify-center mt-20">
+            <div class="flex justify-center mt-4 sm:mt-6 md:mt-8 lg:mt-12 xl:mt-16">
                 @auth
                     <a href="{{ route('posts.create') }}"
-                        class='py-4 px-20 text-lg bg-cyan-500 text-white rounded-full cursor-pointer font-semibold text-center shadow-lg transition-all duration-200 ease-in-out bg-gradient-to-tl hover:from-red-400 hover:to-cyan-500 hover:shadow-lg transform hover:scale-105'>
-                        入社の決め手を投稿する
-                        <i class="far fa-plus-square fa-lg ml-2"></i>
+                        class='py-2 px-4 sm:py-2 sm:px-5 md:py-3 md:px-6 lg:py-3 lg:px-8 xl:py-4 xl:px-10 text-xs sm:text-sm md:text-base lg:text-base bg-cyan-500 text-white rounded-full cursor-pointer font-semibold text-center shadow-lg duration-200 hover:bg-cyan-700 hover:shadow-xl hover:scale-105'>
+                        入社エントリ を投稿する
+                        <i class="far fa-plus-square fa-lg ml-1"></i>
                     </a>
                 @else
                     <a href="{{ route('register') }}"
-                        class='py-4 px-20 text-lg bg-cyan-500 text-white rounded-full cursor-pointer font-semibold text-center shadow-lg transition-all duration-200 ease-in-out hover:shadow-lg transform hover:scale-105'>
-                        入社の決め手を投稿する
-                        <i class="far fa-plus-square fa-lg ml-2"></i>
+                        class='py-2 px-4 sm:py-2 sm:px-5 md:py-3 md:px-6 lg:py-3 lg:px-8 xl:py-4 xl:px-10 text-xs sm:text-sm md:text-base lg:text-base bg-cyan-500 text-white rounded-full cursor-pointer font-semibold text-center shadow-lg duration-200 hover:bg-cyan-700 hover:shadow-xl hover:scale-105'>
+                        入社エントリ を投稿する
+                        <i class="far fa-plus-square fa-lg ml-1"></i>
                     </a>
                 @endauth
             </div>
-
         </div>
     </div>
 </section>
 
 
-<section class="mb-36">
+<section class="mb-16 sm:mb-24 md:mb-32 lg:mb-36 xl:mb-40">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-        <div class="mb-10 flex justify-center">
-            <h2 class="text-xl font-bold text-gray-900 relative inline-block pb-3">
-                最新の入社エントリ
+        <div class="mb-6 sm:mb-8 md:mb-10 lg:mb-12 flex justify-center">
+            <h2 class="text-base sm:text-base md:text-xl lg:text-xl font-bold text-gray-900 relative inline-block pb-3">
+                最新の投稿
                 <span class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-2/5 h-1 bg-cyan-500"></span>
             </h2>
         </div>
@@ -48,17 +50,17 @@
                 @foreach ($latestPosts as $post)
                     @if ($post->corporate_number)
                         <div class="swiper-slide">
-                            <div class="group bg-white border-2 border-solid border-gray-300 mt-2 rounded-xl p-6 transition-all duration-300 hover:border-cyan-500 hover:shadow-lg relative h-[350px] flex flex-col cursor-pointer transform hover:-translate-y-1">
-                                <h6 class="text-gray-900 text-sm font-medium mb-3">
+                            <div class="group bg-white border-2 border-solid border-gray-300 mt-2 rounded-xl p-4 sm:p-5 md:p-6 transition-all duration-300 hover:border-cyan-500 hover:shadow-lg relative h-[300px] sm:h-[325px] md:h-[350px] flex flex-col cursor-pointer transform hover:-translate-y-1">
+                                <h6 class="text-gray-900 text-xs sm:text-xs md:text-xs font-medium mb-2 sm:mb-3">
                                     「<a href="{{ route('companies.show', ['corporate_number' => $post->corporate_number]) }}" class="text-cyan-600 hover:text-cyan-500 transition duration-150 ease-in-out">{{ $post->company_name }}</a>」への入社の決め手
                                 </h6>
-                                <div class="mb-4 flex-grow overflow-y-auto">
+                                <div class="mb-3 sm:mb-4 flex-grow overflow-y-auto">
                                     @foreach ($post->decidingFactors as $index => $factor)
                                         @if ($index < 3)
                                             <div class="mb-2">
                                                 <div class="flex items-center justify-between mb-1">
-                                                    <p class="text-base font-bold text-gray-900">
-                                                        {{ $index + 1 }}位：{{ $factor->factor }}</p>
+                                                    <p class="text-sm sm:text-sm md:text-base font-bold text-gray-900">
+                                                        【{{ $index + 1 }}位】{{ $factor->factor }}</p>
                                                     <div class="flex items-center">
                                                         @for ($i = 1; $i <= 5; $i++)
                                                             @if ($i <= $factor->satisfaction)
@@ -81,16 +83,16 @@
                                                         @endfor
                                                     </div>
                                                 </div>
-                                                <p class="text-sm text-gray-600">
+                                                <p class="text-xs sm:text-sm text-gray-600">
                                                     {{ Str::limit($factor->detail, 20) }}</p>
                                             </div>
                                         @endif
                                     @endforeach
                                 </div>
 
-                                <hr class="my-4 border-gray-200">
+                                <hr class="my-2 sm:my-3 md:my-4 border-gray-200">
 
-                                <div class="text-sm text-gray-600">
+                                <div class="text-xs sm:text-xs text-gray-600">
                                     <p>{{ $post->start_year ?? '◯◯' }}年
                                         {{ $post->entry_type ?? '未設定' }}（{{ $post->status ?? '未設定' }}）</p>
                                     <p>{{ $post->jobCategory->name ?? '職種未設定' }} ＞

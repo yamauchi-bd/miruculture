@@ -4,42 +4,41 @@
 
 @include('layouts.navigation')
 
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 sm:py-1 md:py-2 lg:py-16">
-    <div
-        class="lg:py-12 flex flex-col justify-center gap-x-16 gap-y-5 xl:gap-28 lg:flex-row lg:justify-between mx-auto max-w-full">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 sm:pt-20 lg:pt-28 pb-6 sm:pb-10 md:pb-12 lg:pb-16">
+    <div class="flex flex-col lg:flex-row justify-between gap-8 lg:gap-12">
         <div class="w-full lg:w-3/4">
-            <div class="w-full flex justify-between items-center">
-                <h2 class="font-semibold text-xl text-gray-900">
+            <div class="w-full flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 sm:mb-6">
+                <h2 class="font-semibold text-xl text-gray-900 mb-4 sm:mb-4 lg:mb-0">
                     {{ $company->company_name }}
                 </h2>
                 <a href="{{ route('posts.create', ['corporate_number' => $company->corporate_number]) }}"
-                    class='block w-1/4 py-3 px-4 text-sm bg-cyan-500 text-white rounded-lg border border-solid border-gray-700 shadow-md cursor-pointer font-semibold text-center transition-all duration-300 ease-in-out hover:bg-cyan-700'>
+                    class='block w-full sm:w-auto py-3 px-4 text-sm bg-cyan-500 text-white rounded-lg shadow-md cursor-pointer font-semibold text-center transition-all duration-300 ease-in-out hover:bg-cyan-700'>
                     入社エントリ を投稿する
                 </a>
             </div>
 
-            <section class="py-12 mt-1">
-                <div class="mx-auto max-w-7xl">
+            <section class="py-6 sm:py-8 md:py-12">
+                <div class="mx-auto max-w-full">
                     @foreach ($posts as $post)
-                        <div class="post-container group bg-white border border-solid border-gray-200 rounded-lg px-8 py-4 mb-6 transition-all duration-300 hover:border-cyan-500 hover:shadow-lg relative flex flex-col cursor-pointer transform hover:-translate-y-1" data-post-id="{{ $post->id }}">
+                        <div class="post-container group bg-white border border-solid border-gray-200 rounded-lg px-4 sm:px-6 md:px-8 py-4 mb-6 transition-all duration-300 hover:border-cyan-500 hover:shadow-lg relative flex flex-col cursor-pointer transform hover:-translate-y-1" data-post-id="{{ $post->id }}">
 
                             <div class="flex items-center gap-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12 text-gray-500"
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 sm:h-12 sm:w-12 text-gray-500"
                                     viewBox="0 0 20 20" fill="currentColor">
                                     <path fill-rule="evenodd"
                                         d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z"
                                         clip-rule="evenodd" />
                                 </svg>
                                 <div class="grid flex-grow">
-                                    <h5 class="text-sm text-gray-700 font-medium">
+                                    <h5 class="text-xs sm:text-sm text-gray-700 font-medium">
                                         {{ $post->start_year ?? '◯◯' }}年
                                         {{ $post->entry_type ?? '未設定' }}（{{ $post->status ?? '未設定' }}）</h5>
                                     <div class="flex justify-between items-center">
-                                        <span class="text-xs leading-6 text-gray-500">
+                                        <span class="text-2xs sm:text-xs leading-6 text-gray-500">
                                             {{ $post->jobCategory->name ?? '職種未設定' }} ＞
                                             {{ $post->jobSubcategory->name ?? '未設定' }}
                                         </span>
-                                        <span class="text-xs text-gray-500">
+                                        <span class="text-2xs sm:text-xs text-gray-500">
                                             投稿日: {{ $post->created_at->format('Y年m月d日') }}
                                         </span>
                                     </div>
@@ -49,16 +48,16 @@
                             <hr class="mt-2 mb-4 border-gray-200">
 
                     <div class="flex-grow">
-                    <h2 class="text-sm text-gray-900 mb-4">「{{ $company->company_name }}」への入社の決め手</h2>
+                    <h2 class="text-xs sm:text-sm text-gray-900 mb-4">「{{ $company->company_name }}」への入社の決め手</h2>
                     @if ($post->decidingFactors && $post->decidingFactors->isNotEmpty())
                         @foreach ($post->decidingFactors->take(3) as $index => $factor)
                             <div class="mb-6">
                                 <div class="flex items-center mb-4">
-                                    <p class="text-base font-bold text-gray-900">
+                                    <p class="text-sm sm:text-base font-bold text-gray-900">
                                         【{{ $index + 1 }}位】{{ $factor->factor ?? '未設定' }}</p>
                                     <div class="flex items-center ml-6">
                                         @for ($i = 1; $i <= 5; $i++)
-                                            <svg class="w-5 h-5 {{ $i <= ($factor->satisfaction ?? 0) ? 'text-yellow-400' : 'text-gray-300' }}"
+                                            <svg class="w-4 h-4 sm:w-5 sm:h-5 {{ $i <= ($factor->satisfaction ?? 0) ? 'text-yellow-400' : 'text-gray-300' }}"
                                                 viewBox="0 0 20 20" fill="currentColor"
                                                 xmlns="http://www.w3.org/2000/svg">
                                                 <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
@@ -67,12 +66,12 @@
                                     </div>
                                 </div>
                                 <div class="ml-2">
-                                    <p class="text-sm font-semibold text-gray-900 tracking-wide">-詳細-</p>
-                                    <p class="text-sm text-gray-900 factor-summary mb-2 tracking-wide">{{ Str::limit($factor->detail, 50) }}</p>
-                                    <p class="text-sm text-gray-900 factor-full hidden mb-4 tracking-wide">{{ $factor->detail }}</p>
+                                    <p class="text-xs sm:text-sm font-semibold text-gray-900 tracking-wide">-詳細-</p>
+                                    <p class="text-xs sm:text-sm text-gray-900 factor-summary mb-2 tracking-wide">{{ Str::limit($factor->detail, 50) }}</p>
+                                    <p class="text-xs sm:text-sm text-gray-900 factor-full hidden mb-4 tracking-wide">{{ $factor->detail }}</p>
                                     
-                                    <p class="text-sm font-semibold text-gray-900 satisfaction-reason hidden tracking-wide">-満足度-</p>
-                                    <p class="text-sm text-gray-900 satisfaction-reason hidden tracking-wide">{{ $factor->satisfaction_reason }}</p>
+                                    <p class="text-xs sm:text-sm font-semibold text-gray-900 satisfaction-reason hidden tracking-wide">-満足度-</p>
+                                    <p class="text-xs sm:text-sm text-gray-900 satisfaction-reason hidden tracking-wide">{{ $factor->satisfaction_reason }}</p>
                                 </div>
                             </div>
                         @endforeach
@@ -101,8 +100,8 @@
         <div class="w-full lg:w-1/4">
 
             {{-- 企業データ --}}
-            <section class="py-24">
-                <div class="bg-white border border-gray-200 rounded-lg overflow-hidden">
+            <section class="py-6 sm:py-8 md:py-12 lg:py-0">
+                <div class="bg-white border border-gray-200 rounded-lg overflow-hidden sticky top-24">
                     <div class="px-4 py-3 bg-gray-100 flex justify-between items-center">
                         <h3 class="text-sm font-semibold text-gray-800">企業データ</h3>
                         <a href="{{ route('companies.edit', $company) }}"

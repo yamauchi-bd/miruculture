@@ -19,6 +19,20 @@ export default {
             boxShadow: {
                 'inner-cyan': 'inset 0 0 0 2px #06b6d4', // cyan-500の色コード
             },
+            fontSize: {
+                '2xs': '0.625rem', // 10px
+            },
+            fontWeight: {
+                thin: '100',
+                extralight: '200',
+                light: '300',
+                normal: '400',
+                medium: '500',
+                semibold: '600',
+                bold: '700',
+                extrabold: '800',
+                black: '900',
+            },
         },
     },
 

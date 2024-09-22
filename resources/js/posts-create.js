@@ -21,6 +21,26 @@ document.addEventListener('DOMContentLoaded', function () {
 
     // その他のイベントリスナー
     setupMiscEventListeners();
+
+    // 文字数カウンター機能
+    for (let i = 1; i <= 3; i++) {
+        const detailTextarea = document.getElementById(`factor_${i}_detail`);
+        const detailCount = document.getElementById(`factor_${i}_detail_count`);
+        const reasonTextarea = document.getElementById(`factor_${i}_satisfaction_reason`);
+        const reasonCount = document.getElementById(`factor_${i}_satisfaction_reason_count`);
+
+        if (detailTextarea && detailCount) {
+            detailTextarea.addEventListener('input', function() {
+                detailCount.textContent = this.value.length;
+            });
+        }
+
+        if (reasonTextarea && reasonCount) {
+            reasonTextarea.addEventListener('input', function() {
+                reasonCount.textContent = this.value.length;
+            });
+        }
+    }
 });
 
 function setupJobCategories() {
