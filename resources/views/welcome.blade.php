@@ -10,22 +10,20 @@
             {{-- <h1 class="font-bold text-lg sm:text-xl lg:text-3xl leading-snug text-center mb-6 lg:mb-10 text-gray-900">
                 入社エントリ プラットフォーム
             </h1> --}}
-            <h2 class="text-xs font-semibold sm:text-sm md:text-base lg:text-base leading-relaxed sm:leading-loose tracking-wide sm:tracking-wider text-center mb-4 sm:mb-6 md:mb-8 lg:mb-10 text-gray-800">
+            <h2 class="text-sm font-semibold sm:text-sm md:text-base lg:text-lg leading-relaxed sm:leading-loose tracking-wide sm:tracking-wider text-center mb-4 sm:mb-6 md:mb-8 lg:mb-10 text-gray-800">
                 匿名の入社エントリを投稿して<br>企業カルチャーを可視化していきましょう！
             </h2>
 
             <div class="flex justify-center mt-4 sm:mt-6 md:mt-8 lg:mt-12 xl:mt-16">
                 @auth
                     <a href="{{ route('posts.create') }}"
-                        class='py-2 px-4 sm:py-2 sm:px-5 md:py-3 md:px-6 lg:py-3 lg:px-8 xl:py-4 xl:px-10 text-xs sm:text-sm md:text-base lg:text-base bg-cyan-500 text-white rounded-full cursor-pointer font-semibold text-center shadow-lg duration-200 hover:bg-cyan-700 hover:shadow-xl hover:scale-105'>
-                        入社エントリ を投稿する
-                        <i class="far fa-plus-square fa-lg ml-1"></i>
+                        class='py-2 px-4 sm:py-2 sm:px-8 md:py-3 md:px-10 lg:py-3 lg:px-12 xl:py-4 xl:px-16 text-xs sm:text-sm md:text-base lg:text-base bg-cyan-500 text-white rounded-full cursor-pointer font-semibold text-center shadow-lg duration-200 hover:bg-cyan-700 hover:shadow-xl hover:scale-105'>
+                        入社エントリを投稿する
                     </a>
                 @else
                     <a href="{{ route('register') }}"
                         class='py-2 px-4 sm:py-2 sm:px-5 md:py-3 md:px-6 lg:py-3 lg:px-8 xl:py-4 xl:px-10 text-xs sm:text-sm md:text-base lg:text-base bg-cyan-500 text-white rounded-full cursor-pointer font-semibold text-center shadow-lg duration-200 hover:bg-cyan-700 hover:shadow-xl hover:scale-105'>
-                        入社エントリ を投稿する
-                        <i class="far fa-plus-square fa-lg ml-1"></i>
+                        入社エントリを投稿する
                     </a>
                 @endauth
             </div>
@@ -50,55 +48,57 @@
                 @foreach ($latestPosts as $post)
                     @if ($post->corporate_number)
                         <div class="swiper-slide">
-                            <div class="group bg-white border-2 border-solid border-gray-300 mt-2 rounded-xl p-4 sm:p-5 md:p-6 transition-all duration-300 hover:border-cyan-500 hover:shadow-lg relative h-[300px] sm:h-[325px] md:h-[350px] flex flex-col cursor-pointer transform hover:-translate-y-1">
-                                <h6 class="text-gray-900 text-xs sm:text-xs md:text-xs font-medium mb-2 sm:mb-3">
-                                    「<a href="{{ route('companies.show', ['corporate_number' => $post->corporate_number]) }}" class="text-cyan-600 hover:text-cyan-500 transition duration-150 ease-in-out">{{ $post->company_name }}</a>」への入社の決め手
-                                </h6>
-                                <div class="mb-3 sm:mb-4 flex-grow overflow-y-auto">
-                                    @foreach ($post->decidingFactors as $index => $factor)
-                                        @if ($index < 3)
-                                            <div class="mb-2">
-                                                <div class="flex items-center justify-between mb-1">
-                                                    <p class="text-sm sm:text-sm md:text-base font-bold text-gray-900">
-                                                        【{{ $index + 1 }}位】{{ $factor->factor }}</p>
-                                                    <div class="flex items-center">
-                                                        @for ($i = 1; $i <= 5; $i++)
-                                                            @if ($i <= $factor->satisfaction)
-                                                                <svg class="w-4 h-4 text-yellow-400"
-                                                                    fill="currentColor" viewBox="0 0 20 20"
-                                                                    xmlns="http://www.w3.org/2000/svg">
-                                                                    <path
-                                                                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                                                                    </path>
-                                                                </svg>
-                                                            @else
-                                                                <svg class="w-4 h-4 text-gray-300"
-                                                                    fill="currentColor" viewBox="0 0 20 20"
-                                                                    xmlns="http://www.w3.org/2000/svg">
-                                                                    <path
-                                                                        d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                                                                    </path>
-                                                                </svg>
-                                                            @endif
-                                                        @endfor
+                            <a href="{{ route('companies.show', ['corporate_number' => $post->corporate_number]) }}" class="block">
+                                <div class="group bg-white border-2 border-solid border-gray-300 mt-2 rounded-xl p-4 sm:p-5 md:p-6 transition-all duration-300 hover:border-cyan-500 hover:shadow-lg relative h-[275px] sm:h-[325px] md:h-[325px] flex flex-col cursor-pointer transform hover:-translate-y-1">
+                                    <h6 class="text-gray-900 text-xs sm:text-xs md:text-xs font-medium mb-3 sm:mb-4">
+                                        「<span class="text-cyan-600 hover:text-cyan-700">{{ $post->company_name }}</span>」への決め手
+                                    </h6>
+                                    <div class="mb-1 sm:mb-2 flex-grow overflow-y-auto">
+                                        @foreach ($post->decidingFactors as $index => $factor)
+                                            @if ($index < 3)
+                                                <div class="mb-2">
+                                                    <div class="flex items-center justify-between mb-1">
+                                                        <p class="text-sm sm:text-sm md:text-base font-bold text-gray-900">
+                                                            【{{ $index + 1 }}位】{{ $factor->factor }}</p>
+                                                        <div class="flex items-center">
+                                                            @for ($i = 1; $i <= 5; $i++)
+                                                                @if ($i <= $factor->satisfaction)
+                                                                    <svg class="w-4 h-4 text-yellow-400"
+                                                                        fill="currentColor" viewBox="0 0 20 20"
+                                                                        xmlns="http://www.w3.org/2000/svg">
+                                                                        <path
+                                                                            d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                                                                        </path>
+                                                                    </svg>
+                                                                @else
+                                                                    <svg class="w-4 h-4 text-gray-300"
+                                                                        fill="currentColor" viewBox="0 0 20 20"
+                                                                        xmlns="http://www.w3.org/2000/svg">
+                                                                        <path
+                                                                            d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                                                                        </path>
+                                                                    </svg>
+                                                                @endif
+                                                            @endfor
+                                                        </div>
                                                     </div>
+                                                    <p class="text-xs sm:text-sm text-gray-600">
+                                                        {{ Str::limit($factor->detail, 20) }}</p>
                                                 </div>
-                                                <p class="text-xs sm:text-sm text-gray-600">
-                                                    {{ Str::limit($factor->detail, 20) }}</p>
-                                            </div>
-                                        @endif
-                                    @endforeach
-                                </div>
+                                            @endif
+                                        @endforeach
+                                    </div>
 
-                                <hr class="my-2 sm:my-3 md:my-4 border-gray-200">
+                                    <hr class="my-2 sm:my-3 md:my-4 border-gray-200">
 
-                                <div class="text-xs sm:text-xs text-gray-600">
-                                    <p>{{ $post->start_year ?? '◯◯' }}年
-                                        {{ $post->entry_type ?? '未設定' }}（{{ $post->status ?? '未設定' }}）</p>
-                                    <p>{{ $post->jobCategory->name ?? '職種未設定' }} ＞
-                                        {{ $post->jobSubcategory->name ?? '未設定' }}</p>
+                                    <div class="text-xs sm:text-xs text-gray-600">
+                                        <p>{{ $post->start_year ?? '◯◯' }}年
+                                            {{ $post->entry_type ?? '未設定' }}（{{ $post->status ?? '未設定' }}）</p>
+                                        <p>{{ $post->jobCategory->name ?? '職種未設定' }} ＞
+                                            {{ $post->jobSubcategory->name ?? '未設定' }}</p>
+                                    </div>
                                 </div>
-                            </div>
+                            </a>
                         </div>
                     @endif
                 @endforeach

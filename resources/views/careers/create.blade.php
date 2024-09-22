@@ -1,83 +1,86 @@
 <header>
-    <h2 class="text-lg font-bold text-gray-900">
+    <h2 class="text-lg font-bold text-gray-900 mb-4 sm:mb-6">
         {{ __('キャリア情報') }}
     </h2>
 </header>
 
-<form method="POST" action="{{ route('careers.store') }}" class="mt-6 space-y-6">
+<form method="POST" action="{{ route('careers.store') }}" class="mt-4 sm:mt-6 space-y-4 sm:space-y-6">
     @csrf
     <input type="hidden" name="user_id" value="{{ Auth::id() }}">
     <!-- 基本情報 -->
-    <div class="w-full justify-start items-start mb-6 gap-8 flex sm:flex-row flex-col">
-        <div class="w-full flex-col justify-start items-start gap-1.5 flex">
-            <label for="last_name" class="flex gap-1 items-center text-gray-600 text-sm font-medium leading-relaxed">
+    <div class="w-full flex flex-col sm:flex-row sm:gap-4">
+        <div class="w-full mb-4 sm:mb-0">
+            <label for="last_name" class="block text-sm font-medium text-gray-700 mb-1">
                 姓
                 <x-required-mark />
             </label>
-            <x-text-input id="last_name" name="last_name" type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm h-10" :value="old('last_name')" required />
+            <x-text-input id="last_name" name="last_name" type="text" class="mt-1 block w-full h-10 sm:h-11"
+                :value="old('last_name')" required />
         </div>
-        <div class="w-full flex-col justify-start items-start gap-1.5 flex">
-            <label for="first_name" class="flex gap-1 items-center text-gray-600 text-sm font-medium leading-relaxed">
+        <div class="w-full">
+            <label for="first_name" class="block text-sm font-medium text-gray-700 mb-1">
                 名
                 <x-required-mark />
             </label>
-            <x-text-input id="first_name" name="first_name" type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm h-10" :value="old('first_name')" required />
+            <x-text-input id="first_name" name="first_name" type="text" class="mt-1 block w-full h-10 sm:h-11"
+                :value="old('first_name')" required />
         </div>
     </div>
 
-    <div class="w-full justify-start items-start mb-6 gap-8 flex sm:flex-row flex-col">
-        <div class="w-full flex-col justify-start items-start gap-1.5 flex">
-            <label for="last_name_kana"
-                class="flex gap-1 items-center text-gray-600 text-sm font-medium leading-relaxed">
+    <div class="w-full flex flex-col sm:flex-row sm:gap-4">
+        <div class="w-full mb-4 sm:mb-0">
+            <label for="last_name_kana" class="block text-sm font-medium text-gray-700 mb-1">
                 セイ
                 <x-required-mark />
             </label>
-            <x-text-input id="last_name_kana" name="last_name_kana" type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm h-10" :value="old('last_name_kana')" required />
+            <x-text-input id="last_name_kana" name="last_name_kana" type="text"
+                class="mt-1 block w-full h-10 sm:h-11" :value="old('last_name_kana')" required />
         </div>
-        <div class="w-full flex-col justify-start items-start gap-1.5 flex">
-            <label for="first_name_kana"
-                class="flex gap-1 items-center text-gray-600 text-sm font-medium leading-relaxed">
+        <div class="w-full">
+            <label for="first_name_kana" class="block text-sm font-medium text-gray-700 mb-1">
                 メイ
                 <x-required-mark />
             </label>
-            <x-text-input id="first_name_kana" name="first_name_kana" type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm h-10" :value="old('first_name_kana')" required />
+            <x-text-input id="first_name_kana" name="first_name_kana" type="text"
+                class="mt-1 block w-full h-10 sm:h-11" :value="old('first_name_kana')" required />
         </div>
     </div>
 
     <!-- 生年月日 -->
-    <div class="w-full flex-col justify-start items-start mb-6 gap-1.5 flex">
-        <label for="birth_date" class="flex gap-1 items-center text-gray-600 text-sm font-medium leading-relaxed">
+    <div class="w-full">
+        <label for="birth_date" class="block text-sm font-medium text-gray-700 mb-1">
             生年月日
             <x-required-mark />
         </label>
-        <x-text-input id="birth_date" name="birth_date" type="date" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm h-10" :value="old('birth_date')" required />
+        <x-text-input id="birth_date" name="birth_date" type="date" class="mt-1 block w-full h-10 sm:h-11"
+            :value="old('birth_date')" required />
     </div>
 
-
     <!-- 性別 -->
-    <div class="w-full flex-col justify-start items-start mb-6 gap-1.5 flex">
-        <label for="gender" class="flex gap-1 items-center text-gray-600 text-sm font-medium leading-relaxed">
+    <div class="w-full">
+        <label class="block text-sm font-medium text-gray-700 mb-1">
             性別
             <x-required-mark />
         </label>
-        <div class="flex gap-4">
+        <div class="flex flex-wrap gap-4">
             @foreach ($genders as $gender)
-                <label>
-                    <input type="radio" name="gender_id" value="{{ $gender->id }}" required>
-                    {{ $gender->name }}
+                <label class="inline-flex items-center">
+                    <input type="radio" name="gender_id" value="{{ $gender->id }}" class="form-radio h-4 w-4"
+                        required>
+                    <span class="ml-2">{{ $gender->name }}</span>
                 </label>
             @endforeach
         </div>
     </div>
 
     <!-- 都道府県 -->
-    <div class="w-full flex-col justify-start items-start mb-6 gap-1.5 flex">
-        <label for="prefecture" class="flex gap-1 items-center text-gray-600 text-sm font-medium leading-relaxed">
+    <div class="w-full">
+        <label for="prefecture" class="block text-sm font-medium text-gray-700 mb-1">
             住所
             <x-required-mark />
         </label>
         <select id="prefecture" name="prefecture_id" required
-            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm h-10">
+            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm h-10 sm:h-11">
             <option value="" selected disabled>選択してください</option>
             @foreach ($prefectures as $prefecture)
                 <option value="{{ $prefecture->id }}" {{ old('prefecture_id') == $prefecture->id ? 'selected' : '' }}>
@@ -88,16 +91,17 @@
     </div>
 
     <!-- 現在のキャリア -->
-    <div class="w-full flex-col justify-start items-start mb-6 gap-1.5 flex">
-        <label for="career_status" class="flex gap-1 items-center text-gray-600 text-sm font-medium leading-relaxed">
+    <div class="w-full">
+        <label class="block text-sm font-medium text-gray-700 mb-1">
             現在のキャリア
             <x-required-mark />
         </label>
-        <div class="flex gap-4">
+        <div class="flex flex-wrap gap-4">
             @foreach ($careerStatuses as $status)
-                <label>
-                    <input type="radio" name="career_status_id" value="{{ $status->id }}" required>
-                    {{ $status->name }}
+                <label class="inline-flex items-center">
+                    <input type="radio" name="career_status_id" value="{{ $status->id }}" class="form-radio h-4 w-4"
+                        required>
+                    <span class="ml-2">{{ $status->name }}</span>
                 </label>
             @endforeach
         </div>
@@ -115,7 +119,8 @@
                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm h-10">
                 <option value="" selected disabled>選択してください</option>
                 @foreach ($industries as $industry)
-                    <option value="{{ $industry->id }}" {{ old('current_industry_id') == $industry->id ? 'selected' : '' }}>
+                    <option value="{{ $industry->id }}"
+                        {{ old('current_industry_id') == $industry->id ? 'selected' : '' }}>
                         {{ $industry->name }}
                     </option>
                 @endforeach
@@ -132,7 +137,8 @@
                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm h-10">
                 <option value="" selected disabled>選択してください</option>
                 @foreach ($jobCategories as $category)
-                    <option value="{{ $category->id }}" {{ old('current_job_category_id') == $category->id ? 'selected' : '' }}>
+                    <option value="{{ $category->id }}"
+                        {{ old('current_job_category_id') == $category->id ? 'selected' : '' }}>
                         {{ $category->name }}
                     </option>
                 @endforeach
@@ -157,7 +163,8 @@
                     class="w-1/3 mt-1 block rounded-md border-gray-300 shadow-sm h-10">
                     <option value="" selected disabled>経験年数</option>
                     @foreach ($jobYears as $jobYear)
-                        <option value="{{ $jobYear->id }}" {{ old('current_job_years_id') == $jobYear->id ? 'selected' : '' }}>
+                        <option value="{{ $jobYear->id }}"
+                            {{ old('current_job_years_id') == $jobYear->id ? 'selected' : '' }}>
                             {{ $jobYear->name }}
                         </option>
                     @endforeach
@@ -176,7 +183,8 @@
                 class="mt-1 block w-full rounded-md border-gray-300 shadow-sm h-10">
                 <option value="" selected disabled>選択してください</option>
                 @foreach ($annualIncomes as $income)
-                    <option value="{{ $income->id }}" {{ old('annual_income_id') == $income->id ? 'selected' : '' }}>
+                    <option value="{{ $income->id }}"
+                        {{ old('annual_income_id') == $income->id ? 'selected' : '' }}>
                         {{ $income->name }}
                     </option>
                 @endforeach
@@ -184,42 +192,42 @@
         </div>
 
         <!-- 転職の意欲 -->
-        <div class="w-full justify-start items-start mb-6 gap-8 flex sm:flex-row flex-col">
-            <div class="w-full justify-start items-start gap-8 flex sm:flex-row flex-col">
-                <div class="w-full flex-col justify-start items-start gap-1.5 flex">
-                    <label for="job_change_motivation"
-                        class="flex gap-1 items-center text-gray-600 text-sm font-medium leading-relaxed">
-                        転職の意欲
-                        <x-required-mark />
-                    </label>
-                    <select id="job_change_motivation" name="job_change_motivation_id" required
-                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm h-10">
-                        <option value="" selected disabled>選択してください</option>
-                        @foreach ($jobChangeMotivations as $motivation)
-                            <option value="{{ $motivation->id }}" {{ old('job_change_motivation_id') == $motivation->id ? 'selected' : '' }}>
-                                {{ $motivation->name }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
+        <div class="w-full justify-start items-start mb-6 gap-6 flex sm:flex-row flex-col">
+            <div class="w-full flex-col justify-start items-start gap-1.5 flex">
+                <label for="job_change_motivation"
+                    class="flex gap-1 items-center text-gray-600 text-sm font-medium leading-relaxed">
+                    転職の意欲
+                    <x-required-mark />
+                </label>
+                <select id="job_change_motivation" name="job_change_motivation_id" required
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm h-10">
+                    <option value="" selected disabled>選択してください</option>
+                    @foreach ($jobChangeMotivations as $motivation)
+                        <option value="{{ $motivation->id }}"
+                            {{ old('job_change_motivation_id') == $motivation->id ? 'selected' : '' }}>
+                            {{ $motivation->name }}
+                        </option>
+                    @endforeach
+                </select>
+            </div>
 
-                <!-- 副業の意欲 -->
-                <div class="w-full flex-col justify-start items-start gap-1.5 flex">
-                    <label for="side_job_motivation"
-                        class="flex gap-1 items-center text-gray-600 text-sm font-medium leading-relaxed">
-                        副業の意欲
-                        <x-required-mark />
-                    </label>
-                    <select id="side_job_motivation" name="side_job_motivation_id" required
-                        class="mt-1 block w-full rounded-md border-gray-300 shadow-sm h-10">
-                        <option value="" selected disabled>選択してください</option>
-                        @foreach ($sideJobMotivations as $motivation)
-                            <option value="{{ $motivation->id }}" {{ old('side_job_motivation_id') == $motivation->id ? 'selected' : '' }}>
-                                {{ $motivation->name }}
-                            </option>
-                        @endforeach
-                    </select>
-                </div>
+            <!-- 副業の意欲 -->
+            <div class="w-full flex-col justify-start items-start gap-1.5 flex">
+                <label for="side_job_motivation"
+                    class="flex gap-1 items-center text-gray-600 text-sm font-medium leading-relaxed">
+                    副業の意欲
+                    <x-required-mark />
+                </label>
+                <select id="side_job_motivation" name="side_job_motivation_id" required
+                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm h-10">
+                    <option value="" selected disabled>選択してください</option>
+                    @foreach ($sideJobMotivations as $motivation)
+                        <option value="{{ $motivation->id }}"
+                            {{ old('side_job_motivation_id') == $motivation->id ? 'selected' : '' }}>
+                            {{ $motivation->name }}
+                        </option>
+                    @endforeach
+                </select>
             </div>
         </div>
     </div>
@@ -251,7 +259,8 @@
                 学校名
                 <x-required-mark />
             </label>
-            <x-text-input id="college_name" name="college_name" type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm h-10" :value="old('college_name')" required />
+            <x-text-input id="college_name" name="college_name" type="text"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm h-10" :value="old('college_name')" required />
         </div>
 
         <!-- 学部 -->
@@ -260,7 +269,9 @@
                 class="flex gap-1 items-center text-gray-600 text-sm font-medium leading-relaxed">
                 学部
             </label>
-            <x-text-input id="college_faculty" name="college_faculty" type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm h-10" :value="old('college_faculty')" :required="false" />
+            <x-text-input id="college_faculty" name="college_faculty" type="text"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm h-10" :value="old('college_faculty')"
+                :required="false" />
         </div>
 
         <!-- 学科 -->
@@ -269,7 +280,9 @@
                 class="flex gap-1 items-center text-gray-600 text-sm font-medium leading-relaxed">
                 学科
             </label>
-            <x-text-input id="college_department" name="college_department" type="text" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm h-10" :value="old('college_department')" :required="false" />
+            <x-text-input id="college_department" name="college_department" type="text"
+                class="mt-1 block w-full rounded-md border-gray-300 shadow-sm h-10" :value="old('college_department')"
+                :required="false" />
         </div>
 
         <!-- 卒業予定日 -->
@@ -284,14 +297,16 @@
                     class="w-3/5 mt-1 block rounded-md border-gray-300 shadow-sm h-10">
                     <option value="" selected disabled>年</option>
                     @for ($year = date('Y'); $year <= date('Y') + 6; $year++)
-                        <option value="{{ $year }}" {{ old('graduation_year') == $year ? 'selected' : '' }}>{{ $year }}年</option>
+                        <option value="{{ $year }}" {{ old('graduation_year') == $year ? 'selected' : '' }}>
+                            {{ $year }}年</option>
                     @endfor
                 </select>
                 <select id="graduation_month" name="graduation_month" required
                     class="w-2/5 mt-1 block rounded-md border-gray-300 shadow-sm h-10">
                     <option value="" selected disabled>月</option>
                     @for ($month = 1; $month <= 12; $month++)
-                        <option value="{{ $month }}" {{ old('graduation_month') == $month ? 'selected' : '' }}>{{ $month }}月</option>
+                        <option value="{{ $month }}"
+                            {{ old('graduation_month') == $month ? 'selected' : '' }}>{{ $month }}月</option>
                     @endfor
                 </select>
             </div>
@@ -304,6 +319,21 @@
         </x-primary-button>
     </div>
 </form>
+
+<style>
+    @media (max-width: 640px) {
+        .space-y-4> :not([hidden])~ :not([hidden]) {
+            --tw-space-y-reverse: 0;
+            margin-top: calc(1rem * calc(1 - var(--tw-space-y-reverse)));
+            margin-bottom: calc(1rem * var(--tw-space-y-reverse));
+        }
+
+        select,
+        input[type="date"] {
+            height: 2.5rem;
+        }
+    }
+</style>
 
 <script>
     // 現在のキャリア選択に応じてフィールドの表示/非表示を切り替える

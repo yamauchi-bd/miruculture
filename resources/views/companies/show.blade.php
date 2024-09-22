@@ -11,16 +11,24 @@
                 <h2 class="font-semibold text-xl text-gray-900 mb-4 sm:mb-4 lg:mb-0">
                     {{ $company->company_name }}
                 </h2>
-                <a href="{{ route('posts.create', ['corporate_number' => $company->corporate_number]) }}"
-                    class='block w-full sm:w-auto py-3 px-4 text-sm bg-cyan-500 text-white rounded-lg shadow-md cursor-pointer font-semibold text-center transition-all duration-300 ease-in-out hover:bg-cyan-700'>
-                    入社エントリ を投稿する
-                </a>
+                @auth
+                    <a href="{{ route('posts.create', ['corporate_number' => $company->corporate_number]) }}"
+                        class='block w-full sm:w-auto py-3 px-4 text-sm bg-cyan-500 text-white rounded-lg shadow-md cursor-pointer font-semibold text-center transition-all duration-300 ease-in-out hover:bg-cyan-700'>
+                        入社エントリを投稿する
+                    </a>
+                @else
+                    <a href="{{ route('register') }}"
+                        class='block w-full sm:w-auto py-3 px-4 text-sm bg-cyan-500 text-white rounded-lg shadow-md cursor-pointer font-semibold text-center transition-all duration-300 ease-in-out hover:bg-cyan-700'>
+                        入社エントリを投稿する
+                    </a>
+                @endauth
             </div>
 
             <section class="py-6 sm:py-8 md:py-12">
                 <div class="mx-auto max-w-full">
                     @foreach ($posts as $post)
-                        <div class="post-container group bg-white border border-solid border-gray-200 rounded-lg px-4 sm:px-6 md:px-8 py-4 mb-6 transition-all duration-300 hover:border-cyan-500 hover:shadow-lg relative flex flex-col cursor-pointer transform hover:-translate-y-1" data-post-id="{{ $post->id }}">
+                        <div class="post-container group bg-white border border-solid border-gray-200 rounded-lg px-4 sm:px-6 md:px-8 py-4 mb-6 transition-all duration-300 hover:border-cyan-500 hover:shadow-lg relative flex flex-col cursor-pointer transform hover:-translate-y-1"
+                            data-post-id="{{ $post->id }}">
 
                             <div class="flex items-center gap-2">
                                 <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 sm:h-12 sm:w-12 text-gray-500"
@@ -47,54 +55,71 @@
 
                             <hr class="mt-2 mb-4 border-gray-200">
 
-                    <div class="flex-grow">
-                    <h2 class="text-xs sm:text-sm text-gray-900 mb-4">「{{ $company->company_name }}」への入社の決め手</h2>
-                    @if ($post->decidingFactors && $post->decidingFactors->isNotEmpty())
-                        @foreach ($post->decidingFactors->take(3) as $index => $factor)
-                            <div class="mb-6">
-                                <div class="flex items-center mb-4">
-                                    <p class="text-sm sm:text-base font-bold text-gray-900">
-                                        【{{ $index + 1 }}位】{{ $factor->factor ?? '未設定' }}</p>
-                                    <div class="flex items-center ml-6">
-                                        @for ($i = 1; $i <= 5; $i++)
-                                            <svg class="w-4 h-4 sm:w-5 sm:h-5 {{ $i <= ($factor->satisfaction ?? 0) ? 'text-yellow-400' : 'text-gray-300' }}"
-                                                viewBox="0 0 20 20" fill="currentColor"
-                                                xmlns="http://www.w3.org/2000/svg">
-                                                <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z"></path>
-                                            </svg>
-                                        @endfor
-                                    </div>
-                                </div>
-                                <div class="ml-2">
-                                    <p class="text-xs sm:text-sm font-semibold text-gray-900 tracking-wide">-詳細-</p>
-                                    <p class="text-xs sm:text-sm text-gray-900 factor-summary mb-2 tracking-wide">{{ Str::limit($factor->detail, 50) }}</p>
-                                    <p class="text-xs sm:text-sm text-gray-900 factor-full hidden mb-4 tracking-wide">{{ $factor->detail }}</p>
-                                    
-                                    <p class="text-xs sm:text-sm font-semibold text-gray-900 satisfaction-reason hidden tracking-wide">-満足度-</p>
-                                    <p class="text-xs sm:text-sm text-gray-900 satisfaction-reason hidden tracking-wide">{{ $factor->satisfaction_reason }}</p>
-                                </div>
+                            <div class="flex-grow">
+                                <h2 class="text-xs sm:text-sm text-gray-900 mb-4">
+                                    「<a href="{{ route('companies.show', $post->company) }}" class="text-cyan-600 hover:text-cyan-700 hover:underline">{{ $post->company_name }}</a>」への決め手
+                                </h2>
+                                @if ($post->decidingFactors && $post->decidingFactors->isNotEmpty())
+                                    @foreach ($post->decidingFactors->take(3) as $index => $factor)
+                                        <div class="mb-6">
+                                            <div class="flex items-center mb-4">
+                                                <p class="text-sm sm:text-base font-bold text-gray-900">
+                                                    【{{ $index + 1 }}位】{{ $factor->factor ?? '未設定' }}</p>
+                                                <div class="flex items-center ml-6">
+                                                    @for ($i = 1; $i <= 5; $i++)
+                                                        <svg class="w-4 h-4 sm:w-5 sm:h-5 {{ $i <= ($factor->satisfaction ?? 0) ? 'text-yellow-400' : 'text-gray-300' }}"
+                                                            viewBox="0 0 20 20" fill="currentColor"
+                                                            xmlns="http://www.w3.org/2000/svg">
+                                                            <path
+                                                                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                                                            </path>
+                                                        </svg>
+                                                    @endfor
+                                                </div>
+                                            </div>
+                                            <div class="ml-2">
+                                                <p class="text-xs sm:text-sm font-semibold text-gray-900 tracking-wide">
+                                                    -詳細-</p>
+                                                <p
+                                                    class="text-xs sm:text-sm text-gray-900 factor-summary mb-2 tracking-wide">
+                                                    {{ Str::limit($factor->detail, 50) }}</p>
+                                                <p
+                                                    class="text-xs sm:text-sm text-gray-900 factor-full hidden mb-4 tracking-wide">
+                                                    {{ $factor->detail }}</p>
+
+                                                <p
+                                                    class="text-xs sm:text-sm font-semibold text-gray-900 satisfaction-reason hidden tracking-wide">
+                                                    -満足度-</p>
+                                                <p
+                                                    class="text-xs sm:text-sm text-gray-900 satisfaction-reason hidden tracking-wide">
+                                                    {{ $factor->satisfaction_reason }}</p>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                @else
+                                    <p class="text-sm text-gray-500">入社の決め手が登録されていません。</p>
+                                @endif
                             </div>
-                        @endforeach
-                    @else
-                        <p class="text-sm text-gray-500">入社の決め手が登録されていません。</p>
-                    @endif
+                            <div class="flex items-center justify-end toggle-details">
+                                <h2 class="text-sm font-bold text-cyan-500 toggle-text mr-1">もっと見る</h2>
+                                <svg class="w-5 h-5 text-cyan-500 arrow-down" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M19 9l-7 7-7-7"></path>
+                                </svg>
+                                <svg class="w-5 h-5 text-cyan-500 arrow-up hidden" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M5 15l7-7 7 7"></path>
+                                </svg>
+                            </div>
+                            <div class="post-details hidden mt-4">
+                                <!-- 詳細情報がここに表示されます -->
+                            </div>
+                        </div>
+                    @endforeach
                 </div>
-                <div class="flex items-center justify-end toggle-details">
-                    <h2 class="text-sm font-bold text-cyan-500 toggle-text mr-1">もっと見る</h2>
-                    <svg class="w-5 h-5 text-cyan-500 arrow-down" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
-                    </svg>
-                    <svg class="w-5 h-5 text-cyan-500 arrow-up hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"></path>
-                    </svg>
-                </div>
-                <div class="post-details hidden mt-4">
-                    <!-- 詳細情報がここに表示されます -->
-                </div>
-            </div>
-        @endforeach
-    </div>
-</section>
+            </section>
         </div>
 
         <div class="w-full lg:w-1/4">
@@ -191,7 +216,7 @@
                                     <svg class="w-6 h-6 text-cyan-500" fill="none" stroke="currentColor"
                                         viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9">
+                                            d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z">
                                         </path>
                                     </svg>
                                 </div>

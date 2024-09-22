@@ -4,43 +4,43 @@
     </h2>
 </header>
 
-<form id="career-form" method="POST" action="{{ route('careers.update', $career->id) }}" class="mt-6 space-y-6">
+<form id="career-form" method="POST" action="{{ route('careers.update', $career->id) }}" class="mt-6 space-y-4 sm:space-y-6">
     @csrf
     @method('PUT')
 
-    <div class="flex space-x-4">
-        <div class="flex-1">
+    <div class="flex flex-col sm:flex-row sm:space-x-4">
+        <div class="flex-1 mb-4 sm:mb-0">
             <x-input-label for="last_name" :value="__('姓')" />
-            <x-text-input id="last_name" name="last_name" type="text" class="mt-1 block w-full" :value="old('last_name', $career->last_name)" required />
+            <x-text-input id="last_name" name="last_name" type="text" class="mt-1 block w-full h-10 sm:h-auto" :value="old('last_name', $career->last_name)" required />
         </div>
 
         <div class="flex-1">
             <x-input-label for="first_name" :value="__('名')" />
-            <x-text-input id="first_name" name="first_name" type="text" class="mt-1 block w-full" :value="old('first_name', $career->first_name)" required />
+            <x-text-input id="first_name" name="first_name" type="text" class="mt-1 block w-full h-10 sm:h-auto" :value="old('first_name', $career->first_name)" required />
         </div>
     </div>
 
-    <div class="flex space-x-4 mt-4">
-        <div class="flex-1">
+    <div class="flex flex-col sm:flex-row sm:space-x-4">
+        <div class="flex-1 mb-4 sm:mb-0">
             <x-input-label for="last_name_kana" :value="__('セイ')" />
-            <x-text-input id="last_name_kana" name="last_name_kana" type="text" class="mt-1 block w-full" :value="old('last_name_kana', $career->last_name_kana)" required pattern="^[ァ-ヶー]+$" title="カタカナで入力ください" />
+            <x-text-input id="last_name_kana" name="last_name_kana" type="text" class="mt-1 block w-full h-10 sm:h-auto" :value="old('last_name_kana', $career->last_name_kana)" required pattern="^[ァ-ヶー]+$" title="カタカナで入力ください" />
         </div>
     
         <div class="flex-1">
             <x-input-label for="first_name_kana" :value="__('メイ')" />
-            <x-text-input id="first_name_kana" name="first_name_kana" type="text" class="mt-1 block w-full" :value="old('first_name_kana', $career->first_name_kana)" required pattern="^[ァ-ヶー]+$" title="カタカナで入力ください" />
+            <x-text-input id="first_name_kana" name="first_name_kana" type="text" class="mt-1 block w-full h-10 sm:h-auto" :value="old('first_name_kana', $career->first_name_kana)" required pattern="^[ァ-ヶー]+$" title="カタカナで入力ください" />
         </div>
     </div>
 
-    <div class="flex space-x-4 mt-4">
-        <div class="flex-1">
+    <div class="flex flex-col sm:flex-row sm:space-x-4">
+        <div class="flex-1 mb-4 sm:mb-0">
             <x-input-label for="birth_date" :value="__('生年月日')" />
-            <x-text-input id="birth_date" name="birth_date" type="date" class="mt-1 block w-full" :value="old('birth_date', $career->birth_date->format('Y-m-d'))" required max="{{ date('Y-m-d') }}" />
+            <x-text-input id="birth_date" name="birth_date" type="date" class="mt-1 block w-full h-10 sm:h-auto" :value="old('birth_date', $career->birth_date->format('Y-m-d'))" required max="{{ date('Y-m-d') }}" />
         </div>
 
         <div class="flex-1">
             <x-input-label for="gender_id" :value="__('性別')" />
-            <select id="gender_id" name="gender_id" class="mt-1 block w-full border-gray-300 focus:border-cyan-500 focus:ring-cyan-500 rounded-md shadow-sm" required>
+            <select id="gender_id" name="gender_id" class="mt-1 block w-full border-gray-300 focus:border-cyan-500 focus:ring-cyan-500 rounded-md shadow-sm h-10 sm:h-auto" required>
                 @foreach ($genders as $gender)
                     <option value="{{ $gender->id }}" {{ old('gender_id', $career->gender_id) == $gender->id ? 'selected' : '' }}>
                         {{ $gender->name }}
@@ -50,10 +50,10 @@
         </div>
     </div>
 
-    <div class="flex space-x-4 mt-4">
-        <div class="flex-1">
+    <div class="flex flex-col sm:flex-row sm:space-x-4">
+        <div class="flex-1 mb-4 sm:mb-0">
             <x-input-label for="prefecture_id" :value="__('都道府県')" />
-            <select id="prefecture_id" name="prefecture_id" class="mt-1 block w-full border-gray-300 focus:border-cyan-500 focus:ring-cyan-500 rounded-md shadow-sm" required>
+            <select id="prefecture_id" name="prefecture_id" class="mt-1 block w-full border-gray-300 focus:border-cyan-500 focus:ring-cyan-500 rounded-md shadow-sm h-10 sm:h-auto" required>
                 @foreach ($prefectures as $prefecture)
                     <option value="{{ $prefecture->id }}" {{ old('prefecture_id', $career->prefecture_id) == $prefecture->id ? 'selected' : '' }}>
                         {{ $prefecture->name }}
@@ -64,7 +64,7 @@
 
         <div class="flex-1">
             <x-input-label for="career_status_id" :value="__('現在のキャリア')" />
-            <select id="career_status_id" name="career_status_id" class="mt-1 block w-full border-gray-300 focus:border-cyan-500 focus:ring-cyan-500 rounded-md shadow-sm" required>
+            <select id="career_status_id" name="career_status_id" class="mt-1 block w-full border-gray-300 focus:border-cyan-500 focus:ring-cyan-500 rounded-md shadow-sm h-10 sm:h-auto" required>
                 @foreach ($careerStatuses as $status)
                     <option value="{{ $status->id }}" {{ old('career_status_id', $career->career_status_id) == $status->id ? 'selected' : '' }}>
                         {{ $status->name }}
@@ -78,7 +78,7 @@
         
             <div class="flex-1">
                 <x-input-label for="current_industry_id" :value="__('現在の業界')" />
-                <select id="current_industry_id" name="current_industry_id" class="mt-1 block w-full border-gray-300 focus:border-cyan-500 focus:ring-cyan-500 rounded-md shadow-sm">
+                <select id="current_industry_id" name="current_industry_id" class="mt-1 block w-full border-gray-300 focus:border-cyan-500 focus:ring-cyan-500 rounded-md shadow-sm h-10 sm:h-auto">
                     @foreach ($industries as $industry)
                         <option value="{{ $industry->id }}" {{ old('current_industry_id', $career->current_industry_id) == $industry->id ? 'selected' : '' }}>
                             {{ $industry->name }}
@@ -87,11 +87,11 @@
                 </select>
             </div>
 
-        <div class="flex space-x-4 mt-4">
-            <div class="flex-1">
+        <div class="flex flex-col sm:flex-row sm:space-x-4">
+            <div class="flex-1 mb-4 sm:mb-0">
                 <x-input-label for="current_job_category_id" :value="__('現在の職種')" />
                 <select id="current_job_category_id" name="current_job_category_id"
-                    class="mt-1 block w-full border-gray-300 focus:border-cyan-500 focus:ring-cyan-500 rounded-md shadow-sm">
+                    class="mt-1 block w-full border-gray-300 focus:border-cyan-500 focus:ring-cyan-500 rounded-md shadow-sm h-10 sm:h-auto">
                     @foreach ($jobCategories as $category)
                         <option value="{{ $category->id }}"
                             {{ old('current_job_category_id', $career->current_job_category_id) == $category->id ? 'selected' : '' }}>
@@ -104,16 +104,16 @@
             <div class="flex-1">
                 <x-input-label for="current_job_subcategory_id" :value="__('現在の職種（小カテゴリー）')" />
                 <select id="current_job_subcategory_id" name="current_job_subcategory_id"
-                    class="mt-1 block w-full border-gray-300 focus:border-cyan-500 focus:ring-cyan-500 rounded-md shadow-sm">
+                    class="mt-1 block w-full border-gray-300 focus:border-cyan-500 focus:ring-cyan-500 rounded-md shadow-sm h-10 sm:h-auto">
                     <!-- 小カテゴリーのオプションはJavaScriptで動的に更新されます -->
                 </select>
             </div>
         </div>
 
-        <div class="flex space-x-4 mt-4">
-            <div class="flex-1">
+        <div class="flex flex-col sm:flex-row sm:space-x-4">
+            <div class="flex-1 mb-4 sm:mb-0">
                 <x-input-label for="current_job_years_id" :value="__('経験年数')" />
-                <select id="current_job_years_id" name="current_job_years_id" class="mt-1 block w-full border-gray-300 focus:border-cyan-500 focus:ring-cyan-500 rounded-md shadow-sm">
+                <select id="current_job_years_id" name="current_job_years_id" class="mt-1 block w-full border-gray-300 focus:border-cyan-500 focus:ring-cyan-500 rounded-md shadow-sm h-10 sm:h-auto">
                     @foreach ($jobYears as $jobYear)
                         <option value="{{ $jobYear->id }}" {{ old('current_job_years_id', $career->current_job_years_id) == $jobYear->id ? 'selected' : '' }}>
                             {{ $jobYear->name }}
@@ -124,7 +124,7 @@
 
             <div class="flex-1">
                 <x-input-label for="annual_income_id" :value="__('年収')" />
-                <select id="annual_income_id" name="annual_income_id" class="mt-1 block w-full border-gray-300 focus:border-cyan-500 focus:ring-cyan-500 rounded-md shadow-sm">
+                <select id="annual_income_id" name="annual_income_id" class="mt-1 block w-full border-gray-300 focus:border-cyan-500 focus:ring-cyan-500 rounded-md shadow-sm h-10 sm:h-auto">
                     @foreach ($annualIncomes as $income)
                         <option value="{{ $income->id }}" {{ old('annual_income_id', $career->annual_income_id) == $income->id ? 'selected' : '' }}>
                             {{ $income->name }}
@@ -134,11 +134,11 @@
             </div>
         </div>
 
-        <div class="flex space-x-4 mt-4">
-            <div class="flex-1">
+        <div class="flex flex-col sm:flex-row sm:space-x-4">
+            <div class="flex-1 mb-4 sm:mb-0">
                 <x-input-label for="job_change_motivation_id" :value="__('転職の意欲')" />
                 <select id="job_change_motivation_id" name="job_change_motivation_id"
-                    class="mt-1 block w-full border-gray-300 focus:border-cyan-500 focus:ring-cyan-500 rounded-md shadow-sm">
+                    class="mt-1 block w-full border-gray-300 focus:border-cyan-500 focus:ring-cyan-500 rounded-md shadow-sm h-10 sm:h-auto">
                     @foreach ($jobChangeMotivations as $motivation)
                         <option value="{{ $motivation->id }}"
                             {{ old('job_change_motivation_id', $career->job_change_motivation_id) == $motivation->id ? 'selected' : '' }}>
@@ -151,7 +151,7 @@
             <div class="flex-1">
                 <x-input-label for="side_job_motivation_id" :value="__('副業の意欲')" />
                 <select id="side_job_motivation_id" name="side_job_motivation_id"
-                    class="mt-1 block w-full border-gray-300 focus:border-cyan-500 focus:ring-cyan-500 rounded-md shadow-sm">
+                    class="mt-1 block w-full border-gray-300 focus:border-cyan-500 focus:ring-cyan-500 rounded-md shadow-sm h-10 sm:h-auto">
                     @foreach ($sideJobMotivations as $motivation)
                         <option value="{{ $motivation->id }}"
                             {{ old('side_job_motivation_id', $career->side_job_motivation_id) == $motivation->id ? 'selected' : '' }}>
@@ -167,7 +167,7 @@
         <div>
             <x-input-label for="college_type_id" :value="__('学校タイプ')" />
             <select id="college_type_id" name="college_type_id"
-                class="mt-1 block w-full border-gray-300 focus:border-cyan-500 focus:ring-cyan-500 rounded-md shadow-sm">
+                class="mt-1 block w-full border-gray-300 focus:border-cyan-500 focus:ring-cyan-500 rounded-md shadow-sm h-10 sm:h-auto">
                 @foreach ($collegeTypes as $type)
                     <option value="{{ $type->id }}"
                         {{ old('college_type_id', $career->college_type_id) == $type->id ? 'selected' : '' }}>
@@ -179,26 +179,26 @@
 
         <div class="mt-4">
             <x-input-label for="college_name" :value="__('学校名')" />
-            <x-text-input id="college_name" name="college_name" type="text" class="mt-1 block w-full"
+            <x-text-input id="college_name" name="college_name" type="text" class="mt-1 block w-full h-10 sm:h-auto"
                 :value="old('college_name', $career->college_name)" />
         </div>
 
         <div class="mt-4">
             <x-input-label for="college_faculty" :value="__('学部（任意）')" />
-            <x-text-input id="college_faculty" name="college_faculty" type="text" class="mt-1 block w-full"
+            <x-text-input id="college_faculty" name="college_faculty" type="text" class="mt-1 block w-full h-10 sm:h-auto"
                 :value="old('college_faculty', $career->college_faculty)" :required="false" />
         </div>
     
         <div class="mt-4">
             <x-input-label for="college_department" :value="__('学科（任意）')" />
-            <x-text-input id="college_department" name="college_department" type="text" class="mt-1 block w-full"
+            <x-text-input id="college_department" name="college_department" type="text" class="mt-1 block w-full h-10 sm:h-auto"
                 :value="old('college_department', $career->college_department)" :required="false" />
         </div>
 
-        <div class="flex space-x-4 mt-4">
-            <div class="flex-1">
+        <div class="flex flex-col sm:flex-row sm:space-x-4">
+            <div class="flex-1 mb-4 sm:mb-0">
                 <x-input-label for="graduation_year" :value="__('卒業予定年')" />
-                <select id="graduation_year" name="graduation_year" class="mt-1 block w-full border-gray-300 focus:border-cyan-500 focus:ring-cyan-500 rounded-md shadow-sm">
+                <select id="graduation_year" name="graduation_year" class="mt-1 block w-full border-gray-300 focus:border-cyan-500 focus:ring-cyan-500 rounded-md shadow-sm h-10 sm:h-auto">
                     @for ($year = date('Y'); $year <= date('Y') + 10; $year++)
                         <option value="{{ $year }}" {{ old('graduation_year', $career->graduation_year) == $year ? 'selected' : '' }}>
                             {{ $year }}
@@ -209,7 +209,7 @@
     
             <div class="flex-1">
                 <x-input-label for="graduation_month" :value="__('卒業予定月')" />
-                <select id="graduation_month" name="graduation_month" class="mt-1 block w-full border-gray-300 focus:border-cyan-500 focus:ring-cyan-500 rounded-md shadow-sm">
+                <select id="graduation_month" name="graduation_month" class="mt-1 block w-full border-gray-300 focus:border-cyan-500 focus:ring-cyan-500 rounded-md shadow-sm h-10 sm:h-auto">
                     @for ($month = 1; $month <= 12; $month++)
                         <option value="{{ $month }}" {{ old('graduation_month', $career->graduation_month) == $month ? 'selected' : '' }}>
                             {{ $month }}
@@ -223,9 +223,25 @@
     </div>
 
     <div class="mt-6 flex justify-end">
-        <x-primary-button type="submit">{{ __('更新する') }}</x-primary-button>
+        <x-primary-button type="submit" class="w-full sm:w-auto">{{ __('更新する') }}</x-primary-button>
     </div>
 </form>
+
+<style>
+    @media (max-width: 640px) {
+        .mt-1 {
+            margin-top: 0.25rem;
+        }
+        .space-y-4 > :not([hidden]) ~ :not([hidden]) {
+            --tw-space-y-reverse: 0;
+            margin-top: calc(0.75rem * calc(1 - var(--tw-space-y-reverse)));
+            margin-bottom: calc(0.75rem * var(--tw-space-y-reverse));
+        }
+        select, input[type="date"] {
+            height: 2.5rem;
+        }
+    }
+</style>
 
 <script>
     document.addEventListener('DOMContentLoaded', function() {

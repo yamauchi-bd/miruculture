@@ -4,18 +4,18 @@ use Illuminate\Support\Facades\Route;
 
 @include('layouts.navigation')
 
-<div class="container mx-auto px-4 sm:px-6 lg:px-8 lg:py-24 max-w-md">
+<div class="container mx-auto px-4 sm:px-6 lg:px-8 py-4 lg:py-24 max-w-md">
     <x-auth-session-status class="mb-4" :status="session('status')" />
 
     <form method="POST" action="{{ route('login') }}" class="mt-8 space-y-6">
         @csrf
 
         <div class="text-center">
-            <h2 class="text-2xl font-bold mb-6">ログイン</h2>
+            <h2 class="text-xl sm:text-2xl font-bold mb-8 sm:mb-12">ログイン</h2>
         </div>
 
         <a href="{{ route('login.google') }}"
-            class="flex items-center justify-center w-full gap-2 rounded-lg border border-gray-300 bg-white px-4 py-3 text-sm font-semibold text-gray-800 outline-none ring-gray-300 transition duration-100 hover:bg-gray-100 focus-visible:ring active:bg-gray-200 sm:text-base">
+            class="flex items-center justify-center w-full gap-2 rounded-lg border border-gray-300 bg-white px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base font-semibold text-gray-800 outline-none ring-gray-300 transition duration-100 hover:bg-gray-100 focus-visible:ring active:bg-gray-200">
             <svg class="h-5 w-5 shrink-0" width="24" height="24" viewBox="0 0 24 24" fill="none"
                 xmlns="http://www.w3.org/2000/svg">
                 <path
@@ -36,21 +36,21 @@ use Illuminate\Support\Facades\Route;
 
         <div class="relative flex items-center justify-center">
             <span class="absolute inset-x-0 h-px bg-gray-300"></span>
-            <span class="relative bg-white px-4 text-sm text-gray-400">または</span>
+            <span class="relative bg-white px-4 text-xs sm:text-sm text-gray-400">または</span>
         </div>
 
         <!-- Email Address -->
         <div>
-            <x-input-label for="email" :value="__('メールアドレス')" class="mb-1" />
-            <x-text-input id="email" class="block w-full" type="email" name="email" :value="old('email')" required autofocus autocomplete="email" />
-            <x-input-error :messages="$errors->get('email')" class="mt-2" />
+            <x-input-label for="email" :value="__('メールアドレス')" class="mb-1 text-sm sm:text-base" />
+            <x-text-input id="email" class="block w-full text-sm sm:text-base" type="email" name="email" :value="old('email')" required autofocus autocomplete="email" />
+            <x-input-error :messages="$errors->get('email')" class="mt-2 text-xs sm:text-sm" />
         </div>
 
         <!-- Password -->
         <div>
-            <x-input-label for="password" :value="__('パスワード（8文字以上の英数字）')" class="mb-1" />
+            <x-input-label for="password" :value="__('パスワード（8文字以上の英数字）')" class="mb-1 text-sm sm:text-base" />
             <div class="relative">
-                <x-text-input id="password" class="block w-full pr-10" type="password" name="password" required autocomplete="current-password" />
+                <x-text-input id="password" class="block w-full pr-10 text-sm sm:text-base" type="password" name="password" required autocomplete="current-password" />
 
                 <button type="button" id="togglePassword"
                     class="absolute inset-y-0 right-0 pr-3 flex items-center focus:outline-none">
@@ -62,24 +62,24 @@ use Illuminate\Support\Facades\Route;
                     </svg>
                 </button>
             </div>
-            <x-input-error :messages="$errors->get('password')" class="mt-2" />
+            <x-input-error :messages="$errors->get('password')" class="mt-2 text-xs sm:text-sm" />
         </div>
 
         <!-- Remember Me -->
         <div class="flex items-center">
             <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-cyan-600 shadow-sm focus:ring-cyan-500" name="remember">
-            <label for="remember_me" class="ml-2 block text-sm text-gray-600">
+            <label for="remember_me" class="ml-2 block text-xs sm:text-sm text-gray-600">
                 {{ __('ログイン状態を保持する') }}
             </label>
         </div>
 
         <div>
-            <x-primary-button class="w-full justify-center py-3">
+            <x-primary-button class="w-full justify-center py-2 sm:py-3 text-sm sm:text-base">
                 {{ __('ログインする') }}
             </x-primary-button>
         </div>
 
-        <div class="text-center text-sm text-gray-600">
+        <div class="text-center text-xs sm:text-sm text-gray-600">
             @if (Route::has('password.request'))
                 <a class="underline text-cyan-500 hover:text-cyan-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500" href="{{ route('password.request') }}">
                     {{ __('パスワードをお忘れですか？') }}

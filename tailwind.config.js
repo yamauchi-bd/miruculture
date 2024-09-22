@@ -14,7 +14,15 @@ export default {
     theme: {
         extend: {
             fontFamily: {
-                sans: ['Figtree', ...defaultTheme.fontFamily.sans],
+                sans: [
+                    '"Yu Gothic"',
+                    'YuGothic',
+                    '"Hiragino Sans"',
+                    '"Hiragino Kaku Gothic ProN"',
+                    'Meiryo',
+                    'sans-serif',
+                    ...defaultTheme.fontFamily.sans
+                ],
             },
             boxShadow: {
                 'inner-cyan': 'inset 0 0 0 2px #06b6d4', // cyan-500の色コード
