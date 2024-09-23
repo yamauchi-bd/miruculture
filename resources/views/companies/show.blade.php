@@ -28,7 +28,7 @@
             <section class="py-6 sm:py-8 md:py-8 lg:py-0 mt-6">
                 <div class="border border-gray-200 rounded-lg overflow-hidden">
                     <div class="px-4 py-3 bg-gray-100">
-                        <h3 class="text-sm font-semibold text-gray-800">企業カルチャー</h3>
+                        <h3 class="text-sm font-semibold text-gray-800">入社時の重視度</h3>
                     </div>
                     <div class="px-8 py-4 relative h-[30vh] w-full lg:h-[45vh] sm:h-[30vh]">
                         <canvas id="decidingFactorsChart"></canvas>
@@ -69,7 +69,7 @@
                             <hr class="mt-2 mb-4 border-gray-200">
 
                             <div class="flex-grow">
-                                <h2 class="text-xs sm:text-sm text-gray-700 mb-4">
+                                <h2 class="text-xs sm:text-sm lg:text-xs text-gray-700 mt-1 mb-4">
                                     「<a href="{{ route('companies.show', $post->company) }}"
                                         class="text-cyan-600 hover:text-cyan-700 hover:underline">{{ $post->company_name }}</a>」への決め手
                                 </h2>
