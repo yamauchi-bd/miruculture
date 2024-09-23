@@ -4,11 +4,11 @@
 
 @include('layouts.navigation')
 
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 sm:pt-20 lg:pt-28 pb-6 sm:pb-10 md:pb-12 lg:pb-16">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 sm:pt-20 md:pt-14 lg:pt-28 pb-6 sm:pb-10 md:pb-8 lg:pb-16">
     <div class="flex flex-col lg:flex-row justify-between gap-8 lg:gap-12">
         <div class="w-full lg:w-3/4">
-            <div class="w-full flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 sm:mb-6">
-                <h2 class="font-semibold text-xl text-gray-900 mb-4 sm:mb-4 lg:mb-0">
+            <div class="w-full flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 lg:mb-12 sm:mb-6">
+                <h2 class="font-semibold text-xl text-gray-700 mb-4 sm:mb-4 lg:mb-0">
                     {{ $company->company_name }}
                 </h2>
                 @auth
@@ -23,6 +23,19 @@
                     </a>
                 @endauth
             </div>
+
+            {{-- グラフ --}}
+            <section class="py-6 sm:py-8 md:py-8 lg:py-0 mt-6">
+                <div class="border border-gray-200 rounded-lg overflow-hidden">
+                    <div class="px-4 py-3 bg-gray-100">
+                        <h3 class="text-sm font-semibold text-gray-800">企業カルチャー</h3>
+                    </div>
+                    <div class="px-8 py-4 relative h-[30vh] w-full lg:h-[45vh] sm:h-[30vh]">
+                        <canvas id="decidingFactorsChart"></canvas>
+                    </div>
+                </div>
+            </section>
+
 
             <section class="py-6 sm:py-8 md:py-12">
                 <div class="mx-auto max-w-full">
@@ -56,14 +69,15 @@
                             <hr class="mt-2 mb-4 border-gray-200">
 
                             <div class="flex-grow">
-                                <h2 class="text-xs sm:text-sm text-gray-900 mb-4">
-                                    「<a href="{{ route('companies.show', $post->company) }}" class="text-cyan-600 hover:text-cyan-700 hover:underline">{{ $post->company_name }}</a>」への決め手
+                                <h2 class="text-xs sm:text-sm text-gray-700 mb-4">
+                                    「<a href="{{ route('companies.show', $post->company) }}"
+                                        class="text-cyan-600 hover:text-cyan-700 hover:underline">{{ $post->company_name }}</a>」への決め手
                                 </h2>
                                 @if ($post->decidingFactors && $post->decidingFactors->isNotEmpty())
                                     @foreach ($post->decidingFactors->take(3) as $index => $factor)
                                         <div class="mb-6">
                                             <div class="flex items-center mb-4">
-                                                <p class="text-sm sm:text-base font-bold text-gray-900">
+                                                <p class="text-sm sm:text-base font-bold text-gray-700">
                                                     【{{ $index + 1 }}位】{{ $factor->factor ?? '未設定' }}</p>
                                                 <div class="flex items-center ml-6">
                                                     @for ($i = 1; $i <= 5; $i++)
@@ -78,20 +92,20 @@
                                                 </div>
                                             </div>
                                             <div class="ml-2">
-                                                <p class="text-xs sm:text-sm font-semibold text-gray-900 tracking-wide">
+                                                <p class="text-xs sm:text-sm font-semibold text-gray-700 tracking-wide">
                                                     -詳細-</p>
                                                 <p
-                                                    class="text-xs sm:text-sm text-gray-900 factor-summary mb-2 tracking-wide">
+                                                    class="text-xs sm:text-sm text-gray-700 factor-summary mb-2 tracking-wide">
                                                     {{ Str::limit($factor->detail, 50) }}</p>
                                                 <p
-                                                    class="text-xs sm:text-sm text-gray-900 factor-full hidden mb-4 tracking-wide">
+                                                    class="text-xs sm:text-sm text-gray-700 factor-full hidden mb-4 tracking-wide">
                                                     {{ $factor->detail }}</p>
 
                                                 <p
-                                                    class="text-xs sm:text-sm font-semibold text-gray-900 satisfaction-reason hidden tracking-wide">
+                                                    class="text-xs sm:text-sm font-semibold text-gray-700 satisfaction-reason hidden tracking-wide">
                                                     -満足度-</p>
                                                 <p
-                                                    class="text-xs sm:text-sm text-gray-900 satisfaction-reason hidden tracking-wide">
+                                                    class="text-xs sm:text-sm text-gray-700 satisfaction-reason hidden tracking-wide">
                                                     {{ $factor->satisfaction_reason }}</p>
                                             </div>
                                         </div>
@@ -125,7 +139,8 @@
         <div class="w-full lg:w-1/4">
 
             {{-- 企業データ --}}
-            <section class="py-6 sm:py-8 md:py-12 lg:py-0">
+            <div class="lg:mb-3"></div>
+            <section class="py-2 sm:py-2 md:py-4 lg:py-20">
                 <div class="bg-white border border-gray-200 rounded-lg overflow-hidden sticky top-24">
                     <div class="px-4 py-3 bg-gray-100 flex justify-between items-center">
                         <h3 class="text-sm font-semibold text-gray-800">企業データ</h3>
@@ -151,7 +166,7 @@
                                 </div>
                                 <div>
                                     <p class="text-xs font-medium text-gray-500">ミッション</p>
-                                    <p class="text-xs text-gray-900">{{ $company->company_mission }}</p>
+                                    <p class="text-xs text-gray-700">{{ $company->company_mission }}</p>
                                 </div>
                             </div>
                         @endif
@@ -170,7 +185,7 @@
                                 </div>
                                 <div>
                                     <p class="text-xs font-medium text-gray-500 pb-2">ビジョン</p>
-                                    <p class="text-xs text-gray-900">{{ $company->company_vision }}</p>
+                                    <p class="text-xs text-gray-700">{{ $company->company_vision }}</p>
                                 </div>
                             </div>
                         @endif
@@ -187,7 +202,7 @@
                                 </div>
                                 <div>
                                     <p class="text-xs font-medium text-gray-500 pb-2">バリュー</p>
-                                    <p class="text-xs text-gray-900">{{ $company->company_values }}</p>
+                                    <p class="text-xs text-gray-700">{{ $company->company_values }}</p>
                                 </div>
                             </div>
                         @endif
@@ -204,7 +219,7 @@
                                 </div>
                                 <div>
                                     <p class="text-xs font-medium text-gray-500 pb-2">事業概要</p>
-                                    <p class="text-xs text-gray-900">
+                                    <p class="text-xs text-gray-700">
                                         {{ str_replace(["\r\n", "\r", "\n"], '　', e($company->business_summary)) }}</p>
                                 </div>
                             </div>
@@ -242,7 +257,7 @@
                                 </div>
                                 <div>
                                     <p class="text-xs font-medium text-gray-500">所在地</p>
-                                    <p class="text-xs text-gray-900">{{ $company->location }}</p>
+                                    <p class="text-xs text-gray-700">{{ $company->location }}</p>
                                 </div>
                             </div>
                         @endif
@@ -259,7 +274,7 @@
                                 </div>
                                 <div>
                                     <p class="text-xs font-medium text-gray-500">従業員数</p>
-                                    <p class="text-xs text-gray-900">{{ number_format($company->employee_number) }} 人
+                                    <p class="text-xs text-gray-700">{{ number_format($company->employee_number) }} 人
                                     </p>
                                 </div>
                             </div>
@@ -277,7 +292,7 @@
                                 </div>
                                 <div>
                                     <p class="text-xs font-medium text-gray-500">設立年</p>
-                                    <p class="text-xs text-gray-900">
+                                    <p class="text-xs text-gray-700">
                                         {{ \Carbon\Carbon::parse($company->date_of_establishment)->format('Y') }} 年</p>
                                 </div>
                             </div>
@@ -295,7 +310,7 @@
                                 </div>
                                 <div>
                                     <p class="text-xs font-medium text-gray-500">資本金</p>
-                                    <p class="text-xs text-gray-900">
+                                    <p class="text-xs text-gray-700">
                                         {{ number_format($company->capital_stock / 1000000) }}
                                         百万円</p>
                                 </div>
@@ -314,7 +329,7 @@
                                 </div>
                                 <div>
                                     <p class="text-xs font-medium text-gray-500">代表者</p>
-                                    <p class="text-xs text-gray-900">{{ $company->representative_name }}</p>
+                                    <p class="text-xs text-gray-700">{{ $company->representative_name }}</p>
                                 </div>
                             </div>
                         @endif
@@ -331,7 +346,7 @@
                                 </div>
                                 <div>
                                     <p class="text-xs font-medium text-gray-500">業界</p>
-                                    <p class="text-xs text-gray-900">{{ $company->industry->name }}</p>
+                                    <p class="text-xs text-gray-700">{{ $company->industry->name }}</p>
                                 </div>
                             </div>
                         @endif
@@ -348,7 +363,7 @@
                                 </div>
                                 <div>
                                     <p class="text-xs font-medium text-gray-500">上場区分</p>
-                                    <p class="text-xs text-gray-900">{{ $company->listing_status }}</p>
+                                    <p class="text-xs text-gray-700">{{ $company->listing_status }}</p>
                                 </div>
                             </div>
                         @endif
@@ -363,3 +378,8 @@
 
 @include('layouts.footer')
 @vite(['resources/js/company-show.js'])
+
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script id="decidingFactorsData" type="application/json">@json($decidingFactorsData)</script>
+@vite(['resources/js/company-chart.js'])

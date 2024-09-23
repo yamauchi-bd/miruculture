@@ -42,10 +42,12 @@ class CompanyController extends Controller
     {
         $company = Company::with('industry')->where('corporate_number', $corporateNumber)->firstOrFail();
         $posts = Post::where('corporate_number', $corporateNumber)
-                     ->orderBy('created_at', 'desc')
-                     ->get();
-    
-        return view('companies.show', compact('company', 'posts'));
+            ->orderBy('created_at', 'desc')
+            ->get();
+
+        $decidingFactorsData = $this->calculateDecidingFactorsData($posts);
+
+        return view('companies.show', compact('company', 'posts', 'decidingFactorsData'));
     }
 
     /**
@@ -64,7 +66,7 @@ class CompanyController extends Controller
     public function update(Request $request, $corporate_number)
     {
         $company = Company::where('corporate_number', $corporate_number)->firstOrFail();
-    
+
         $validatedData = $request->validate([
             'company_name' => 'required|string|max:255',
             'business_summary' => 'nullable|string',
@@ -80,7 +82,7 @@ class CompanyController extends Controller
             'industry_id' => 'nullable|exists:industries,id',
             'listing_status' => 'nullable|in:,プライム,スタンダード,グロース',
         ]);
-    
+
         try {
             $company->update($validatedData);
             Log::info('Company updated successfully', ['corporate_number' => $corporate_number]);
@@ -103,11 +105,46 @@ class CompanyController extends Controller
     public function search(Request $request)
     {
         $query = $request->input('query');
-        
+
         $companies = Cache::remember("company_search:{$query}", now()->addMinutes(60), function () use ($query) {
             return Company::search($query)->get();
         });
-    
+
         return response()->json($companies);
+    }
+
+    private function calculateDecidingFactorsData($posts)
+    {
+        $factorCounts = [];
+        $totalPosts = $posts->count();
+    
+        foreach ($posts as $post) {
+            $factors = $post->decidingFactors->take(3)->values();
+            foreach ($factors as $index => $factor) {
+                $factorName = $factor->factor;
+                if (!isset($factorCounts[$factorName])) {
+                    $factorCounts[$factorName] = [0, 0, 0];
+                }
+                $factorCounts[$factorName][$index]++;
+            }
+        }
+    
+        $factorData = [];
+        foreach ($factorCounts as $factor => $counts) {
+            $percentages = array_map(function($count) use ($totalPosts) {
+                return round(($count / $totalPosts) * 100, 1);
+            }, $counts);
+            $factorData[] = [
+                'factor' => $factor,
+                'percentages' => $percentages,
+                'total' => array_sum($percentages)
+            ];
+        }
+    
+        usort($factorData, function($a, $b) {
+            return $b['total'] <=> $a['total'];
+        });
+    
+        return $factorData; // 全ての要因を返す
     }
 }
