@@ -23,26 +23,30 @@ class CompaniesSeeder extends Seeder
         '法人代表者名' => 'representative_name',
     ];
 
-    public function run()
+    public function run($specificFile = null)
     {
         ini_set('memory_limit', '512M');
         ini_set('max_execution_time', 0);
 
-        // すべてのCSVファイルを処理する
-        $files = glob(storage_path('app/company_data/*.csv'));
+        $files = $specificFile 
+            ? [storage_path('app/company_data/' . $specificFile)]
+            : glob(storage_path('app/company_data/*.csv'));
 
         $totalProcessed = 0;
 
         foreach ($files as $file) {
-            if (!file_exists($file)) {
-                $this->command->error("File does not exist: " . $file);
-                continue;
+            $this->command->info("Processing file: " . basename($file));
+            try {
+                $processed = $this->processFile($file);
+                $totalProcessed += $processed;
+                $this->command->info("Processed $processed records from " . basename($file));
+            } catch (\Exception $e) {
+                $this->command->error("Error processing file " . basename($file) . ": " . $e->getMessage());
+                Log::error("Error processing file: " . basename($file) . " - " . $e->getMessage());
             }
-
-            $totalProcessed += $this->processFile($file);
         }
 
-        $this->command->info("Total processed records: " . $totalProcessed);
+        $this->command->info("Total processed records: $totalProcessed");
     }
 
     protected function processFile($file)
@@ -67,69 +71,87 @@ class CompaniesSeeder extends Seeder
         Log::info("File headers: " . implode(', ', $header));
 
         $processedCount = 0;
-        $batchSize = 50; // バッチサイズを小さく設定
+        $batchSize = 5000; // バッチサイズを増やす
         $offset = 0;
 
-        while (true) {
-            $stmt = (new Statement())->offset($offset)->limit($batchSize);
-            $records = $stmt->process($csv, $header);
+        DB::beginTransaction(); // トランザクション開始
 
-            if ($records->count() == 0) {
-                break;
-            }
+        try {
+            while (true) {
+                $stmt = (new Statement())->offset($offset)->limit($batchSize);
+                $records = $stmt->process($csv, $header);
 
-            $batch = [];
-            foreach ($records as $record) {
-                try {
-                    // 空の列を除去
-                    $record = array_filter($record, function($value) {
-                        return $value !== '';
-                    });
+                if ($records->count() == 0) {
+                    break;
+                }
 
-                    // デバッグログを追加
-                    Log::info("Processing record: " . json_encode($record));
+                $batch = [];
+                foreach ($records as $record) {
+                    try {
+                        // 空の列を除去
+                        $record = array_filter($record, function($value) {
+                            return $value !== '';
+                        });
 
-                    // 法人番号と本社所在地が空でないことを確認
-                    if (!empty($record['法人番号']) && !empty($record['本社所在地'])) {
-                        $data = $this->mapData($record);
-                        
-                        // データベースに既に存在していないか確認
-                        if (!DB::table('companies')->where('corporate_number', $data['corporate_number'])->exists()) {
+                        if (!empty($record['本社所在地']) && $record['ステータス'] !== '閉鎖') {
+                            $data = $this->mapData($record);
                             $batch[] = $data;
                             $processedCount++;
                         }
+                    } catch (\Exception $e) {
+                        Log::error("Error processing record in file " . basename($file) . ": " . $e->getMessage());
+                        Log::error("Problematic record: " . json_encode($record));
                     }
-                } catch (\Exception $e) {
-                    Log::error("Error processing record in file " . basename($file) . ": " . $e->getMessage());
-                    Log::error("Problematic record: " . json_encode($record));
                 }
+
+                if (!empty($batch)) {
+                    DB::table('companies')->insert($batch);
+                }
+
+                $offset += $batchSize;
+                $this->command->info("Processed $processedCount records. Memory usage: " . $this->getMemoryUsage());
+                gc_collect_cycles();
             }
 
-            if (!empty($batch)) {
-                DB::table('companies')->insert($batch);
-            }
-
-            $offset += $batchSize;
-            $this->command->info("Processed $processedCount records. Memory usage: " . $this->getMemoryUsage());
-            gc_collect_cycles();
+            DB::commit(); // トランザクションをコミット
+        } catch (\Exception $e) {
+            DB::rollBack(); // エラーが発生した場合はロールバック
+            throw $e;
         }
 
         Log::info("Finished processing file: " . basename($file) . ". Processed records: " . $processedCount . ". Memory usage: " . $this->getMemoryUsage());
         return $processedCount;
     }
 
+    protected function getMemoryUsage()
+    {
+        return round(memory_get_usage(true) / 1048576, 2) . ' MB';
+    }
+
     protected function getDefaultHeader()
     {
+        // CSVファイルの正しいヘッダーをここに記述
         return [
             '法人番号',
             '法人名',
+            '法人名ふりがな',
+            '法人名英語',
+            '郵便番号',
+            '本社所在地',
+            'ステータス',
+            '登記記録の閉鎖等年月日',
+            '登記記録の閉鎖等の事由',
+            '法人代表者名',
+            '法人代表者役職',
+            '資本金',
+            '従業員数',
+            '企業規模詳細(男性)',
+            '企業規模詳細(女性)',
+            '営業品目リスト',
             '事業概要',
             '企業ホームページ',
-            '本社所在地',
-            '従業員数',
             '設立年月日',
-            '資本金',
-            '法人代表者名',
+            '創業年',
             '最終更新日',
             '資格等級'
         ];
@@ -169,10 +191,5 @@ class CompaniesSeeder extends Seeder
         $data['updated_at'] = $now;
 
         return $data;
-    }
-
-    protected function getMemoryUsage()
-    {
-        return round(memory_get_usage(true) / 1024 / 1024) . ' MB';
     }
 }
