@@ -23,22 +23,18 @@ class CompaniesSeeder extends Seeder
         '法人代表者名' => 'representative_name',
     ];
 
-    public function run()
+    public function run($specificFile = null)
     {
-        ini_set('memory_limit', '512M');
-        ini_set('max_execution_time', 600);
+        ini_set('memory_limit', '256M');
+        ini_set('max_execution_time', 300);
 
-        // 特定のファイルを処理する
-        $specificFile = 'company_data/kihonjoho_053.csv';
-        $files = [storage_path('app/' . $specificFile)];
+        $files = $specificFile 
+            ? [storage_path('app/company_data/' . $specificFile)]
+            : glob(storage_path('app/company_data/*.csv'));
 
         $totalProcessed = 0;
 
         foreach ($files as $file) {
-            if (!file_exists($file)) {
-                $this->command->error("File does not exist: " . $file);
-                continue;
-            }
             $this->command->info("Processing file: " . basename($file));
             try {
                 $processed = $this->processFile($file);
