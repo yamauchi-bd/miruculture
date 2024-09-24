@@ -33,7 +33,7 @@
 <section class="mb-16 sm:mb-24 md:mb-32 lg:mb-36 xl:mb-40">
     <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div class="mb-6 sm:mb-8 md:mb-10 lg:mb-12 flex justify-center">
-            <h2 class="text-base sm:text-base md:text-xl lg:text-xl font-bold text-gray-900 relative inline-block pb-3">
+            <h2 class="text-base sm:text-base md:text-xl lg:text-xl font-bold text-gray-700 relative inline-block pb-3">
                 最新の投稿
                 <span class="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-2/5 h-1 bg-cyan-500"></span>
             </h2>
@@ -48,7 +48,7 @@
                         <div class="swiper-slide">
                             <a href="{{ route('companies.show', ['corporate_number' => $post->corporate_number]) }}" class="block">
                                 <div class="group bg-white border-2 border-solid border-gray-300 mt-2 rounded-xl p-4 sm:p-5 md:p-6 transition-all duration-300 hover:border-cyan-500 hover:shadow-lg relative h-[275px] sm:h-[325px] md:h-[325px] flex flex-col cursor-pointer transform hover:-translate-y-1">
-                                    <h6 class="text-gray-900 text-xs sm:text-xs md:text-xs font-medium mb-3 sm:mb-4">
+                                    <h6 class="text-gray-700 text-xs sm:text-xs md:text-xs font-medium mb-3 sm:mb-4">
                                         「<span class="text-cyan-600 hover:text-cyan-700">{{ $post->company_name }}</span>」への決め手
                                     </h6>
                                     <div class="mb-1 sm:mb-2 flex-grow overflow-y-auto">
@@ -56,7 +56,7 @@
                                             @if ($index < 3)
                                                 <div class="mb-2">
                                                     <div class="flex items-center justify-between mb-1">
-                                                        <p class="text-sm sm:text-sm md:text-base font-bold text-gray-900">
+                                                        <p class="text-sm sm:text-sm md:text-base font-bold text-gray-700">
                                                             【{{ $index + 1 }}位】{{ $factor->factor }}</p>
                                                         <div class="flex items-center">
                                                             @for ($i = 1; $i <= 5; $i++)

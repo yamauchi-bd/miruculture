@@ -28,7 +28,7 @@
             <section class="py-6 sm:py-8 md:py-8 lg:py-0 mt-6">
                 <div class="border border-gray-200 rounded-lg overflow-hidden">
                     <div class="flex items-center px-4 py-3 bg-gray-100">
-                        <h3 class="text-sm font-semibold text-gray-800">企業カルチャー</h3>
+                        <h3 class="text-sm font-semibold text-gray-700">企業カルチャー</h3>
                         <h2 class="text-2xs text-gray-600">（入社の決め手から測定）</h2>
                     </div>
                     <div class="px-8 py-4 relative h-[30vh] w-full lg:h-[45vh] sm:h-[30vh]">
@@ -144,7 +144,7 @@
             <section class="py-2 sm:py-2 md:py-4 lg:py-20">
                 <div class="bg-white border border-gray-200 rounded-lg overflow-hidden sticky top-24">
                     <div class="px-4 py-3 bg-gray-100 flex justify-between items-center">
-                        <h3 class="text-sm font-semibold text-gray-800">企業データ</h3>
+                        <h3 class="text-sm font-semibold text-gray-700">企業データ</h3>
                         <a href="{{ route('companies.edit', $company) }}"
                             class="inline-flex items-center text-xs text-cyan-500 hover:text-cyan-600 transition duration-150 ease-in-out">
                             <svg class="mr-1 h-4 w-4" xmlns="http://www.w3.org/2000/svg" fill="none"

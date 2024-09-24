@@ -79,7 +79,7 @@
             
                 <div class="flex relative">
                     <input type="text" id="company-input" required
-                        class="block w-full px-4 py-2 pr-12 border border-gray-300 text-base font-normal text-gray-900 bg-white rounded-md placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
+                        class="block w-full px-4 py-2 pr-12 border border-gray-300 text-base font-normal text-gray-700 bg-white rounded-md placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
                         placeholder="投稿する企業を探す..."
                         value="{{ $company ? $company->company_name : '' }}" {{ $company ? 'readonly' : '' }}>
                         <button type="button" id="input-button"
@@ -167,7 +167,7 @@
                 </label>
                 <div class="flex items-center">
                     <select id="start_year" name="start_year" required
-                        class="h-10 w-1/3 px-4 border border-gray-300 text-base font-normal text-gray-900 bg-white rounded-md placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent">
+                        class="h-10 w-1/3 px-4 border border-gray-300 text-base font-normal text-gray-700 bg-white rounded-md placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent">
                         <option value="">入社年</option>
                         @for ($year = date('Y'); $year >= date('Y') - 50; $year--)
                             <option value="{{ $year }}">{{ $year }}年</option>
@@ -175,7 +175,7 @@
                     </select>
                     <span class="mx-2">〜</span>
                     <select id="end_year" name="end_year"
-                        class="h-10 w-1/3 px-4 border border-gray-300 text-base font-normal text-gray-900 bg-white rounded-md placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent">
+                        class="h-10 w-1/3 px-4 border border-gray-300 text-base font-normal text-gray-700 bg-white rounded-md placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent">
                         <option value="" selected disabled>退職年</option>
                         @for ($year = date('Y'); $year >= date('Y') - 50; $year--)
                             <option value="{{ $year }}">{{ $year }}年</option>
@@ -192,7 +192,7 @@
                     <p id="job_category-error" class="error-message text-red-500 text-xs" style="display: none;"></p>
                 </label>
                 <select id="job_category" name="current_job_category_id" required
-                    class="h-10 w-full px-4 border border-gray-300 text-base font-normal text-gray-900 bg-white rounded-md placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent">
+                    class="h-10 w-full px-4 border border-gray-300 text-base font-normal text-gray-700 bg-white rounded-md placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent">
                     <option value="">選択してください</option>
                     @foreach ($jobCategories as $category)
                         <option value="{{ $category->id }}">{{ $category->name }}</option>
@@ -209,7 +209,7 @@
                 </label>
                 <div class="w-full flex gap-4">
                     <select id="job_subcategory" name="current_job_subcategory_id" required
-                        class="h-10 w-full px-4 border border-gray-300 text-base font-normal text-gray-900 bg-white rounded-md placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent">
+                        class="h-10 w-full px-4 border border-gray-300 text-base font-normal text-gray-700 bg-white rounded-md placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent">
                         <option value="">選択してください</option>
                         <!-- 大カテゴリー選択後にJavaScriptで動的に追加 -->
                     </select>
@@ -262,7 +262,7 @@
                                     <span class="text-xs text-gray-500 ml-2">(<span id="factor_{{ $i }}_detail_count">0</span>/100文字以上)</span>
                                 </label>
                                 <textarea id="factor_{{ $i }}_detail" name="factor_{{ $i }}_detail"
-                                    class="block w-full px-4 py-2 border border-gray-300 text-base font-normal text-gray-900 bg-white rounded-md placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
+                                    class="block w-full px-4 py-2 border border-gray-300 text-base font-normal text-gray-700 bg-white rounded-md placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
                                     rows="3" {{ $i == 1 ? 'required' : '' }} minlength="100"></textarea>
                             </div>
 
@@ -300,7 +300,7 @@
                                     <span class="text-xs text-gray-500 ml-2">(<span id="factor_{{ $i }}_satisfaction_reason_count">0</span>/50文字以上)</span>
                                 </label>
                                 <textarea id="factor_{{ $i }}_satisfaction_reason"
-                                    class="block w-full px-4 py-2 border border-gray-300 text-base font-normal text-gray-900 bg-white rounded-md placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
+                                    class="block w-full px-4 py-2 border border-gray-300 text-base font-normal text-gray-700 bg-white rounded-md placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
                                     name="factor_{{ $i }}_satisfaction_reason" rows="3" {{ $i == 1 ? 'required' : '' }} minlength="50"></textarea>
                             </div>
                         </div>
@@ -310,7 +310,7 @@
 
             <div class="flex justify-center mt-8" id="add-factor-button-container">
                 <button type="button" id="add-factor-button"
-                    class="bg-gray-300 hover:bg-gray-400 text-sm text-gray-800 font-bold py-2 px-6 rounded inline-flex items-center">
+                    class="bg-gray-300 hover:bg-gray-400 text-sm text-gray-700 font-bold py-2 px-6 rounded inline-flex items-center">
                     <span>他にも入社の決め手がある</span>
                     <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                         xmlns="http://www.w3.org/2000/svg">
@@ -324,7 +324,7 @@
 
             <div class="flex justify-center mt-16 space-x-4">
                 <button type="button" id="back-button"
-                    class="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-3 px-8 rounded-full transform transition duration-300 ease-in-out hover:scale-105 flex items-center">
+                    class="bg-gray-300 hover:bg-gray-400 text-gray-700 font-bold py-3 px-8 rounded-full transform transition duration-300 ease-in-out hover:scale-105 flex items-center">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                         xmlns="http://www.w3.org/2000/svg">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"

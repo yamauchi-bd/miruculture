@@ -4,7 +4,7 @@
     <div class="max-w-5xl mt-24 mx-auto px-4 sm:px-6 lg:px-8">
         <div class="bg-white shadow-lg rounded-3xl overflow-hidden">
             <div class="px-6 py-8 border-b border-gray-200">
-                <h3 class="text-xl font-semibold text-gray-800">「{{ $company->company_name }}」の企業データを編集</h3>
+                <h3 class="text-xl font-semibold text-gray-700">「{{ $company->company_name }}」の企業データを編集</h3>
             </div>
             <form action="{{ route('companies.update', $company->corporate_number) }}" method="POST" class="p-6" id="edit-company-form">
                 @csrf
@@ -100,7 +100,7 @@
         </div>
 
         <div class="mt-8 mb-12 flex justify-center space-x-4">
-            <a href="{{ route('companies.show', $company->corporate_number) }}" class="px-4 py-2 bg-gray-300 text-gray-800 rounded-md hover:bg-gray-400 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500 shadow-md">戻る</a>
+            <a href="{{ route('companies.show', $company->corporate_number) }}" class="px-4 py-2 bg-gray-300 text-gray-700 rounded-md hover:bg-gray-400 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-500 shadow-md">戻る</a>
             <button type="submit" form="edit-company-form" class="px-6 py-2 bg-cyan-500 text-white rounded-md hover:bg-cyan-600 transition-colors focus:outline-none focus:ring-2 focus:ring-cyan-500 shadow-md">更新</button>
         </div>
     </div>
