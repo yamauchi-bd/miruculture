@@ -25,28 +25,29 @@ class CompaniesSeeder extends Seeder
 
     public function run()
     {
+        ini_set('memory_limit', '512M');
+        ini_set('max_execution_time', 0);
+
+        // すべてのCSVファイルを処理する
         $files = glob(storage_path('app/company_data/*.csv'));
+
         $totalProcessed = 0;
 
         foreach ($files as $file) {
-            $this->command->info("Processing file: " . basename($file));
-            try {
-                $processed = $this->processFile($file);
-                $totalProcessed += $processed;
-                $this->command->info("Processed $processed records from " . basename($file));
-            } catch (\Exception $e) {
-                $this->command->error("Error processing file " . basename($file) . ": " . $e->getMessage());
-                // オプション：エラーをログに記録
-                Log::error("Error processing file: " . basename($file) . " - " . $e->getMessage());
+            if (!file_exists($file)) {
+                $this->command->error("File does not exist: " . $file);
+                continue;
             }
+
+            $totalProcessed += $this->processFile($file);
         }
 
-        $this->command->info("Total processed records: $totalProcessed");
+        $this->command->info("Total processed records: " . $totalProcessed);
     }
 
     protected function processFile($file)
     {
-        Log::info("Started processing file: " . basename($file));
+        Log::info("Started processing file: " . basename($file) . ". Memory usage: " . $this->getMemoryUsage());
 
         $csv = Reader::createFromPath($file, 'r');
 
@@ -65,34 +66,60 @@ class CompaniesSeeder extends Seeder
 
         Log::info("File headers: " . implode(', ', $header));
 
-        $records = $csv->getRecords($header);
-
         $processedCount = 0;
-        foreach ($records as $record) {
-            try {
-                // 空の列を除去
-                $record = array_filter($record, function($value) {
-                    return $value !== '';
-                });
+        $batchSize = 50; // バッチサイズを小さく設定
+        $offset = 0;
 
-                if (!empty($record['本社所在地'])) {
-                    $data = $this->mapData($record);
-                    DB::table('companies')->insert($data);
-                    $processedCount++;
-                }
-            } catch (\Exception $e) {
-                Log::error("Error processing record in file " . basename($file) . ": " . $e->getMessage());
-                Log::error("Problematic record: " . json_encode($record));
+        while (true) {
+            $stmt = (new Statement())->offset($offset)->limit($batchSize);
+            $records = $stmt->process($csv, $header);
+
+            if ($records->count() == 0) {
+                break;
             }
+
+            $batch = [];
+            foreach ($records as $record) {
+                try {
+                    // 空の列を除去
+                    $record = array_filter($record, function($value) {
+                        return $value !== '';
+                    });
+
+                    // デバッグログを追加
+                    Log::info("Processing record: " . json_encode($record));
+
+                    // 法人番号と本社所在地が空でないことを確認
+                    if (!empty($record['法人番号']) && !empty($record['本社所在地'])) {
+                        $data = $this->mapData($record);
+                        
+                        // データベースに既に存在していないか確認
+                        if (!DB::table('companies')->where('corporate_number', $data['corporate_number'])->exists()) {
+                            $batch[] = $data;
+                            $processedCount++;
+                        }
+                    }
+                } catch (\Exception $e) {
+                    Log::error("Error processing record in file " . basename($file) . ": " . $e->getMessage());
+                    Log::error("Problematic record: " . json_encode($record));
+                }
+            }
+
+            if (!empty($batch)) {
+                DB::table('companies')->insert($batch);
+            }
+
+            $offset += $batchSize;
+            $this->command->info("Processed $processedCount records. Memory usage: " . $this->getMemoryUsage());
+            gc_collect_cycles();
         }
 
-        Log::info("Finished processing file: " . basename($file) . ". Processed records: " . $processedCount);
+        Log::info("Finished processing file: " . basename($file) . ". Processed records: " . $processedCount . ". Memory usage: " . $this->getMemoryUsage());
         return $processedCount;
     }
 
     protected function getDefaultHeader()
     {
-        // CSVファイルの正しいヘッダーをここに記述
         return [
             '法人番号',
             '法人名',
@@ -153,5 +180,10 @@ class CompaniesSeeder extends Seeder
         $data['updated_at'] = $now;
 
         return $data;
+    }
+
+    protected function getMemoryUsage()
+    {
+        return round(memory_get_usage(true) / 1024 / 1024) . ' MB';
     }
 }
