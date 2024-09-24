@@ -23,13 +23,15 @@ class CompaniesSeeder extends Seeder
         '法人代表者名' => 'representative_name',
     ];
 
-    public function run($specificFile = null)
+    public function run()
     {
-        ini_set('memory_limit', '256M');
-        ini_set('max_execution_time', 300);
+        ini_set('memory_limit', '512M');
+        ini_set('max_execution_time', 600);
+
+        $specificFile = $this->command->argument('file');
 
         $files = $specificFile 
-            ? [storage_path('app/company_data/' . $specificFile)]
+            ? [storage_path('app/' . $specificFile)]
             : glob(storage_path('app/company_data/*.csv'));
 
         $totalProcessed = 0;
@@ -135,7 +137,7 @@ class CompaniesSeeder extends Seeder
             '郵便番号',
             '本社所在地',
             'ステータス',
-            '登記記録の閉鎖等年月日',
+            '登記記録の閉鎖等��月日',
             '登記記録の閉鎖等の事由',
             '法人代表者名',
             '法人代表者役職',
