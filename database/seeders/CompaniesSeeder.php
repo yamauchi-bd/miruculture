@@ -67,7 +67,7 @@ class CompaniesSeeder extends Seeder
         Log::info("File headers: " . implode(', ', $header));
 
         $processedCount = 0;
-        $batchSize = 50; // バッチサイズを小さく設定
+        $batchSize = 5000; // バッチサイズを小さく設定
         $offset = 0;
 
         while (true) {
