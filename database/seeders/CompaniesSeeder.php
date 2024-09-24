@@ -90,10 +90,15 @@ class CompaniesSeeder extends Seeder
                         return $value !== '';
                     });
 
-                    if (!empty($record['本社所在地'])) {
+                    // 法人番号と本社所在地が空でないことを確認
+                    if (!empty($record['法人番号']) && !empty($record['本社所在地'])) {
                         $data = $this->mapData($record);
-                        $batch[] = $data;
-                        $processedCount++;
+                        
+                        // データベースに既に存在していないか確認
+                        if (!DB::table('companies')->where('corporate_number', $data['corporate_number'])->exists()) {
+                            $batch[] = $data;
+                            $processedCount++;
+                        }
                     }
                 } catch (\Exception $e) {
                     Log::error("Error processing record in file " . basename($file) . ": " . $e->getMessage());

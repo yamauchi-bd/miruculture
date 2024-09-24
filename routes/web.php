@@ -7,6 +7,7 @@ use App\Http\Controllers\CareerController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\InformationController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Auth;
@@ -85,5 +86,8 @@ Route::get('/companies/search', [CompanyController::class, 'search'])->name('com
 Route::get('/companies/{corporate_number}', [CompanyController::class, 'show'])->name('companies.show');
 Route::get('/companies/{corporate_number}/edit', [CompanyController::class, 'edit'])->name('companies.edit');
 Route::put('/companies/{corporate_number}', [CompanyController::class, 'update'])->name('companies.update');
+
+Route::get('/rule', [InformationController::class, 'rule'])->name('rule');
+Route::get('/policy', [InformationController::class, 'policy'])->name('policy');
 
 require __DIR__ . '/auth.php';
