@@ -38,8 +38,8 @@ class RegisterController extends Controller
         // 確認メールの送信
         Mail::to($user->email)->send(new VerificationCode($verificationCode));
 
-        // セッションにメールアドレスを保存
-        session(['registration_email' => $user->email]);
+        // セッションにメールアドレスとリダイレクト先URLを保存
+        session(['registration_email' => $user->email, 'redirect_to' => $request->input('redirect_to')]);
 
         return redirect()->route('register.verify')
             ->with('message', '認証コードを記載したメールを送信しました。');
@@ -92,7 +92,13 @@ class RegisterController extends Controller
         // ユーザーを認証
         Auth::login($user);
 
-        return redirect()->route('home')->with('success', '登録が完了しました！');
+        // セッションからリダイレクト先のURLを取得
+        $redirectTo = session('redirect_to', route('home'));
+
+        // セッションからリダイレクト先のURLを削除
+        session()->forget('redirect_to');
+
+        return redirect($redirectTo)->with('success', '登録が完了しました！');
     }
 
     public function resendCode(Request $request)
