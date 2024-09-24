@@ -9,10 +9,10 @@
     }
 </style>
 
-@include('layouts.navigation')
+{{-- @include('layouts.navigation')
 
 <div class="max-w-7xl mx-auto px-8 sm:px-8 lg:px-16 xl:px-16 pt-10 sm:pt-20 md:pt-14 lg:pt-28 pb-6 sm:pb-10 md:pb-8 lg:pb-16">
-    <h1 class="text-2xl font-bold mb-8 text-gray-700">vivivision プライバシーポリシー</h1>
+    <h1 class="text-2xl font-bold mb-8 text-gray-700">vivivision プライバシーポリシー</h1> --}}
 
     <div class="terms-content space-y-8 text-gray-700">
         <p class="text-sm mb-8">
@@ -137,6 +137,6 @@
             {{-- 最終更新日：20XX年XX月XX日 --}}
         </p>
     </div>
-</div>
+{{-- </div>
 
-@include('layouts.footer')
+@include('layouts.footer') --}}

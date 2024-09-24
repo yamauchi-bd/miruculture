@@ -59,7 +59,7 @@
                 </button>
             </div>
             <x-input-error :messages="$errors->get('password')" class="mt-2 text-xs sm:text-sm" />
-            <p class="mt-2 text-xs sm:text-sm text-gray-500">※<a href="#"
+            <p class="mt-2 text-xs sm:text-sm text-gray-500">※<a href="{{ route('legal') }}"
                     class="text-cyan-500 transition duration-100 hover:text-cyan-600 active:text-cyan-700">利用規約･個人情報の取り扱い</a>に同意の上ご登録ください
             </p>
         </div>

@@ -87,7 +87,6 @@ Route::get('/companies/{corporate_number}', [CompanyController::class, 'show'])-
 Route::get('/companies/{corporate_number}/edit', [CompanyController::class, 'edit'])->name('companies.edit');
 Route::put('/companies/{corporate_number}', [CompanyController::class, 'update'])->name('companies.update');
 
-Route::get('/rule', [InformationController::class, 'rule'])->name('rule');
-Route::get('/policy', [InformationController::class, 'policy'])->name('policy');
+Route::get('/legal', [InformationController::class, 'legal'])->name('legal');
 
 require __DIR__ . '/auth.php';

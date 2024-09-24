@@ -8,11 +8,16 @@ class InformationController extends Controller
 {
     public function rule()
     {
-        return view('infomations.rule');
+        return view('informations.rule');
     }
 
     public function policy()
     {
-        return view('infomations.policy');
+        return view('informations.policy');
+    }
+
+    public function legal()
+    {
+        return view('informations.legal');
     }
 }

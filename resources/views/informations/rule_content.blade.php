@@ -8,11 +8,11 @@
         padding-left: 2rem;
     }
 </style>
-
+{{-- 
 @include('layouts.navigation')
 
 <div class="max-w-7xl mx-auto px-8 sm:px-8 lg:px-16 xl:px-16 pt-10 sm:pt-20 md:pt-14 lg:pt-28 pb-6 sm:pb-10 md:pb-8 lg:pb-16">
-    <h1 class="text-2xl font-bold mb-8 text-gray-700">vivivision 利用規約</h1>
+    <h1 class="text-2xl font-bold mb-8 text-gray-700">vivivision 利用規約</h1> --}}
 
     <div class="terms-content space-y-8 text-gray-700">
         <section class="mb-4">
@@ -146,5 +146,5 @@
             </ol>
         </section>
     </div>
-</div>
-@include('layouts.footer')
+{{-- </div>
+@include('layouts.footer') --}}
