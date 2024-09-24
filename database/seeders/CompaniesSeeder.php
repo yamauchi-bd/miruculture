@@ -23,30 +23,26 @@ class CompaniesSeeder extends Seeder
         '法人代表者名' => 'representative_name',
     ];
 
-    public function run($specificFile = null)
+    public function run()
     {
-        ini_set('memory_limit', '256M');
-        ini_set('max_execution_time', 300);
+        ini_set('memory_limit', '512M');
+        ini_set('max_execution_time', 0);
 
-        $files = $specificFile 
-            ? [storage_path('app/company_data/' . $specificFile)]
-            : glob(storage_path('app/company_data/*.csv'));
+        // すべてのCSVファイルを処理する
+        $files = glob(storage_path('app/company_data/*.csv'));
 
         $totalProcessed = 0;
 
         foreach ($files as $file) {
-            $this->command->info("Processing file: " . basename($file));
-            try {
-                $processed = $this->processFile($file);
-                $totalProcessed += $processed;
-                $this->command->info("Processed $processed records from " . basename($file));
-            } catch (\Exception $e) {
-                $this->command->error("Error processing file " . basename($file) . ": " . $e->getMessage());
-                Log::error("Error processing file: " . basename($file) . " - " . $e->getMessage());
+            if (!file_exists($file)) {
+                $this->command->error("File does not exist: " . $file);
+                continue;
             }
+
+            $totalProcessed += $this->processFile($file);
         }
 
-        $this->command->info("Total processed records: $totalProcessed");
+        $this->command->info("Total processed records: " . $totalProcessed);
     }
 
     protected function processFile($file)
@@ -71,7 +67,7 @@ class CompaniesSeeder extends Seeder
         Log::info("File headers: " . implode(', ', $header));
 
         $processedCount = 0;
-        $batchSize = 100;
+        $batchSize = 50; // バッチサイズを小さく設定
         $offset = 0;
 
         while (true) {
@@ -89,6 +85,9 @@ class CompaniesSeeder extends Seeder
                     $record = array_filter($record, function($value) {
                         return $value !== '';
                     });
+
+                    // デバッグログを追加
+                    Log::info("Processing record: " . json_encode($record));
 
                     // 法人番号と本社所在地が空でないことを確認
                     if (!empty($record['法人番号']) && !empty($record['本社所在地'])) {
@@ -119,35 +118,18 @@ class CompaniesSeeder extends Seeder
         return $processedCount;
     }
 
-    protected function getMemoryUsage()
-    {
-        return round(memory_get_usage(true) / 1048576, 2) . ' MB';
-    }
-
     protected function getDefaultHeader()
     {
-        // CSVファイルの正しいヘッダーをここに記述
         return [
             '法人番号',
             '法人名',
-            '法人名ふりがな',
-            '法人名英語',
-            '郵便番号',
-            '本社所在地',
-            'ステータス',
-            '登記記録の閉鎖等年月日',
-            '登記記録の閉鎖等の事由',
-            '法人代表者名',
-            '法人代表者役職',
-            '資本金',
-            '従業員数',
-            '企業規模詳細(男性)',
-            '企業規模詳細(女性)',
-            '営業品目リスト',
             '事業概要',
             '企業ホームページ',
+            '本社所在地',
+            '従業員数',
             '設立年月日',
-            '創業年',
+            '資本金',
+            '法人代表者名',
             '最終更新日',
             '資格等級'
         ];
@@ -187,5 +169,10 @@ class CompaniesSeeder extends Seeder
         $data['updated_at'] = $now;
 
         return $data;
+    }
+
+    protected function getMemoryUsage()
+    {
+        return round(memory_get_usage(true) / 1024 / 1024) . ' MB';
     }
 }
