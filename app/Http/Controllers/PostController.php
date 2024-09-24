@@ -44,7 +44,7 @@ class PostController extends Controller
         $validatedData = $request->validate([
             'company_name' => 'required|string|max:255',
             'corporate_number' => 'nullable|string|max:13',
-            'employment_type' => 'required|in:正社員,契約社員,その他',
+            // 'employment_type' => 'required|in:正社員,契約社員,その他',
             'entry_type' => 'required|in:新卒入社,中途入社',
             'status' => 'required|in:在籍中,退職済み',
             'start_year' => "required|integer|min:1900|max:$currentYear",
@@ -54,15 +54,15 @@ class PostController extends Controller
             'deciding_factor_1' => 'required|string',
             'factor_1_detail' => 'required|string|min:100',
             'factor_1_satisfaction' => 'required|integer|min:1|max:5',
-            'factor_1_satisfaction_reason' => 'required|string|min:100',
+            'factor_1_satisfaction_reason' => 'required|string|min:50',
             'deciding_factor_2' => 'nullable|string',
             'factor_2_detail' => 'nullable|string|min:100',
             'factor_2_satisfaction' => 'nullable|integer|min:1|max:5',
-            'factor_2_satisfaction_reason' => 'nullable|string|min:100',
+            'factor_2_satisfaction_reason' => 'nullable|string|min:50',
             'deciding_factor_3' => 'nullable|string',
             'factor_3_detail' => 'nullable|string|min:100',
             'factor_3_satisfaction' => 'nullable|integer|min:1|max:5',
-            'factor_3_satisfaction_reason' => 'nullable|string|min:100',
+            'factor_3_satisfaction_reason' => 'nullable|string|min:50',
         ]);
 
         // 新しい投稿を作成
@@ -102,7 +102,7 @@ class PostController extends Controller
         $validatedData = $request->validate([
             'company_name' => 'required|string|max:255',
             'corporate_number' => 'nullable|string|max:13',
-            'employment_type' => 'required|in:正社員,契約社員,その他',
+            // 'employment_type' => 'required|in:正社員,契約社員,その他',
             'entry_type' => 'required|in:新卒入社,中途入社',
             'status' => 'required|in:在籍中,退職済み',
             'start_year' => "required|integer|min:1900|max:$currentYear",
@@ -112,15 +112,15 @@ class PostController extends Controller
             'deciding_factor_1' => 'required|string',
             'factor_1_detail' => 'required|string|min:100',
             'factor_1_satisfaction' => 'required|integer|min:1|max:5',
-            'factor_1_satisfaction_reason' => 'required|string|min:100',
+            'factor_1_satisfaction_reason' => 'required|string|min:50',
             'deciding_factor_2' => 'nullable|string',
             'factor_2_detail' => 'nullable|required_with:deciding_factor_2|string|min:100',
             'factor_2_satisfaction' => 'nullable|required_with:deciding_factor_2|integer|min:1|max:5',
-            'factor_2_satisfaction_reason' => 'nullable|required_with:deciding_factor_2|string|min:100',
+            'factor_2_satisfaction_reason' => 'nullable|required_with:deciding_factor_2|string|min:50',
             'deciding_factor_3' => 'nullable|string',
             'factor_3_detail' => 'nullable|required_with:deciding_factor_3|string|min:100',
             'factor_3_satisfaction' => 'nullable|required_with:deciding_factor_3|integer|min:1|max:5',
-            'factor_3_satisfaction_reason' => 'nullable|required_with:deciding_factor_3|string|min:100',
+            'factor_3_satisfaction_reason' => 'nullable|required_with:deciding_factor_3|string|min:50',
         ]);
 
         $post->update($validatedData);
@@ -140,7 +140,7 @@ class PostController extends Controller
 
         $validator = Validator::make($request->all(), [
             'company_name' => 'required|string|max:255',
-            'employment_type' => 'required|in:正社員,契約社員,その他',
+            // 'employment_type' => 'required|in:正社員,契約社員,その他',
             'entry_type' => 'required|in:新卒入社,中途入社',
             'status' => 'required|in:在籍中,退職済み',
             'start_year' => 'required|integer|min:1900|max:' . date('Y'),

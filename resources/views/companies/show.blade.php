@@ -27,8 +27,9 @@
             {{-- グラフ --}}
             <section class="py-6 sm:py-8 md:py-8 lg:py-0 mt-6">
                 <div class="border border-gray-200 rounded-lg overflow-hidden">
-                    <div class="px-4 py-3 bg-gray-100">
-                        <h3 class="text-sm font-semibold text-gray-800">入社時の重視度</h3>
+                    <div class="flex items-center px-4 py-3 bg-gray-100">
+                        <h3 class="text-sm font-semibold text-gray-800">企業カルチャー</h3>
+                        <h2 class="text-2xs text-gray-600">（入社の決め手から測定）</h2>
                     </div>
                     <div class="px-8 py-4 relative h-[30vh] w-full lg:h-[45vh] sm:h-[30vh]">
                         <canvas id="decidingFactorsChart"></canvas>
@@ -381,5 +382,7 @@
 
 
 <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script id="decidingFactorsData" type="application/json">@json($decidingFactorsData)</script>
+<script id="decidingFactorsData" type="application/json">
+    {!! json_encode($decidingFactorsData) !!}
+</script>
 @vite(['resources/js/company-chart.js'])

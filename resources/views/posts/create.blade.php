@@ -101,7 +101,7 @@
                 <input type="hidden" id="corporate_number" name="corporate_number" value="{{ $company ? $company->corporate_number : '' }}">
             </div>
 
-            <div class="mb-10">
+            {{-- <div class="mb-10">
                 <label class="flex gap-1 mb-2 items-center text-gray-700 text-sm font-bold leading-relaxed">
                     雇用形態
                     <x-required-mark />
@@ -121,7 +121,7 @@
                         <span class="ml-2">その他</span>
                     </label>
                 </div>
-            </div>
+            </div> --}}
 
             <div class="mb-10">
                 <label class="flex gap-1 mb-2 items-center text-gray-700 text-sm font-bold leading-relaxed">
@@ -297,11 +297,11 @@
                                     class="flex gap-1 mb-2 items-center text-gray-700 text-sm font-bold leading-relaxed">
                                     満足度の理由
                                     <x-required-mark />
-                                    <span class="text-xs text-gray-500 ml-2">(<span id="factor_{{ $i }}_satisfaction_reason_count">0</span>/100文字以上)</span>
+                                    <span class="text-xs text-gray-500 ml-2">(<span id="factor_{{ $i }}_satisfaction_reason_count">0</span>/50文字以上)</span>
                                 </label>
                                 <textarea id="factor_{{ $i }}_satisfaction_reason"
                                     class="block w-full px-4 py-2 border border-gray-300 text-base font-normal text-gray-900 bg-white rounded-md placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
-                                    name="factor_{{ $i }}_satisfaction_reason" rows="3" {{ $i == 1 ? 'required' : '' }} minlength="100"></textarea>
+                                    name="factor_{{ $i }}_satisfaction_reason" rows="3" {{ $i == 1 ? 'required' : '' }} minlength="50"></textarea>
                             </div>
                         </div>
                     </div>
