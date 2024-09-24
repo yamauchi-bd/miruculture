@@ -23,15 +23,16 @@ class CompaniesSeeder extends Seeder
         '法人代表者名' => 'representative_name',
     ];
 
+    protected $progressFile = 'company_seeder_progress.json';
+
     public function run()
     {
         ini_set('memory_limit', '512M');
         ini_set('max_execution_time', 0);
 
-        // すべてのCSVファイルを処理する
+        $progress = $this->loadProgress();
         $files = glob(storage_path('app/company_data/*.csv'));
-
-        $totalProcessed = 0;
+        $totalProcessed = $progress['total_processed'] ?? 0;
 
         foreach ($files as $file) {
             if (!file_exists($file)) {
@@ -39,13 +40,24 @@ class CompaniesSeeder extends Seeder
                 continue;
             }
 
-            $totalProcessed += $this->processFile($file);
+            if (in_array($file, $progress['processed_files'] ?? [])) {
+                $this->command->info("Skipping already processed file: " . basename($file));
+                continue;
+            }
+
+            $processedInFile = $this->processFile($file, $progress['last_offset'] ?? 0);
+            $totalProcessed += $processedInFile;
+
+            $progress['processed_files'][] = $file;
+            $progress['total_processed'] = $totalProcessed;
+            $progress['last_offset'] = 0; // リセット
+            $this->saveProgress($progress);
         }
 
         $this->command->info("Total processed records: " . $totalProcessed);
     }
 
-    protected function processFile($file)
+    protected function processFile($file, $startOffset = 0)
     {
         Log::info("Started processing file: " . basename($file) . ". Memory usage: " . $this->getMemoryUsage());
 
@@ -68,7 +80,7 @@ class CompaniesSeeder extends Seeder
 
         $processedCount = 0;
         $batchSize = 5000; // バッチサイズを小さく設定
-        $offset = 0;
+        $offset = $startOffset;
 
         while (true) {
             $stmt = (new Statement())->offset($offset)->limit($batchSize);
@@ -110,6 +122,7 @@ class CompaniesSeeder extends Seeder
             }
 
             $offset += $batchSize;
+            $this->saveProgress(['last_offset' => $offset]);
             $this->command->info("Processed $processedCount records. Memory usage: " . $this->getMemoryUsage());
             gc_collect_cycles();
         }
@@ -185,5 +198,20 @@ class CompaniesSeeder extends Seeder
     protected function getMemoryUsage()
     {
         return round(memory_get_usage(true) / 1024 / 1024) . ' MB';
+    }
+
+    protected function loadProgress()
+    {
+        $file = storage_path($this->progressFile);
+        if (file_exists($file)) {
+            return json_decode(file_get_contents($file), true);
+        }
+        return [];
+    }
+
+    protected function saveProgress($progress)
+    {
+        $file = storage_path($this->progressFile);
+        file_put_contents($file, json_encode($progress));
     }
 }
