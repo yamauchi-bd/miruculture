@@ -37,6 +37,10 @@ class CompaniesSeeder extends Seeder
         $totalProcessed = 0;
 
         foreach ($files as $file) {
+            if (!file_exists($file)) {
+                $this->command->error("File does not exist: " . $file);
+                continue;
+            }
             $this->command->info("Processing file: " . basename($file));
             try {
                 $processed = $this->processFile($file);
@@ -137,7 +141,7 @@ class CompaniesSeeder extends Seeder
             '郵便番号',
             '本社所在地',
             'ステータス',
-            '登記記録の閉鎖等��月日',
+            '登記記録の閉鎖等月日',
             '登記記録の閉鎖等の事由',
             '法人代表者名',
             '法人代表者役職',
