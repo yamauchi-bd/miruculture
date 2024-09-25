@@ -18,8 +18,12 @@ class RegisteredUserController extends Controller
     /**
      * Display the registration view.
      */
-    public function create(): View
+    public function create(Request $request): View
     {
+        $redirectTo = $request->query('redirect_to');
+        if ($redirectTo) {
+            session(['register_redirect_to' => $redirectTo]);
+        }
         return view('auth.register');
     }
 
@@ -44,6 +48,9 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        return redirect(route('posts.create', absolute: false));
+        $redirectTo = session('register_redirect_to', route('posts.create'));
+        session()->forget('register_redirect_to');
+
+        return redirect($redirectTo);
     }
 }

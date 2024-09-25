@@ -26,17 +26,18 @@ class RegisterController extends Controller
             'email' => $request->email,
             'password' => $request->password,
             'verification_code' => $verificationCode,
+            'redirect_to' => $request->input('redirect_to'), // リダイレクト先を保存
         ]);
 
-    // メール送信処理
-    try {
-        Mail::to($request->email)->send(new VerificationCode($verificationCode));
-    } catch (\Exception $e) {
-        // メール送信に失敗した場合のエラーハンドリング
-        return back()->withErrors(['email' => 'メールの送信に失敗しました。']);
-    }
+        // メール送信処理
+        try {
+            Mail::to($request->email)->send(new VerificationCode($verificationCode));
+        } catch (\Exception $e) {
+            // メール送信に失敗した場合のエラーハンドリング
+            return back()->withErrors(['email' => 'メールの送信に失敗しました。']);
+        }
 
-    return redirect()->route('register.verify')->with('message', '認証コードを記載したメールを送信しました。');
+        return redirect()->route('register.verify')->with('message', '認証コードを記載したメールを送信しました。');
     }
 
     public function showVerificationForm()
@@ -68,7 +69,10 @@ class RegisterController extends Controller
         // ログイン処理
         Auth::login($user);
 
-        return redirect()->route('dashboard');
+        // リダイレクト先を取得
+        $redirectTo = $registrationData['redirect_to'] ?? route('dashboard');
+
+        return redirect($redirectTo);
     }
 
     public function resendCode(Request $request)

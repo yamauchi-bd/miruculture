@@ -17,7 +17,7 @@
                         入社エントリを投稿する
                     </a>
                 @else
-    <a href="{{ route('register', ['redirect_to' => route('posts.create', ['corporate_number' => $company->corporate_number])]) }}"
+                    <a href="{{ route('register', ['redirect_to' => route('posts.create', ['corporate_number' => $company->corporate_number])]) }}"
                         class='block w-full sm:w-auto py-3 px-4 text-sm bg-cyan-500 text-white rounded-lg shadow-md cursor-pointer font-semibold text-center transition-all duration-300 ease-in-out hover:bg-cyan-700'>
                         入社エントリを投稿する
                     </a>

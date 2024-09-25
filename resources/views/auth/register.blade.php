@@ -3,7 +3,7 @@
 <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-4 lg:py-24 max-w-md">
     <form method="POST" action="{{ route('register') }}" class="mt-8 space-y-6">
         @csrf
-        <input type="hidden" name="redirect_to" value="{{ request('redirect_to', url()->previous()) }}">
+        <input type="hidden" name="redirect_to" value="{{ session('register_redirect_to', url()->previous()) }}">
 
         <div class="text-center">
             <h2 class="text-xl sm:text-2xl font-bold mb-8 sm:mb-12">無料ユーザー登録（１分）</h2>
