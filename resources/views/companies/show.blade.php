@@ -32,6 +32,13 @@
                         <h2 class="text-2xs text-gray-600">（入社の決め手から測定）</h2>
                     </div>
                     <div class="px-8 py-4 relative h-[30vh] w-full lg:h-[45vh] sm:h-[30vh]">
+                        @if ($posts->isEmpty())
+                        <div class="absolute inset-0 flex items-center justify-center">
+                            <p class="text-sm sm:text-base md:text-lg lg:text-xl text-cyan-500 font-bold text-center leading-tight sm:leading-normal">
+                                入社エントリを投稿して<br class="sm:hidden">企業カルチャーを<br class="hidden sm:inline md:hidden">可視化しよう！
+                            </p>
+                        </div>
+                        @endif
                         <canvas id="decidingFactorsChart"></canvas>
                     </div>
                 </div>

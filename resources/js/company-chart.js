@@ -1,6 +1,12 @@
 document.addEventListener('DOMContentLoaded', function() {
     const ctx = document.getElementById('decidingFactorsChart').getContext('2d');
-    const data = JSON.parse(document.getElementById('decidingFactorsData').textContent);
+    const dataElement = document.getElementById('decidingFactorsData');
+    const data = JSON.parse(dataElement.textContent);
+
+    if (Object.keys(data).length === 0) {
+        // データが空の場合、グラフを描画しない
+        return;
+    }
 
     const gradientCyan1 = ctx.createLinearGradient(0, 0, 0, 400);
     gradientCyan1.addColorStop(0, 'rgba(8, 145, 178, 1)');
