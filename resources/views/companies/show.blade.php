@@ -35,7 +35,7 @@
                         @if ($posts->isEmpty())
                         <div class="absolute inset-0 flex items-center justify-center">
                             <p class="text-sm sm:text-base md:text-lg lg:text-xl text-cyan-500 font-bold text-center leading-tight sm:leading-normal">
-                                入社エントリを投稿して<br class="sm:hidden">企業カルチャーを<br class="hidden sm:inline md:hidden">可視化しよう！
+                                入社エントリを投稿して､<br class="sm:hidden">企業カルチャーを<br class="hidden sm:inline md:hidden">可視化しよう！
                             </p>
                         </div>
                         @endif
