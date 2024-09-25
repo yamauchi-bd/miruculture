@@ -72,10 +72,12 @@ Route::get('/email/change/{token}', [ProfileController::class, 'confirmEmailChan
     ->name('email.change.confirm');
 
 //メールアドレス4桁コード認証
-Route::post('/register/request', [RegisterController::class, 'request'])->name('register.request');
-Route::get('/register/verify', [RegisterController::class, 'showVerificationForm'])->name('register.verify');
-Route::post('/register/verify', [RegisterController::class, 'verify']);
-Route::post('/register/resend-code', [RegisterController::class, 'resendCode'])->name('register.resend-code');
+// Route::post('/register/request', [RegisterController::class, 'request'])->name('register.request');
+// Route::get('/register/verify', [RegisterController::class, 'showVerificationForm'])->name('register.verify');
+// Route::post('/register/verify', [RegisterController::class, 'verify']);
+// Route::post('/register/resend-code', [RegisterController::class, 'resendCode'])->name('register.resend-code');
+Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
+Route::post('/register', [RegisterController::class, 'request']);
 
 // 企業情報関連
 // Route::get('/companies', function () {

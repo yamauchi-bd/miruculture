@@ -1,7 +1,7 @@
 @include('layouts.navigation')
 
 <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-4 lg:py-24 max-w-md">
-    <form method="POST" action="{{ route('register.request') }}" class="mt-8 space-y-6">
+    <form method="POST" action="{{ route('register') }}" class="mt-8 space-y-6">
         @csrf
         <input type="hidden" name="redirect_to" value="{{ request('redirect_to', url()->previous()) }}">
 
