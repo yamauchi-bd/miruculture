@@ -5,6 +5,9 @@ document.addEventListener('DOMContentLoaded', function () {
     const companyNameHiddenInput = document.getElementById('company_name');
     const searchButton = document.getElementById('input-button');
 
+    // 検索ボタンを有効化
+    searchButton.disabled = false;
+
     let debounceTimer;
 
     searchInput.addEventListener('input', function () {
@@ -18,6 +21,13 @@ document.addEventListener('DOMContentLoaded', function () {
                 searchResults.classList.add('hidden');
             }
         }, 300);
+
+        // 入力フィールドの値が変更されたときに隠しフィールドも更新する
+        companyNameHiddenInput.value = this.value;
+        // 企業が選択されていない場合、corporate_numberをクリアする
+        if (!corporateNumberInput.value) {
+            corporateNumberInput.value = '';
+        }
     });
 
     searchButton.addEventListener('click', function (e) {
@@ -90,6 +100,11 @@ document.addEventListener('DOMContentLoaded', function () {
         }
         searchResults.classList.remove('hidden');
     }
+
+    // 入力フィールドがフォーカスを受けたときに全選択する
+    searchInput.addEventListener('focus', function() {
+        this.select();
+    });
 
     document.addEventListener('click', function (e) {
         if (!searchResults.contains(e.target) && e.target !== searchInput) {

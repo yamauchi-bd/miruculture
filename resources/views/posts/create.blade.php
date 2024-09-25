@@ -81,10 +81,9 @@
                     <input type="text" id="company-input" required
                         class="block w-full px-4 py-2 pr-12 border border-gray-300 text-base font-normal text-gray-700 bg-white rounded-md placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
                         placeholder="投稿する企業を探す..."
-                        value="{{ $company ? $company->company_name : '' }}" {{ $company ? 'readonly' : '' }}>
+                        value="{{ $company ? $company->company_name : '' }}">
                         <button type="button" id="input-button"
-                        class="absolute right-0 top-0 h-full px-3 bg-cyan-500 text-white text-sm font-bold rounded-r-md transition-all hover:bg-cyan-700 flex items-center justify-center"
-                        {{ $company ? 'disabled' : '' }}>
+                        class="absolute right-0 top-0 h-full px-3 bg-cyan-500 text-white text-sm font-bold rounded-r-md transition-all hover:bg-cyan-700 flex items-center justify-center">
                         <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
                             xmlns="http://www.w3.org/2000/svg">
                             <path d="M17 17L21 21" stroke="#ffffff" stroke-width="3" stroke-linecap="round"
