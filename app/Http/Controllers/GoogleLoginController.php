@@ -7,11 +7,23 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Exception;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Http\Request;
 
 class GoogleLoginController extends Controller
 {
-    public function redirectToGoogle()
+    public function redirectToGoogle(Request $request)
     {
+        if ($request->has('redirect_to')) {
+            $redirectTo = $request->query('redirect_to');
+            // URLが登録ページの場合、そのクエリパラメータを取得
+            if (str_contains($redirectTo, '/register') && str_contains($redirectTo, 'redirect_to=')) {
+                $parsedUrl = parse_url($redirectTo);
+                parse_str($parsedUrl['query'] ?? '', $queryParams);
+                $redirectTo = urldecode($queryParams['redirect_to'] ?? route('home'));
+            }
+            session(['google_redirect_to' => $redirectTo]);
+        }
+    
         return Socialite::driver('google')->redirect();
     }
 
@@ -29,7 +41,13 @@ class GoogleLoginController extends Controller
     
             Auth::login($user);
     
-            return redirect()->route('home');
+            // セッションからリダイレクト先のURLを取得
+            $redirectTo = session('google_redirect_to', route('home'));
+
+            // セッションからリダイレクト先のURLを削除
+            session()->forget('google_redirect_to');
+
+            return redirect($redirectTo);
         } catch (\Laravel\Socialite\Two\InvalidStateException $e) {
             // 認証がキャンセルされた場合の処理
             return redirect()->route('login')->with('error', 'Google認証がキャンセルされました。');
@@ -39,4 +57,3 @@ class GoogleLoginController extends Controller
         }
     }
 }
-

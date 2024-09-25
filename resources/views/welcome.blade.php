@@ -19,7 +19,7 @@
                     </a>
                 @else
                     <a href="{{ route('register') }}"
-                        class='py-2 px-4 sm:py-2 sm:px-5 md:py-3 md:px-6 lg:py-3 lg:px-8 xl:py-4 xl:px-10 text-xs sm:text-sm md:text-base lg:text-base bg-cyan-500 text-white rounded-full cursor-pointer font-semibold text-center shadow-lg duration-200 hover:bg-cyan-700 hover:shadow-xl hover:scale-105'>
+                        class='py-2 px-4 sm:py-2 sm:px-8 md:py-3 md:px-10 lg:py-3 lg:px-12 xl:py-4 xl:px-16 text-xs sm:text-sm md:text-base lg:text-base bg-cyan-500 text-white rounded-full cursor-pointer font-semibold text-center shadow-lg duration-200 hover:bg-cyan-700 hover:shadow-xl hover:scale-105'>
                         入社エントリを投稿する
                     </a>
                 @endauth

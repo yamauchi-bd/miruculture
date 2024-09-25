@@ -107,7 +107,7 @@
                                 class="bg-white shadow-inner-cyan text-cyan-500 rounded-full cursor-pointer font-semibold text-center transition-all duration-500 py-2 px-4 text-sm md:text-xs lg:text-sm hover:bg-cyan-50 mr-2">
                                 ユーザー登録
                             </a>
-                            <a href="{{ route('login') }}"
+                            <a href="{{ route('login', ['redirect_to' => url()->current()]) }}"
                                 class="bg-cyan-500 text-white rounded-full cursor-pointer font-semibold text-center shadow-xs transition-all duration-500 py-2 px-4 text-sm md:text-xs lg:text-sm hover:bg-cyan-700">
                                 ログイン
                             </a>

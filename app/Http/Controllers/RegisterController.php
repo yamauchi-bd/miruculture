@@ -67,8 +67,8 @@ class RegisterController extends Controller
         ]);
 
         // ここでユーザーを認証したり、追加の処理を行うことができます
-
-        return redirect()->route('home')->with('success', '登録が完了しました！');
+        $redirectTo = $request->input('redirect_to', route('home'));
+        return redirect($redirectTo);
     }
 
     public function verify(Request $request)

@@ -1,5 +1,5 @@
 @php
-use Illuminate\Support\Facades\Route;
+    use Illuminate\Support\Facades\Route;
 @endphp
 
 @include('layouts.navigation')
@@ -9,12 +9,13 @@ use Illuminate\Support\Facades\Route;
 
     <form method="POST" action="{{ route('login') }}" class="mt-8 space-y-6">
         @csrf
+        <input type="hidden" name="redirect_to" value="{{ session('login_redirect_to', url()->previous()) }}">
 
         <div class="text-center">
             <h2 class="text-xl sm:text-2xl font-bold mb-8 sm:mb-12">ログイン</h2>
         </div>
 
-        <a href="{{ route('login.google') }}"
+        <a href="{{ route('login.google', ['redirect_to' => session('login_redirect_to', url()->previous())]) }}"
             class="flex items-center justify-center w-full gap-2 rounded-lg border border-gray-300 bg-white px-3 sm:px-4 py-2 sm:py-3 text-sm sm:text-base font-semibold text-gray-700 outline-none ring-gray-300 transition duration-100 hover:bg-gray-100 focus-visible:ring active:bg-gray-200">
             <svg class="h-5 w-5 shrink-0" width="24" height="24" viewBox="0 0 24 24" fill="none"
                 xmlns="http://www.w3.org/2000/svg">
@@ -42,7 +43,8 @@ use Illuminate\Support\Facades\Route;
         <!-- Email Address -->
         <div>
             <x-input-label for="email" :value="__('メールアドレス')" class="mb-1 text-sm sm:text-base" />
-            <x-text-input id="email" class="block w-full text-sm sm:text-base" type="email" name="email" :value="old('email')" required autofocus autocomplete="email" />
+            <x-text-input id="email" class="block w-full text-sm sm:text-base" type="email" name="email"
+                :value="old('email')" required autofocus autocomplete="email" />
             <x-input-error :messages="$errors->get('email')" class="mt-2 text-xs sm:text-sm" />
         </div>
 
@@ -50,7 +52,8 @@ use Illuminate\Support\Facades\Route;
         <div>
             <x-input-label for="password" :value="__('パスワード（8文字以上の英数字）')" class="mb-1 text-sm sm:text-base" />
             <div class="relative">
-                <x-text-input id="password" class="block w-full pr-10 text-sm sm:text-base" type="password" name="password" required autocomplete="current-password" />
+                <x-text-input id="password" class="block w-full pr-10 text-sm sm:text-base" type="password"
+                    name="password" required autocomplete="current-password" />
 
                 <button type="button" id="togglePassword"
                     class="absolute inset-y-0 right-0 pr-3 flex items-center focus:outline-none">
@@ -67,7 +70,8 @@ use Illuminate\Support\Facades\Route;
 
         <!-- Remember Me -->
         <div class="flex items-center">
-            <input id="remember_me" type="checkbox" class="rounded border-gray-300 text-cyan-600 shadow-sm focus:ring-cyan-500" name="remember">
+            <input id="remember_me" type="checkbox"
+                class="rounded border-gray-300 text-cyan-600 shadow-sm focus:ring-cyan-500" name="remember">
             <label for="remember_me" class="ml-2 block text-xs sm:text-sm text-gray-600">
                 {{ __('ログイン状態を保持する') }}
             </label>
@@ -81,7 +85,8 @@ use Illuminate\Support\Facades\Route;
 
         <div class="text-center text-xs sm:text-sm text-gray-600">
             @if (Route::has('password.request'))
-                <a class="underline text-cyan-500 hover:text-cyan-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500" href="{{ route('password.request') }}">
+                <a class="underline text-cyan-500 hover:text-cyan-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500"
+                    href="{{ route('password.request') }}">
                     {{ __('パスワードをお忘れですか？') }}
                 </a>
             @endif

@@ -14,8 +14,18 @@ class AuthenticatedSessionController extends Controller
     /**
      * Display the login view.
      */
-    public function create(): View
+    public function create(Request $request): View
     {
+        if ($request->has('redirect_to')) {
+            $redirectTo = $request->query('redirect_to');
+            // URLが登録ページの場合、そのクエリパラメータを取得
+            if (str_contains($redirectTo, '/register') && str_contains($redirectTo, 'redirect_to=')) {
+                $parsedUrl = parse_url($redirectTo);
+                parse_str($parsedUrl['query'] ?? '', $queryParams);
+                $redirectTo = urldecode($queryParams['redirect_to'] ?? route('home'));
+            }
+            session(['login_redirect_to' => $redirectTo]);
+        }
         return view('auth.login');
     }
 
@@ -28,7 +38,10 @@ class AuthenticatedSessionController extends Controller
 
         $request->session()->regenerate();
 
-        return redirect()->intended(route('home', absolute: false));
+        $redirectTo = session('login_redirect_to', route('home', absolute: false));
+        session()->forget('login_redirect_to');
+
+        return redirect()->intended($redirectTo);
     }
 
     /**
