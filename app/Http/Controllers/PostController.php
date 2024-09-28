@@ -108,7 +108,7 @@ class PostController extends Controller
             'start_year' => "required|integer|min:1900|max:$currentYear",
             'end_year' => "nullable|integer|min:1900|max:$currentYear",
             'current_job_category_id' => 'required|exists:job_categories,id',
-            'current_job_subcategory_id' => 'required|exists:job_categories,id',
+            // 'current_job_subcategory_id' => 'required|exists:job_categories,id',
             'deciding_factor_1' => 'required|string',
             'factor_1_detail' => 'required|string|min:100',
             'factor_1_satisfaction' => 'required|integer|min:1|max:5',
@@ -146,7 +146,7 @@ class PostController extends Controller
             'start_year' => 'required|integer|min:1900|max:' . date('Y'),
             'end_year' => 'nullable|integer|min:1900|max:' . date('Y'),
             'current_job_category_id' => 'required|exists:job_categories,id',
-            'current_job_subcategory_id' => 'required|exists:job_categories,id',
+            // 'current_job_subcategory_id' => 'required|exists:job_categories,id',
         ]);
 
         if ($validator->fails()) {

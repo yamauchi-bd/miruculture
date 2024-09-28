@@ -50,31 +50,31 @@ function setupJobCategories() {
         return;
     }
 
-    const subCategories = JSON.parse(jobCategoriesElement.dataset.categories);
-    const jobCategoryElement = document.getElementById('job_category');
-    if (!jobCategoryElement) {
-        console.error('job_category element not found');
-        return;
-    }
+    // const subCategories = JSON.parse(jobCategoriesElement.dataset.categories);
+    // const jobCategoryElement = document.getElementById('job_category');
+    // if (!jobCategoryElement) {
+    //     console.error('job_category element not found');
+    //     return;
+    // }
 
-    jobCategoryElement.addEventListener('change', function () {
-        updateSubCategories(this.value, subCategories);
-    });
+    // jobCategoryElement.addEventListener('change', function () {
+    //     updateSubCategories(this.value, subCategories);
+    // });
 }
 
-function updateSubCategories(selectedCategoryId, subCategories) {
-    const subCategorySelect = document.getElementById('job_subcategory');
-    subCategorySelect.innerHTML = '<option value="">選択してください</option>';
+// function updateSubCategories(selectedCategoryId, subCategories) {
+//     const subCategorySelect = document.getElementById('job_subcategory');
+//     subCategorySelect.innerHTML = '<option value="">選択してください</option>';
 
-    if (selectedCategoryId && subCategories[selectedCategoryId]) {
-        subCategories[selectedCategoryId].forEach(subCategory => {
-            const option = document.createElement('option');
-            option.value = subCategory.id;
-            option.textContent = subCategory.name;
-            subCategorySelect.appendChild(option);
-        });
-    }
-}
+//     if (selectedCategoryId && subCategories[selectedCategoryId]) {
+//         subCategories[selectedCategoryId].forEach(subCategory => {
+//             const option = document.createElement('option');
+//             option.value = subCategory.id;
+//             option.textContent = subCategory.name;
+//             subCategorySelect.appendChild(option);
+//         });
+//     }
+// }
 
 function setupDecidingFactors() {
     // 2番目と3番の入社の決め手を任意にする

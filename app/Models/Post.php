@@ -13,13 +13,13 @@ class Post extends Model
         'user_id',
         'company_name',
         'corporate_number',
-        'employment_type',
+        // 'employment_type',
         'entry_type',
         'status',
         'start_year',
         'end_year',
         'current_job_category_id',
-        'current_job_subcategory_id',
+        // 'current_job_subcategory_id',
         'deciding_factor_1',
         'factor_1_detail',
         'factor_1_satisfaction',
@@ -44,10 +44,10 @@ class Post extends Model
         return $this->belongsTo(JobCategory::class, 'current_job_category_id');
     }
     
-    public function jobSubcategory()
-    {
-        return $this->belongsTo(JobCategory::class, 'current_job_subcategory_id');
-    }
+    // public function jobSubcategory()
+    // {
+    //     return $this->belongsTo(JobCategory::class, 'current_job_subcategory_id');
+    // }
     
     public function getDecidingFactorsAttribute()
     {

@@ -186,7 +186,7 @@
 
             <div class="mb-10">
                 <label for="job_category" class="flex gap-1 mb-2 items-center text-gray-700 text-sm font-bold leading-relaxed">
-                    入社時の職種
+                    職種
                     <x-required-mark />
                     <p id="job_category-error" class="error-message text-red-500 text-xs" style="display: none;"></p>
                 </label>
@@ -199,10 +199,10 @@
                 </select>
             </div>
 
-            <div class="w-full flex-col justify-start items-start mb-10 gap-1.5 flex">
+            {{-- <div class="w-full flex-col justify-start items-start mb-10 gap-1.5 flex">
                 <label for="job_subcategory"
                     class="flex gap-1 mb-2 items-center text-gray-700 text-sm font-bold leading-relaxed">
-                    詳しい職種
+                    職種（小カテゴリー）
                     <x-required-mark />
                     <p id="job_subcategory-error" class="error-message text-red-500 text-xs" style="display: none;"></p>
                 </label>
@@ -213,7 +213,7 @@
                         <!-- 大カテゴリー選択後にJavaScriptで動的に追加 -->
                     </select>
                 </div>
-            </div>
+            </div> --}}
 
             <div class="flex justify-center mt-16">
                 <button type="button" id="next-button"
