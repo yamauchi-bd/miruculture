@@ -1,0 +1,1 @@
+document.addEventListener("DOMContentLoaded",function(){const n=document.querySelectorAll('textarea[id^="culture_detail_"]'),a=document.querySelectorAll('span[id^="culture_detail_count_"]');function o(){let t=0;n.forEach(e=>{t+=e.value.length}),a.forEach(e=>{e.textContent=t})}n.forEach(t=>{t.addEventListener("input",o)}),o()});

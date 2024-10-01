@@ -9,28 +9,30 @@ return new class extends Migration
 {
     public function up(): void
     {
-        Schema::create('companies', function (Blueprint $table) {
-            $table->string('corporate_number')->primary();
-            $table->string('company_name');
-            $table->text('business_summary')->nullable();
-            $table->text('company_mission')->nullable();
-            $table->text('company_vision')->nullable();
-            $table->text('company_values')->nullable();
-            $table->string('company_logo')->nullable();
-            $table->text('company_url')->nullable();
-            $table->string('location');
-            $table->integer('employee_number')->nullable();
-            $table->date('date_of_establishment')->nullable();
-            $table->bigInteger('capital_stock')->nullable();
-            $table->string('representative_name')->nullable();
-            $table->string('listing_status')->nullable();
-            $table->unsignedBigInteger('industry_id')->nullable();
-            $table->foreign('industry_id')->references('id')->on('industries');
-            $table->timestamps();
-        });
-
-        // 重複データの削除（必要な場合）
-        $this->removeDuplicates();
+        if (!Schema::hasTable('companies')) {
+            Schema::create('companies', function (Blueprint $table) {
+                $table->string('corporate_number')->primary();
+                $table->string('company_name');
+                $table->text('business_summary')->nullable();
+                $table->text('company_mission')->nullable();
+                $table->text('company_vision')->nullable();
+                $table->text('company_values')->nullable();
+                $table->string('company_logo')->nullable();
+                $table->text('company_url')->nullable();
+                $table->string('location');
+                $table->integer('employee_number')->nullable();
+                $table->date('date_of_establishment')->nullable();
+                $table->bigInteger('capital_stock')->nullable();
+                $table->string('representative_name')->nullable();
+                $table->string('listing_status')->nullable();
+                $table->foreignId('industry_id')->nullable()->constrained();
+                $table->timestamps();
+            });
+        } else {
+            Schema::table('companies', function (Blueprint $table) {
+                // 既存のテーブルに対する変更がある場合はここに記述
+            });
+        }
     }
 
     public function down(): void

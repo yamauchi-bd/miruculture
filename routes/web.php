@@ -34,8 +34,12 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::put('/careers/{career}', [CareerController::class, 'update'])->name('careers.update');
     
     // 投稿関連
-    Route::get('/posts/create', [PostController::class, 'create'])->name('posts.create');
-    Route::post('/posts', [PostController::class, 'store'])->name('posts.store');
+    Route::get('/posts/create/step1', [PostController::class, 'createStep1'])->name('posts.create.step1');
+    Route::post('/posts/create/step1', [PostController::class, 'storeStep1'])->name('posts.store.step1');
+    Route::get('/posts/create/step2', [PostController::class, 'createStep2'])->name('posts.create.step2');
+    Route::post('/posts/create/step2', [PostController::class, 'storeStep2'])->name('posts.store.step2');
+    Route::get('/posts/create/step3', [PostController::class, 'createStep3'])->name('posts.create.step3');
+    Route::post('/posts/create/step3', [PostController::class, 'store'])->name('posts.store');
     Route::get('/posts/{post}/edit', [PostController::class, 'edit'])->name('posts.edit');
     Route::put('/posts/{post}', [PostController::class, 'update'])->name('posts.update');
     Route::delete('/posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy');

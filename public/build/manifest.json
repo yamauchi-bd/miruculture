@@ -1,6 +1,6 @@
 {
   "resources/css/app.css": {
-    "file": "assets/app-DMUi0OIm.css",
+    "file": "assets/app-CRg2y3BY.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
@@ -19,13 +19,13 @@
     ]
   },
   "resources/js/company-chart.js": {
-    "file": "assets/company-chart-DJbQROF-.js",
+    "file": "assets/company-chart-DkUfHvd8.js",
     "name": "company-chart",
     "src": "resources/js/company-chart.js",
     "isEntry": true
   },
   "resources/js/company-input.js": {
-    "file": "assets/company-input-Dd3LqUZP.js",
+    "file": "assets/company-input-BwPMOfhM.js",
     "name": "company-input",
     "src": "resources/js/company-input.js",
     "isEntry": true
@@ -43,9 +43,27 @@
     "isEntry": true
   },
   "resources/js/posts-create.js": {
-    "file": "assets/posts-create-BjLIQniz.js",
+    "file": "assets/posts-create-BPjHStTA.js",
     "name": "posts-create",
     "src": "resources/js/posts-create.js",
+    "isEntry": true
+  },
+  "resources/js/posts-step1.js": {
+    "file": "assets/posts-step1-BMM5Pujp.js",
+    "name": "posts-step1",
+    "src": "resources/js/posts-step1.js",
+    "isEntry": true
+  },
+  "resources/js/posts-step2.js": {
+    "file": "assets/posts-step2-DXo3437b.js",
+    "name": "posts-step2",
+    "src": "resources/js/posts-step2.js",
+    "isEntry": true
+  },
+  "resources/js/posts-step3.js": {
+    "file": "assets/posts-step3-CfQ1wjvL.js",
+    "name": "posts-step3",
+    "src": "resources/js/posts-step3.js",
     "isEntry": true
   },
   "resources/js/top.js": {

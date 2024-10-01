@@ -12,12 +12,12 @@
                     {{ $company->company_name }}
                 </h2>
                 @auth
-                    <a href="{{ route('posts.create', ['corporate_number' => $company->corporate_number]) }}"
+                    <a href="{{ route('posts.create.step1', ['corporate_number' => $company->corporate_number]) }}"
                         class='block w-full sm:w-auto py-3 px-4 text-sm bg-cyan-500 text-white rounded-lg shadow-md cursor-pointer font-semibold text-center transition-all duration-300 ease-in-out hover:bg-cyan-700'>
                         入社エントリを投稿する
                     </a>
                 @else
-                    <a href="{{ route('register', ['redirect_to' => route('posts.create', ['corporate_number' => $company->corporate_number])]) }}"
+                    <a href="{{ route('register', ['redirect_to' => route('posts.create.step1', ['corporate_number' => $company->corporate_number])]) }}"
                         class='block w-full sm:w-auto py-3 px-4 text-sm bg-cyan-500 text-white rounded-lg shadow-md cursor-pointer font-semibold text-center transition-all duration-300 ease-in-out hover:bg-cyan-700'>
                         入社エントリを投稿する
                     </a>
@@ -109,12 +109,12 @@
                                                     class="text-xs sm:text-sm text-gray-700 factor-full hidden mb-4 tracking-wide">
                                                     {{ $factor->detail }}</p>
 
-                                                <p
+                                                {{-- <p
                                                     class="text-xs sm:text-sm font-semibold text-gray-700 satisfaction-reason hidden tracking-wide">
                                                     -満足度-</p>
                                                 <p
                                                     class="text-xs sm:text-sm text-gray-700 satisfaction-reason hidden tracking-wide">
-                                                    {{ $factor->satisfaction_reason }}</p>
+                                                    {{ $factor->satisfaction_reason }}</p> --}}
                                             </div>
                                         </div>
                                     @endforeach
