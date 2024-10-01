@@ -70,7 +70,7 @@
                                             name="deciding_factor_{{ $i }}" value="{{ $factor }}"
                                             {{ $i == 1 ? 'required' : '' }}>
                                         <span
-                                            class="factor-label sm:w-fit w-full px-3 py-1.5 transition-all duration-100 rounded-full border cursor-pointer text-sm font-bold bg-white hover:bg-gray-100 text-gray-700 border-gray-300">
+                                            class="factor-label sm:w-fit w-full px-3 py-1.5 transition-all rounded-full border cursor-pointer text-sm font-bold bg-white hover:bg-gray-100 text-gray-700 border-gray-300">
                                             {{ $factor }}
                                         </span>
                                     </label>

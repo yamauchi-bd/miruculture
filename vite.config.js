@@ -11,7 +11,6 @@ export default defineConfig({
                 'resources/js/top.js',
                 'resources/js/company-input.js',
                 'resources/js/company-search.js',
-                'resources/js/posts-create.js',
                 'resources/js/company-show.js',
                 'resources/js/company-chart.js',
                 'resources/js/posts-step1.js',

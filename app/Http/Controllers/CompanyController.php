@@ -47,7 +47,10 @@ class CompanyController extends Controller
 
         $decidingFactorsData = $this->calculateDecidingFactorsData($posts);
 
-        return view('companies.show', compact('company', 'posts', 'decidingFactorsData'));
+        // 会社文化要因を計算
+        $companyCultureFactors = $this->calculateCompanyCultureFactors($posts);
+
+        return view('companies.show', compact('company', 'posts', 'decidingFactorsData', 'companyCultureFactors'));
     }
 
     /**
@@ -146,5 +149,37 @@ class CompanyController extends Controller
         });
     
         return $factorData; // 全ての要因を返す
+    }
+
+    private function calculateCompanyCultureFactors($posts)
+    {
+        $cultureItems = [
+            ['name' => '人間関係', 'a' => 'フォーマル', 'b' => 'カジュアル'],
+            ['name' => '組織体系', 'a' => 'クローズ･階層的', 'b' => 'オープン･フラット'],
+            ['name' => '判断基準', 'a' => 'ロジカル', 'b' => 'パッション'],
+            ['name' => '事業の軸', 'a' => '収益･成長性', 'b' => 'ビジョン･理念'],
+            ['name' => '組織特性', 'a' => '安定･保守', 'b' => '変革･挑戦'],
+            ['name' => '評価基準', 'a' => 'プロセス重視', 'b' => '結果重視'],
+            ['name' => '意思決定', 'a' => 'トップダウン', 'b' => 'ボトムアップ'],
+            ['name' => '仕事の進め方', 'a' => '個人プレー', 'b' => 'チームプレー'],
+            ['name' => '雰囲気', 'a' => 'モクモク･真面目', 'b' => 'ワイワイ･元気'],
+            ['name' => 'ワークライフ', 'a' => 'バランス重視', 'b' => 'ワーク重視'],
+        ];
+    
+        $factorData = [];
+    
+        foreach ($cultureItems as $index => $item) {
+            $scores = $posts->pluck("culture_{$index}")->filter()->values();
+            $averageScore = $scores->avg() ?? 3; // デフォルト値を3（中間）に設定
+    
+            $factorData[] = [
+                'name' => $item['name'],
+                'a' => $item['a'],
+                'b' => $item['b'],
+                'average_score' => round($averageScore, 1),
+            ];
+        }
+    
+        return collect($factorData);
     }
 }

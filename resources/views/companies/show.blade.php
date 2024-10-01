@@ -4,150 +4,348 @@
 
 @include('layouts.navigation')
 
-<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-10 sm:pt-20 md:pt-14 lg:pt-28 pb-6 sm:pb-10 md:pb-8 lg:pb-16">
-    <div class="flex flex-col lg:flex-row justify-between gap-8 lg:gap-12">
+<div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pt-4 sm:pt-10 md:pt-14 lg:pt-28 pb-4 sm:pb-6 md:pb-8 lg:pb-16">
+    <div class="flex flex-col lg:flex-row justify-between gap-4 lg:gap-12">
+        {{-- メインコンテンツ（左側） --}}
         <div class="w-full lg:w-3/4">
-            <div class="w-full flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 lg:mb-12 sm:mb-6">
-                <h2 class="font-semibold text-xl text-gray-700 mb-4 sm:mb-4 lg:mb-0">
+            <div
+                class="w-full flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 lg:mb-12 sm:mb-6">
+                <h2 class="font-semibold text-lg sm:text-xl text-gray-700 mb-2 sm:mb-0">
                     {{ $company->company_name }}
                 </h2>
                 @auth
                     <a href="{{ route('posts.create.step1', ['corporate_number' => $company->corporate_number]) }}"
-                        class='block w-full sm:w-auto py-3 px-4 text-sm bg-cyan-500 text-white rounded-lg shadow-md cursor-pointer font-semibold text-center transition-all duration-300 ease-in-out hover:bg-cyan-700'>
+                        class='block w-full sm:w-auto py-2 px-3 text-sm bg-cyan-500 text-white rounded-lg shadow-md cursor-pointer font-semibold text-center transition-all duration-300 ease-in-out hover:bg-cyan-700'>
                         入社エントリを投稿する
                     </a>
                 @else
                     <a href="{{ route('register', ['redirect_to' => route('posts.create.step1', ['corporate_number' => $company->corporate_number])]) }}"
-                        class='block w-full sm:w-auto py-3 px-4 text-sm bg-cyan-500 text-white rounded-lg shadow-md cursor-pointer font-semibold text-center transition-all duration-300 ease-in-out hover:bg-cyan-700'>
+                        class='block w-full sm:w-auto py-2 px-3 text-sm bg-cyan-500 text-white rounded-lg shadow-md cursor-pointer font-semibold text-center transition-all duration-300 ease-in-out hover:bg-cyan-700'>
                         入社エントリを投稿する
                     </a>
                 @endauth
             </div>
 
-            {{-- グラフ --}}
-            <section class="py-6 sm:py-8 md:py-8 lg:py-0 mt-6">
+            {{-- タブ切り替え --}}
+            <div class="mb-4 sm:mb-2">
+                <div class="border-b border-gray-200">
+                    <nav class="-mb-px flex" aria-label="Tabs">
+                        <button
+                            class="tab-button w-1/2 py-3 px-1 text-center border-b-2 font-semibold text-xs sm:text-sm flex items-center justify-center transition-all duration-200 ease-in-out cursor-pointer"
+                            data-tab="deciding-factors">
+                            <span>入社の決め手</span>
+                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <button
+                            class="tab-button w-1/2 py-3 px-1 text-center border-b-2 font-semibold text-xs sm:text-sm flex items-center justify-center transition-all duration-200 ease-in-out cursor-pointer"
+                            data-tab="company-culture">
+                            <span>社風･雰囲気</span>
+                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                    </nav>
+                </div>
+            </div>
+
+            {{-- グラフ部分 --}}
+            <section class="py-2 sm:py-2 md:py-8 lg:py-2 mt-4 sm:mt-4">
                 <div class="border border-gray-200 rounded-lg overflow-hidden">
-                    <div class="flex items-center px-4 py-3 bg-gray-100">
-                        <h3 class="text-sm font-semibold text-gray-700">企業カルチャー</h3>
-                        <h2 class="text-2xs text-gray-600">（入社の決め手から測定）</h2>
-                    </div>
-                    <div class="px-8 py-4 relative h-[30vh] w-full lg:h-[45vh] sm:h-[30vh]">
-                        @if ($posts->isEmpty())
-                        <div class="absolute inset-0 flex items-center justify-center">
-                            <p class="text-sm sm:text-base md:text-lg lg:text-xl text-cyan-500 font-bold text-center leading-tight sm:leading-normal">
-                                入社エントリを投稿して、<br class="sm:hidden">企業カルチャーを<br class="hidden sm:inline md:hidden">可視化しよう！
-                            </p>
+                    {{-- 決め手グラフ --}}
+                    <div id="deciding-factors-content" class="tab-content">
+                        <div class="flex items-center px-3 py-2 sm:px-4 sm:py-3 bg-gray-100">
+                            <h3 class="text-xs sm:text-sm font-semibold text-gray-700">入社の決め手</h3>
+                            <h2 class="text-2xs sm:text-xs text-gray-600">（従業員の価値観・重視度）</h2>
                         </div>
-                        @endif
-                        <canvas id="decidingFactorsChart"></canvas>
+                        <div class="px-4 sm:px-8 py-3 sm:py-4 relative h-[30vh] w-full lg:h-[45vh] sm:h-[30vh]">
+                            @if ($posts->isEmpty())
+                                <div class="absolute inset-0 flex items-center justify-center">
+                                    <p
+                                        class="text-sm sm:text-base md:text-lg lg:text-xl text-cyan-500 font-bold text-center leading-tight sm:leading-normal">
+                                        入社エントリを投稿して、<br class="sm:hidden">企業カルチャーを<br
+                                            class="hidden sm:inline md:hidden">可視化しよう！
+                                    </p>
+                                </div>
+                            @endif
+                            <canvas id="decidingFactorsChart"></canvas>
+                        </div>
+                    </div>
+
+                    {{-- 社風グラフ --}}
+                    <div id="company-culture-content" class="tab-content hidden">
+                        <div class="flex items-center px-3 py-2 sm:px-4 sm:py-3 bg-gray-100">
+                            <h3 class="text-xs sm:text-sm font-semibold text-gray-700">社風･雰囲気</h3>
+                            <h2 class="text-2xs sm:text-xs text-gray-600">（企業のカルチャー）</h2>
+                        </div>
+                        <div class="px-4 sm:px-12 py-3 sm:py-6 relative w-full">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 sm:gap-4">
+                                @foreach ($companyCultureFactors as $factor)
+                                    <div class="mb-3 sm:mb-4 px-2 sm:px-4">
+                                        <div class="flex items-center mb-1 sm:mb-2">
+                                            <span
+                                                class="text-xs sm:text-sm font-semibold text-gray-700">{{ $factor['name'] }}
+                                                :</span>
+                                            <span
+                                                class="text-xs sm:text-sm font-medium text-gray-700">（{{ number_format(abs($factor['average_score'] - 3) * 25 + 50, 0) }}%）</span>
+                                            <span
+                                                class="text-xs sm:text-sm font-medium text-gray-700">{{ $factor['average_score'] > 3 ? $factor['b'] : $factor['a'] }}
+                                                型</span>
+                                        </div>
+                                        <div class="relative pt-1">
+                                            <div class="h-2 mb-1 rounded bg-cyan-200"></div>
+                                            <div class="absolute top-0 left-1/2 w-0.5 h-2 bg-gray-400"></div>
+                                            <div class="absolute top-[-2.5px] w-4 h-4 sm:w-5 sm:h-5 rounded-full bg-cyan-500 border-2 border-white shadow-md"
+                                                style="left: calc({{ (($factor['average_score'] - 1) / 4) * 100 }}% - 8px);">
+                                            </div>
+                                        </div>
+                                        <div
+                                            class="flex justify-between text-2xs sm:text-xs text-gray-600 mt-1 sm:mt-2">
+                                            <span>{{ $factor['a'] }} ←</span>
+                                            <span>→ {{ $factor['b'] }}</span>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
                     </div>
                 </div>
             </section>
 
+            {{-- 会社文化データをJavaScriptに渡す --}}
+            <script id="companyCultureData" type="application/json">
+                {!! json_encode($companyCultureFactors) !!}
+            </script>
 
-            <section class="py-6 sm:py-8 md:py-12">
-                <div class="mx-auto max-w-full">
-                    @foreach ($posts as $post)
-                        <div class="post-container group bg-white border border-solid border-gray-200 rounded-lg px-4 sm:px-6 md:px-8 py-4 mb-6 transition-all duration-300 hover:border-cyan-500 hover:shadow-lg relative flex flex-col cursor-pointer transform hover:-translate-y-1"
-                            data-post-id="{{ $post->id }}">
+            {{-- タブ切り替え --}}
+            <div class="mt-10">
+                <div class="border-b border-gray-200">
+                    <nav class="-mb-px flex" aria-label="Tabs">
+                        <button
+                            class="tab-button w-1/2 py-3 px-1 text-center border-b-2 font-semibold text-xs sm:text-sm flex items-center justify-center transition-all duration-200 ease-in-out cursor-pointer"
+                            data-tab="deciding-factors">
+                            <span>入社の決め手</span>
+                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <button
+                            class="tab-button w-1/2 py-3 px-1 text-center border-b-2 font-semibold text-xs sm:text-sm flex items-center justify-center transition-all duration-200 ease-in-out cursor-pointer"
+                            data-tab="company-culture">
+                            <span>社風･雰囲気</span>
+                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                    </nav>
+                </div>
+            </div>
 
-                            <div class="flex items-center gap-2">
-                                <svg xmlns="http://www.w3.org/2000/svg" class="h-10 w-10 sm:h-12 sm:w-12 text-gray-500"
-                                    viewBox="0 0 20 20" fill="currentColor">
-                                    <path fill-rule="evenodd"
-                                        d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z"
-                                        clip-rule="evenodd" />
-                                </svg>
-                                <div class="grid flex-grow">
-                                    <h5 class="text-xs sm:text-sm text-gray-700 font-medium">
-                                        {{ $post->start_year ?? '◯◯' }}年
-                                        {{ $post->entry_type ?? '未設定' }}（{{ $post->status ?? '未設定' }}）</h5>
-                                    <div class="flex justify-between items-center">
-                                        <span class="text-2xs sm:text-xs leading-6 text-gray-500">
-                                            {{ $post->jobCategory->name ?? '職種未設定' }} ＞
-                                            {{ $post->jobSubcategory->name ?? '未設定' }}
-                                        </span>
-                                        <span class="text-2xs sm:text-xs text-gray-500">
-                                            投稿日: {{ $post->created_at->format('Y年m月d日') }}
-                                        </span>
+            {{-- 決め手タブコンテンツ --}}
+            <div id="deciding-factors-content" class="tab-content">
+                <section class="py-6 sm:py-6 md:py-6">
+                    <div class="mx-auto max-w-full">
+                        @foreach ($posts as $post)
+                            <div class="post-container group bg-white border border-solid border-gray-200 rounded-lg px-4 sm:px-6 md:px-8 py-4 mb-6 transition-all duration-300 hover:border-cyan-500 hover:shadow-lg relative flex flex-col cursor-pointer transform hover:-translate-y-1"
+                                data-post-id="{{ $post->id }}">
+
+                                <div class="flex items-center gap-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                        class="h-10 w-10 sm:h-12 sm:w-12 text-gray-500" viewBox="0 0 20 20"
+                                        fill="currentColor">
+                                        <path fill-rule="evenodd"
+                                            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                    <div class="grid flex-grow">
+                                        <h5 class="text-xs sm:text-sm text-gray-700 font-medium">
+                                            {{ $post->start_year ?? '◯◯' }}年
+                                            {{ $post->entry_type ?? '未設定' }}（{{ $post->status ?? '未設定' }}）</h5>
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-2xs sm:text-xs leading-6 text-gray-500">
+                                                {{ $post->jobCategory->name ?? '職種未設定' }}
+                                                {{-- {{ $post->jobSubcategory->name ?? '未設定' }} --}}
+                                            </span>
+                                            <span class="text-2xs sm:text-xs text-gray-500">
+                                                投稿日: {{ $post->created_at->format('Y年m月d日') }}
+                                            </span>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
 
-                            <hr class="mt-2 mb-4 border-gray-200">
+                                <hr class="mt-2 mb-4 border-gray-200">
 
-                            <div class="flex-grow">
-                                <h2 class="text-xs sm:text-sm lg:text-xs text-gray-700 mt-1 mb-4">
-                                    「<a href="{{ route('companies.show', $post->company) }}"
-                                        class="text-cyan-600 hover:text-cyan-700 hover:underline">{{ $post->company_name }}</a>」への決め手
-                                </h2>
-                                @if ($post->decidingFactors && $post->decidingFactors->isNotEmpty())
-                                    @foreach ($post->decidingFactors->take(3) as $index => $factor)
-                                        <div class="mb-6">
-                                            <div class="flex items-center mb-4">
-                                                <p class="text-sm sm:text-base font-bold text-gray-700">
-                                                    【{{ $index + 1 }}位】{{ $factor->factor ?? '未設定' }}</p>
-                                                <div class="flex items-center ml-6">
-                                                    @for ($i = 1; $i <= 5; $i++)
-                                                        <svg class="w-4 h-4 sm:w-5 sm:h-5 {{ $i <= ($factor->satisfaction ?? 0) ? 'text-yellow-400' : 'text-gray-300' }}"
-                                                            viewBox="0 0 20 20" fill="currentColor"
-                                                            xmlns="http://www.w3.org/2000/svg">
-                                                            <path
-                                                                d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
-                                                            </path>
-                                                        </svg>
-                                                    @endfor
+                                <div class="flex-grow">
+                                    <h2 class="text-xs sm:text-sm lg:text-xs text-gray-700 mt-1 mb-4">
+                                        「<a href="{{ route('companies.show', $post->company) }}"
+                                            class="text-cyan-600 hover:text-cyan-700 hover:underline">{{ $post->company_name }}</a>」への決め手
+                                    </h2>
+                                    @if ($post->decidingFactors && $post->decidingFactors->isNotEmpty())
+                                        @foreach ($post->decidingFactors->take(3) as $index => $factor)
+                                            <div class="mb-8">
+                                                <div class="flex items-center mb-4">
+                                                    <p class="text-sm sm:text-base font-bold text-gray-700">
+                                                        【{{ $index + 1 }}位】{{ $factor->factor ?? '未設定' }}</p>
+                                                    <div class="flex items-center ml-6">
+                                                        @for ($i = 1; $i <= 5; $i++)
+                                                            <svg class="w-4 h-4 sm:w-5 sm:h-5 {{ $i <= ($factor->satisfaction ?? 0) ? 'text-yellow-400' : 'text-gray-300' }}"
+                                                                viewBox="0 0 20 20" fill="currentColor"
+                                                                xmlns="http://www.w3.org/2000/svg">
+                                                                <path
+                                                                    d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z">
+                                                                </path>
+                                                            </svg>
+                                                        @endfor
+                                                    </div>
+                                                </div>
+                                                <div class="ml-2">
+                                                    <p
+                                                        class="text-xs sm:text-sm text-gray-700 factor-summary mb-2 tracking-wide">
+                                                        {{ Str::limit($factor->detail, 50) }}</p>
+                                                    <p
+                                                        class="text-xs sm:text-sm text-gray-700 factor-full hidden mb-4 tracking-wide">
+                                                        {{ $factor->detail }}</p>
                                                 </div>
                                             </div>
+                                        @endforeach
+                                    @else
+                                        <p class="text-sm text-gray-500">入社の決め手が登録されていません。</p>
+                                    @endif
+                                </div>
+                                <div class="flex items-center justify-end toggle-details">
+                                    <h2 class="text-sm font-bold text-cyan-500 toggle-text mr-1">もっと見る</h2>
+                                    <svg class="w-5 h-5 text-cyan-500 arrow-down" fill="none" stroke="currentColor"
+                                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                    <svg class="w-5 h-5 text-cyan-500 arrow-up hidden" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M5 15l7-7 7 7"></path>
+                                    </svg>
+                                </div>
+                                <div class="post-details hidden mt-4">
+                                    <!-- 詳細情報がここに表示されます -->
+                                </div>
+                            </div>
+                        @endforeach
+                    </div>
+                </section>
+            </div>
+
+            {{-- 社風タブコンテンツ --}}
+            <div id="company-culture-content" class="tab-content hidden">
+                <section class="py-6 sm:py-6 md:py-8">
+                    <div class="mx-auto max-w-full">
+
+                        {{-- 既存の投稿リスト --}}
+                        @foreach ($posts as $post)
+                            <div
+                                class="post-container group bg-white border border-solid border-gray-200 rounded-lg px-4 sm:px-6 md:px-8 py-4 mb-6 transition-all duration-300 hover:border-cyan-500 hover:shadow-lg relative flex flex-col cursor-pointer transform hover:-translate-y-1">
+                                <div class="flex items-center gap-2">
+                                    <svg xmlns="http://www.w3.org/2000/svg"
+                                        class="h-10 w-10 sm:h-12 sm:w-12 text-gray-500" viewBox="0 0 20 20"
+                                        fill="currentColor">
+                                        <path fill-rule="evenodd"
+                                            d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z"
+                                            clip-rule="evenodd" />
+                                    </svg>
+                                    <div class="grid flex-grow">
+                                        <h5 class="text-xs sm:text-sm text-gray-700 font-medium">
+                                            {{ $post->start_year ?? '◯◯' }}年
+                                            {{ $post->entry_type ?? '未設定' }}（{{ $post->status ?? '未設定' }}）
+                                        </h5>
+                                        <div class="flex justify-between items-center">
+                                            <span class="text-2xs sm:text-xs leading-6 text-gray-500">
+                                                {{ $post->jobCategory->name ?? '職種未設定' }}
+                                                {{-- {{ $post->jobSubcategory->name ?? '未設定' }} --}}
+                                            </span>
+                                            <span class="text-2xs sm:text-xs text-gray-500">
+                                                投稿日: {{ $post->created_at->format('Y年m月d日') }}
+                                            </span>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <hr class="mt-2 mb-4 border-gray-200">
+
+                                <div class="flex-grow">
+                                    <h2 class="text-xs sm:text-sm lg:text-xs text-gray-700 mt-1 mb-4">
+                                        「<a href="{{ route('companies.show', $post->company) }}"
+                                            class="text-cyan-600 hover:text-cyan-700 hover:underline">{{ $post->company_name }}</a>」の社風
+                                    </h2>
+                                    @foreach ($post->getCultureDetailsAttribute() as $index => $culture)
+                                        <div class="mb-8 {{ $index > 0 ? 'hidden culture-detail' : '' }}">
+
+                                            <div class="flex items-center mb-4">
+                                                <label class="mr-4 text-sm sm:text-base text-gray-700 font-bold whitespace-nowrap">
+                                                    【{{ $culture['name'] }}】
+                                                </label>
+                                                <span class="text-2xs sm:text-xs text-gray-600 whitespace-nowrap">
+                                                    {{ $culture['a'] }}
+                                                </span>
+                                                <span class="text-2xs sm:text-2xs text-gray-600">← </span>
+                                                @php
+                                                    $options = [
+                                                        'A寄り',
+                                                        'ややA寄り',
+                                                        'どちらとも',
+                                                        'ややB寄り',
+                                                        'B寄り',
+                                                    ];
+                                                @endphp
+                                                @foreach ($options as $value => $label)
+                                                    <div class="w-8 sm:w-10 mx-1">
+                                                        <div
+                                                            class="text-center py-1 border {{ $value + 1 == $culture['value'] ? 'bg-cyan-500 text-white border-cyan-500' : 'border-gray-300 text-gray-600' }} rounded transition-all duration-100 ease-in-out">
+                                                            {{-- <span class="text-2xs sm:text-2xs">{{ $label }}</span> --}}
+                                                        </div>
+                                                    </div>
+                                                @endforeach
+                                                <span class="text-2xs sm:text-xs text-gray-600"> →</span>
+                                                <span class="text-2xs sm:text-xs text-gray-600 whitespace-nowrap">
+                                                    {{ $culture['b'] }}
+                                                </span>
+                                            </div>
                                             <div class="ml-2">
-                                                <p class="text-xs sm:text-sm font-semibold text-gray-700 tracking-wide">
-                                                    -詳細-</p>
                                                 <p
                                                     class="text-xs sm:text-sm text-gray-700 factor-summary mb-2 tracking-wide">
-                                                    {{ Str::limit($factor->detail, 50) }}</p>
+                                                    {{ Str::limit($culture['detail'], 50) }}
+                                                </p>
                                                 <p
                                                     class="text-xs sm:text-sm text-gray-700 factor-full hidden mb-4 tracking-wide">
-                                                    {{ $factor->detail }}</p>
-
-                                                {{-- <p
-                                                    class="text-xs sm:text-sm font-semibold text-gray-700 satisfaction-reason hidden tracking-wide">
-                                                    -満足度-</p>
-                                                <p
-                                                    class="text-xs sm:text-sm text-gray-700 satisfaction-reason hidden tracking-wide">
-                                                    {{ $factor->satisfaction_reason }}</p> --}}
+                                                    {{ $culture['detail'] }}
+                                                </p>
                                             </div>
                                         </div>
                                     @endforeach
-                                @else
-                                    <p class="text-sm text-gray-500">入社の決め手が登録されていません。</p>
-                                @endif
+                                </div>
+                                <div class="flex items-center justify-end toggle-details">
+                                    <h2 class="text-sm font-bold text-cyan-500 toggle-text mr-1">もっと見る</h2>
+                                    <svg class="w-5 h-5 text-cyan-500 arrow-down" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M19 9l-7 7-7-7"></path>
+                                    </svg>
+                                    <svg class="w-5 h-5 text-cyan-500 arrow-up hidden" fill="none"
+                                        stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                            d="M5 15l7-7 7 7"></path>
+                                    </svg>
+                                </div>
                             </div>
-                            <div class="flex items-center justify-end toggle-details">
-                                <h2 class="text-sm font-bold text-cyan-500 toggle-text mr-1">もっと見る</h2>
-                                <svg class="w-5 h-5 text-cyan-500 arrow-down" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M19 9l-7 7-7-7"></path>
-                                </svg>
-                                <svg class="w-5 h-5 text-cyan-500 arrow-up hidden" fill="none" stroke="currentColor"
-                                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                        d="M5 15l7-7 7 7"></path>
-                                </svg>
-                            </div>
-                            <div class="post-details hidden mt-4">
-                                <!-- 詳細情報がここに表示されます -->
-                            </div>
-                        </div>
-                    @endforeach
-                </div>
-            </section>
+                        @endforeach
+                    </div>
+                </section>
+            </div>
         </div>
 
+        {{-- 企業データ（右側） --}}
         <div class="w-full lg:w-1/4">
-
-            {{-- 企業データ --}}
-            <div class="lg:mb-3"></div>
+            <div class="lg:pt-2"></div>
+            <div class="lg:mt-16 lg:mb-3"></div>
             <section class="py-2 sm:py-2 md:py-4 lg:py-20">
                 <div class="bg-white border border-gray-200 rounded-lg overflow-hidden sticky top-24">
                     <div class="px-4 py-3 bg-gray-100 flex justify-between items-center">
@@ -228,7 +426,8 @@
                                 <div>
                                     <p class="text-xs font-medium text-gray-500 pb-2">事業概要</p>
                                     <p class="text-xs text-gray-700">
-                                        {{ str_replace(["\r\n", "\r", "\n"], '　', e($company->business_summary)) }}</p>
+                                        {{ str_replace(["\r\n", "\r", "\n"], '　', e($company->business_summary)) }}
+                                    </p>
                                 </div>
                             </div>
                         @endif
@@ -282,7 +481,8 @@
                                 </div>
                                 <div>
                                     <p class="text-xs font-medium text-gray-500">従業員数</p>
-                                    <p class="text-xs text-gray-700">{{ number_format($company->employee_number) }} 人
+                                    <p class="text-xs text-gray-700">
+                                        {{ number_format($company->employee_number) }} 人
                                     </p>
                                 </div>
                             </div>
@@ -301,7 +501,8 @@
                                 <div>
                                     <p class="text-xs font-medium text-gray-500">設立年</p>
                                     <p class="text-xs text-gray-700">
-                                        {{ \Carbon\Carbon::parse($company->date_of_establishment)->format('Y') }} 年</p>
+                                        {{ \Carbon\Carbon::parse($company->date_of_establishment)->format('Y') }} 年
+                                    </p>
                                 </div>
                             </div>
                         @endif
@@ -379,17 +580,14 @@
                 </div>
             </section>
         </div>
-
-
     </div>
-</div>
 
-@include('layouts.footer')
-@vite(['resources/js/company-show.js'])
+    @include('layouts.footer')
+    @vite(['resources/js/company-show.js'])
 
 
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-<script id="decidingFactorsData" type="application/json">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script id="decidingFactorsData" type="application/json">
     {!! json_encode($decidingFactorsData) !!}
 </script>
-@vite(['resources/js/company-chart.js'])
+    @vite(['resources/js/company-chart.js'])

@@ -1,6 +1,6 @@
 {
   "resources/css/app.css": {
-    "file": "assets/app-CRg2y3BY.css",
+    "file": "assets/app-CqmCkofg.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
@@ -37,15 +37,9 @@
     "isEntry": true
   },
   "resources/js/company-show.js": {
-    "file": "assets/company-show-BZ_7JuSz.js",
+    "file": "assets/company-show-EeBmfAoe.js",
     "name": "company-show",
     "src": "resources/js/company-show.js",
-    "isEntry": true
-  },
-  "resources/js/posts-create.js": {
-    "file": "assets/posts-create-BPjHStTA.js",
-    "name": "posts-create",
-    "src": "resources/js/posts-create.js",
     "isEntry": true
   },
   "resources/js/posts-step1.js": {

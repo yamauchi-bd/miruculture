@@ -92,9 +92,25 @@ class Post extends Model
 
     public function getCultureDetailsAttribute()
     {
+        $cultureItems = [
+            ['name' => '人間関係', 'a' => 'フォーマル', 'b' => 'カジュアル'],
+            ['name' => '組織体系', 'a' => 'クローズ･階層的', 'b' => 'オープン･フラット'],
+            ['name' => '判断基準', 'a' => 'ロジカル', 'b' => 'パッション'],
+            ['name' => '事業の軸', 'a' => '収益･成長性', 'b' => 'ビジョン･理念'],
+            ['name' => '組織特性', 'a' => '安定･保守', 'b' => '変革･挑戦'],
+            ['name' => '評価基準', 'a' => 'プロセス重視', 'b' => '結果重視'],
+            ['name' => '意思決定', 'a' => 'トップダウン', 'b' => 'ボトムアップ'],
+            ['name' => '仕事の進め方', 'a' => '個人プレー', 'b' => 'チームプレー'],
+            ['name' => '雰囲気', 'a' => 'モクモク･真面目', 'b' => 'ワイワイ･元気'],
+            ['name' => 'ワークライフ', 'a' => 'バランス重視', 'b' => 'ワーク重視'],
+        ];
+
         $details = [];
         for ($i = 0; $i < 10; $i++) {
             $details[] = [
+                'name' => $cultureItems[$i]['name'],
+                'a' => $cultureItems[$i]['a'],
+                'b' => $cultureItems[$i]['b'],
                 'value' => $this->{"culture_$i"},
                 'detail' => $this->{"culture_detail_$i"}
             ];
