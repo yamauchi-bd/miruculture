@@ -28,16 +28,16 @@ document.addEventListener('DOMContentLoaded', function () {
                     searchResults[index].innerHTML = '';
                     searchResults[index].classList.add('hidden');
                 }
-            }, 300);
+            }, 500);
         });
 
-        searchButtons[index].addEventListener('click', function (e) {
-            e.preventDefault();
-            const query = searchInput.value.trim();
-            if (query.length > 1) {
-                fetchCompanies(query, index);
-            }
-        });
+        // searchButtons[index].addEventListener('click', function (e) {
+        //     e.preventDefault();
+        //     const query = searchInput.value.trim();
+        //     if (query.length > 1) {
+        //         fetchCompanies(query, index);
+        //     }
+        // });
     });
 
     function fetchCompanies(query, index) {
