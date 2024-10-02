@@ -6,7 +6,8 @@ use App\Http\Controllers\GoogleLoginController;
 use App\Http\Controllers\CareerController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\WelcomeController;
-use App\Http\Controllers\RegisterController;
+use App\Http\Controllers\Auth\RegisteredUserController;
+use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\InformationController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
@@ -55,7 +56,7 @@ Route::get('/auth/google', [GoogleLoginController::class, 'redirectToGoogle'])->
 Route::get('/auth/google/callback', [GoogleLoginController::class, 'handleGoogleCallback'])->name('login.google.callback');
 
 // メール認証関連
-Auth::routes(['verify' => true]);
+// Auth::routes(['verify' => true]);
 
 Route::get('/email/verify', function () {
     return view('auth.verify-email');
@@ -75,13 +76,14 @@ Route::get('/email/change/{token}', [ProfileController::class, 'confirmEmailChan
     ->middleware(['auth'])
     ->name('email.change.confirm');
 
-//メールアドレス4桁コード認証
-// Route::post('/register/request', [RegisterController::class, 'request'])->name('register.request');
-// Route::get('/register/verify', [RegisterController::class, 'showVerificationForm'])->name('register.verify');
-// Route::post('/register/verify', [RegisterController::class, 'verify']);
-// Route::post('/register/resend-code', [RegisterController::class, 'resendCode'])->name('register.resend-code');
-Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
-Route::post('/register', [RegisterController::class, 'request']);
+// 4桁コード認証用のルート
+Route::middleware(['guest'])->group(function () {
+    Route::get('/register', [RegisteredUserController::class, 'create'])->name('register');
+    Route::post('/register', [RegisteredUserController::class, 'store']);
+    Route::get('/register/verify', [RegisteredUserController::class, 'showVerificationForm'])->name('register.verify');
+    Route::post('/register/verify', [RegisteredUserController::class, 'verify']);
+    Route::post('/register/resend-code', [RegisteredUserController::class, 'resendCode'])->name('register.resend-code');
+});
 
 // 企業情報関連
 // Route::get('/companies', function () {
@@ -94,5 +96,10 @@ Route::get('/companies/{corporate_number}/edit', [CompanyController::class, 'edi
 Route::put('/companies/{corporate_number}', [CompanyController::class, 'update'])->name('companies.update');
 
 Route::get('/legal', [InformationController::class, 'legal'])->name('legal');
+
+// 代わりに必要な認証ルートのみを定義
+Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
+Route::post('/login', [AuthenticatedSessionController::class, 'store']);
+Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
 
 require __DIR__ . '/auth.php';

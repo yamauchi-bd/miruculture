@@ -1,56 +1,104 @@
 <?php
 
 namespace App\Http\Controllers\Auth;
-
 use App\Http\Controllers\Controller;
-use App\Models\User;
-use Illuminate\Auth\Events\Registered;
-use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Validation\Rules;
-use Illuminate\Validation\Rules\Password;
-use Illuminate\View\View;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Auth;
+use App\Mail\VerificationCode;
 
 class RegisteredUserController extends Controller
 {
-    /**
-     * Display the registration view.
-     */
-    public function create(Request $request): View
+    public function create()
     {
-        $redirectTo = $request->query('redirect_to');
-        if ($redirectTo) {
-            session(['register_redirect_to' => $redirectTo]);
-        }
         return view('auth.register');
     }
 
-    /**
-     * Handle an incoming registration request.
-     *
-     * @throws \Illuminate\Validation\ValidationException
-     */
-    public function store(Request $request): RedirectResponse
+    public function store(Request $request)
     {
         $request->validate([
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'string', Password::defaults(), 'password_rules'],
+            'email' => 'required|string|email|max:255|unique:users',
+            'password' => 'required|string|min:8|regex:/^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{8,}$/',
         ]);
 
+        // 4桁の認証コードを生成
+        $verificationCode = sprintf('%04d', mt_rand(0, 9999));
+
+        // ユーザーを作成（email_verified_atはnullのまま）
         $user = User::create([
             'email' => $request->email,
             'password' => Hash::make($request->password),
+            'verification_code' => $verificationCode,
         ]);
 
-        event(new Registered($user));
+        // 認証コードをメールで送信
+        Mail::to($user->email)->send(new VerificationCode($verificationCode));
 
+        // セッションにメールアドレスを保存
+        session(['registration_email' => $user->email]);
+
+        // 認証コード入力ページにリダイレクト
+        return redirect()->route('register.verify');
+    }
+
+    public function showVerificationForm()
+    {
+        $email = session('registration_email');
+        if (!$email) {
+            return redirect()->route('register')->with('error', '登録プロセスを最初からやり直してください。');
+        }
+        return view('auth.verify', ['email' => $email]);
+    }
+
+    public function verify(Request $request)
+    {
+        $request->validate([
+            'verification_code' => 'required|string|size:4',
+        ]);
+
+        $user = User::where('email', session('registration_email'))
+                    ->where('verification_code', $request->verification_code)
+                    ->first();
+
+        if (!$user) {
+            return back()->withErrors(['verification_code' => '無効な認証コードです。']);
+        }
+
+        // ユーザーを認証済みにする
+        $user->email_verified_at = now();
+        $user->verification_code = null;
+        $user->save();
+
+        // ユーザーを認証
         Auth::login($user);
 
-        $redirectTo = session('register_redirect_to', route('posts.create'));
-        session()->forget('register_redirect_to');
+        // リダイレクト先のURLを取得
+        $redirectTo = session('redirect_to', route('home'));
 
-        return redirect($redirectTo);
+        return redirect($redirectTo)->with('success', '登録が完了しました！');
+    }
+
+    public function resendCode(Request $request)
+    {
+        $user = User::where('email', $request->session()->get('registration_email'))
+            ->whereNull('email_verified_at')
+            ->first();
+
+        if (!$user) {
+            return back()->withErrors(['email' => 'ユーザーが見つかりません。']);
+        }
+
+        // 新しい確認コードの生成（4桁の数字）
+        $newVerificationCode = sprintf('%04d', mt_rand(0, 9999));
+        $user->verification_code = $newVerificationCode;
+        $user->save();
+
+        // 新しい確認コードのメール送信
+        Mail::to($user->email)->send(new VerificationCode($newVerificationCode));
+
+        return back()->with('message', '新しい確認コードを送信しました。');
     }
 }

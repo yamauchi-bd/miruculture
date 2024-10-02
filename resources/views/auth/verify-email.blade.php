@@ -1,7 +1,7 @@
 @include('layouts.navigation')
 
 <div class="container mx-auto px-4 sm:px-6 lg:px-8 lg:py-24 max-w-md">
-    <form method="POST" action="{{ route('register.verify') }}" class="mt-8 space-y-6">
+    <form method="POST" action="{{ route('verification.verify') }}" class="mt-8 space-y-6">
         @csrf
 
         <div class="text-center">
@@ -25,7 +25,7 @@
             <p>
                 コードが届かない場合は
                 <a class="underline text-cyan-500 hover:text-cyan-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500"
-                    href="{{ route('register.resend-code') }}">{{ __('再送信') }}</a>
+                    href="{{ route('verification.resend') }}">{{ __('再送信') }}</a>
                 してください。
             </p>
         </div>
