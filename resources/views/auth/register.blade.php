@@ -3,7 +3,7 @@
 <div class="container mx-auto px-4 sm:px-6 lg:px-8 py-4 lg:py-24 max-w-md">
     <form method="POST" action="{{ route('register') }}" class="mt-8 space-y-6">
         @csrf
-        <input type="hidden" name="redirect_to" value="{{ session('register_redirect_to', url()->previous()) }}">
+        <input type="hidden" name="redirect_to" value="{{ url()->previous() }}">
 
         <div class="text-center">
             <h2 class="text-xl sm:text-2xl font-bold mb-8 sm:mb-12">無料ユーザー登録（１分）</h2>
@@ -75,7 +75,7 @@
             <p>
                 登録がお済みの方は
                 <a class="underline text-cyan-500 hover:text-cyan-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-cyan-500"
-                    href="{{ route('login', ['redirect_to' => url()->current()]) }}">{{ __('ログイン') }}</a>
+                    href="{{ route('login', ['redirect_to' => request('redirect_to', url()->previous())]) }}">{{ __('ログイン') }}</a>
             </p>
         </div>
     </form>

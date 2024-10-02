@@ -12,7 +12,7 @@
 
         <form method="POST" action="{{ route('register.verify') }}">
             @csrf
-            <input type="hidden" name="redirect_to" value="{{ session('redirect_to') }}">
+            <input type="hidden" name="redirect_to" value="{{ session('redirect_after_verify') }}">
 
             <div class="mt-8 mb-6">
                 <label for="verification_code" class="block text-base font-semibold text-gray-700 mb-4 text-center">

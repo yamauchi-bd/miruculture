@@ -12,8 +12,12 @@ use App\Mail\VerificationCode;
 
 class RegisteredUserController extends Controller
 {
-    public function create()
+    public function create(Request $request)
     {
+        $redirectTo = $request->query('redirect_to');
+        if ($redirectTo) {
+            $request->session()->put('redirect_after_verify', $redirectTo);
+        }
         return view('auth.register');
     }
 
@@ -37,9 +41,9 @@ class RegisteredUserController extends Controller
         // 認証コードをメールで送信
         Mail::to($user->email)->send(new VerificationCode($verificationCode));
 
-        // セッションにメールアドレスを保存
-        session(['registration_email' => $user->email]);
-
+        // セッションに登録メールアドレスを保存
+        $request->session()->put('registration_email', $user->email);
+        
         // 認証コード入力ページにリダイレクト
         return redirect()->route('register.verify');
     }
@@ -75,8 +79,9 @@ class RegisteredUserController extends Controller
         // ユーザーを認証
         Auth::login($user);
 
-        // リダイレクト先のURLを取得
-        $redirectTo = session('redirect_to', route('home'));
+        // セッションから遷移先URLを取得し、セッションをクリア
+        $redirectTo = $request->session()->pull('redirect_after_verify', route('home'));
+        $request->session()->forget('registration_email');
 
         return redirect($redirectTo)->with('success', '登録が完了しました！');
     }

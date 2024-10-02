@@ -322,7 +322,7 @@
                                             <span class="text-2xs sm:text-xs text-gray-600 whitespace-nowrap">
                                                 {{ $culture['a'] }}
                                             </span>
-                                            <span class="text-2xs sm:text-2xs text-gray-600">← </span>
+                                            <span class="text-2xs sm:text-xs text-gray-600">← </span>
                                             @php
                                                 $options = ['A寄り', 'ややA寄り', 'どちらとも', 'ややB寄り', 'B寄り'];
                                             @endphp

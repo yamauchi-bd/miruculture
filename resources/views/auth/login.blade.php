@@ -9,7 +9,7 @@
 
     <form method="POST" action="{{ route('login') }}" class="mt-8 space-y-6">
         @csrf
-        <input type="hidden" name="redirect_to" value="{{ session('login_redirect_to', url()->previous()) }}">
+        <input type="hidden" name="redirect_to" value="{{ session('url.intended') }}">
 
         <div class="text-center">
             <h2 class="text-xl sm:text-2xl font-bold mb-8 sm:mb-12">ログイン</h2>
