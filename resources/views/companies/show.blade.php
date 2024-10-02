@@ -316,7 +316,7 @@
 
                                         <div class="flex items-center mb-4">
                                             <label
-                                                class="mr-4 text-sm sm:text-base text-gray-700 font-bold whitespace-nowrap">
+                                                class="sm:mr-4 text-xs sm:text-base text-gray-700 font-bold whitespace-nowrap">
                                                 【{{ $culture['name'] }}】
                                             </label>
                                             <span class="text-2xs sm:text-xs text-gray-600 whitespace-nowrap">
@@ -327,10 +327,9 @@
                                                 $options = ['A寄り', 'ややA寄り', 'どちらとも', 'ややB寄り', 'B寄り'];
                                             @endphp
                                             @foreach ($options as $value => $label)
-                                                <div class="w-8 sm:w-10 mx-1">
+                                                <div class="w-2 sm:w-10 mx-1">
                                                     <div
-                                                        class="text-center py-1 border {{ $value + 1 == $culture['value'] ? 'bg-cyan-500 text-white border-cyan-500' : 'border-gray-300 text-gray-600' }} rounded transition-all duration-100 ease-in-out">
-                                                        {{-- <span class="text-2xs sm:text-2xs">{{ $label }}</span> --}}
+                                                        class="w-3 h-1 sm:w-10 sm:h-1  text-center py-1 border {{ $value + 1 == $culture['value'] ? 'bg-cyan-500 text-white border-cyan-500' : 'border-gray-300 text-gray-600' }} rounded transition-all duration-100 ease-in-out">
                                                     </div>
                                                 </div>
                                             @endforeach
