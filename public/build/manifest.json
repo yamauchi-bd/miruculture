@@ -1,6 +1,6 @@
 {
   "resources/css/app.css": {
-    "file": "assets/app-Cxk1kssi.css",
+    "file": "assets/app-DK1kqzOY.css",
     "src": "resources/css/app.css",
     "isEntry": true
   },
@@ -10,7 +10,7 @@
     "isEntry": true
   },
   "resources/js/app.js": {
-    "file": "assets/app-BVaxDO61.js",
+    "file": "assets/app-CxUxYH50.js",
     "name": "app",
     "src": "resources/js/app.js",
     "isEntry": true,
@@ -25,13 +25,13 @@
     "isEntry": true
   },
   "resources/js/company-input.js": {
-    "file": "assets/company-input-BwPMOfhM.js",
+    "file": "assets/company-input-DJwSBICs.js",
     "name": "company-input",
     "src": "resources/js/company-input.js",
     "isEntry": true
   },
   "resources/js/company-search.js": {
-    "file": "assets/company-search-BLbT7I_j.js",
+    "file": "assets/company-search-CQo6AiuP.js",
     "name": "company-search",
     "src": "resources/js/company-search.js",
     "isEntry": true

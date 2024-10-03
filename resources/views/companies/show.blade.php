@@ -16,12 +16,12 @@
                 @auth
                     <a href="{{ route('posts.create.step1', ['corporate_number' => $company['corporate_number']]) }}"
                         class='block w-full sm:w-auto py-2 px-3 text-sm bg-cyan-500 text-white rounded-lg shadow-md cursor-pointer font-semibold text-center transition-all duration-300 ease-in-out hover:bg-cyan-700'>
-                        入社エントリを投稿する
+                        企業カルチャーを登録する
                     </a>
                 @else
                     <a href="{{ route('register', ['redirect_to' => route('posts.create.step1', ['corporate_number' => $company['corporate_number']])]) }}"
                         class='block w-full sm:w-auto py-2 px-3 text-sm bg-cyan-500 text-white rounded-lg shadow-md cursor-pointer font-semibold text-center transition-all duration-300 ease-in-out hover:bg-cyan-700'>
-                        入社エントリを投稿する
+                        企業カルチャーを登録する
                     </a>
                 @endauth
             </div>
@@ -67,17 +67,17 @@
                             @if ($posts->isEmpty())
                             <div class="absolute inset-0 flex flex-col items-center justify-center">
                                 <p class="text-sm sm:text-base md:text-lg lg:text-xl text-cyan-500 font-bold text-center leading-tight sm:leading-normal mb-4">
-                                    入社の決め手を投稿して、<br class="sm:hidden">従業員の価値観を<br class="hidden sm:inline md:hidden">可視化しよう！
+                                    「入社の決め手」を登録して、<br class="sm:hidden">従業員の価値観を<br class="hidden sm:inline md:hidden">可視化しよう！
                                 </p>
                                 @auth
                                     <a href="{{ route('posts.create.step1', ['corporate_number' => $company['corporate_number']]) }}"
                                         class='block w-full sm:w-auto py-2 px-3 text-sm bg-cyan-500 text-white rounded-lg shadow-md cursor-pointer font-semibold text-center transition-all duration-300 ease-in-out hover:bg-cyan-700'>
-                                        入社エントリを投稿する
+                                        入社の決め手を登録する
                                     </a>
                                 @else
                                     <a href="{{ route('register', ['redirect_to' => route('posts.create.step1', ['corporate_number' => $company['corporate_number']])]) }}"
                                         class='block w-full sm:w-auto py-2 px-3 text-sm bg-cyan-500 text-white rounded-lg shadow-md cursor-pointer font-semibold text-center transition-all duration-300 ease-in-out hover:bg-cyan-700'>
-                                        入社エントリを投稿する
+                                        入社の決め手を登録する
                                     </a>
                                 @endauth
                             </div>
@@ -96,17 +96,17 @@
                             @if ($posts->isEmpty())
                             <div class="px-4 sm:px-8 py-3 sm:py-4 relative h-[27vh] w-full lg:h-[39vh] sm:h-[27vh] flex flex-col items-center justify-center">
                                 <p class="text-sm sm:text-base md:text-lg lg:text-xl text-cyan-500 font-bold text-center leading-tight sm:leading-normal mb-4">
-                                    社風・雰囲気を投稿して、<br class="sm:hidden">企業カルチャーを<br class="hidden sm:inline md:hidden">可視化しよう！
+                                    「社風･雰囲気」を登録して、<br class="sm:hidden">企業カルチャーを<br class="hidden sm:inline md:hidden">可視化しよう！
                                 </p>
                                 @auth
                                     <a href="{{ route('posts.create.step1', ['corporate_number' => $company['corporate_number']]) }}"
                                         class='block w-full sm:w-auto py-2 px-3 text-sm bg-cyan-500 text-white rounded-lg shadow-md cursor-pointer font-semibold text-center transition-all duration-300 ease-in-out hover:bg-cyan-700'>
-                                        入社エントリを投稿する
+                                        社風･雰囲気を登録する
                                     </a>
                                 @else
                                     <a href="{{ route('register', ['redirect_to' => route('posts.create.step1', ['corporate_number' => $company['corporate_number']])]) }}"
                                         class='block w-full sm:w-auto py-2 px-3 text-sm bg-cyan-500 text-white rounded-lg shadow-md cursor-pointer font-semibold text-center transition-all duration-300 ease-in-out hover:bg-cyan-700'>
-                                        入社エントリを投稿する
+                                        社風･雰囲気を登録する
                                     </a>
                                 @endauth
                             </div>

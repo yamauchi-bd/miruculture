@@ -70,7 +70,7 @@
                 <div class="flex relative">
                     <input type="text" id="company-input" required
                         class="block w-full px-4 py-2 pr-12 border border-gray-300 text-base font-normal text-gray-700 bg-white rounded-md placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
-                        placeholder="投稿する企業を探す..." value="{{ $company ? $company->company_name : '' }}">
+                        placeholder="登録する企業を探す..." value="{{ $company ? $company->company_name : '' }}">
                     <button type="button" id="input-button"
                         class="absolute right-0 top-0 h-full px-3 bg-cyan-500 text-white text-sm font-bold rounded-r-md transition-all hover:bg-cyan-700 flex items-center justify-center">
                         <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
@@ -174,7 +174,7 @@
             <div class="w-full flex-col justify-start items-start mb-10 gap-1.5 flex">
                 <label for="job_subcategory"
                     class="flex gap-1 mb-2 items-center text-gray-700 text-sm font-bold leading-relaxed">
-                    職種（小カテゴリー）
+                    詳細な職種
                     <x-required-mark />
                     <p id="job_subcategory-error" class="error-message text-red-500 text-xs" style="display: none;">
                     </p>
