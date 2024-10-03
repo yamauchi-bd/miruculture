@@ -59,6 +59,7 @@ class PostController extends Controller
             'start_year' => 'required|integer|min:1900|max:' . date('Y'),
             'end_year' => 'nullable|required_if:status,退職済み|integer|min:1900|max:' . date('Y'),
             'current_job_category_id' => 'required|exists:job_categories,id',
+            'current_job_subcategory_id' => 'required|exists:job_categories,id',
         ]);
 
         $request->session()->put('post_step1', $validatedData);
@@ -126,8 +127,6 @@ class PostController extends Controller
             'culture_5' => 'required|integer|min:1|max:5',
             'culture_6' => 'required|integer|min:1|max:5',
             'culture_7' => 'required|integer|min:1|max:5',
-            'culture_8' => 'required|integer|min:1|max:5',
-            'culture_9' => 'required|integer|min:1|max:5',
             'culture_detail_0' => 'nullable|string',
             'culture_detail_1' => 'nullable|string',
             'culture_detail_2' => 'nullable|string',
@@ -136,8 +135,6 @@ class PostController extends Controller
             'culture_detail_5' => 'nullable|string',
             'culture_detail_6' => 'nullable|string',
             'culture_detail_7' => 'nullable|string',
-            'culture_detail_8' => 'nullable|string',
-            'culture_detail_9' => 'nullable|string',
         ]);
 
         // 補足の合計文字数を確認
@@ -198,7 +195,7 @@ class PostController extends Controller
             'start_year' => "required|integer|min:1900|max:$currentYear",
             'end_year' => "nullable|integer|min:1900|max:$currentYear",
             'current_job_category_id' => 'required|exists:job_categories,id',
-            // 'current_job_subcategory_id' => 'required|exists:job_categories,id',
+            'current_job_subcategory_id' => 'required|exists:job_categories,id',
             'deciding_factor_1' => 'required|string',
             'factor_1_detail' => 'required|string|min:100',
             'factor_1_satisfaction' => 'required|integer|min:1|max:5',
@@ -236,7 +233,7 @@ class PostController extends Controller
             'start_year' => 'required|integer|min:1900|max:' . date('Y'),
             'end_year' => 'nullable|integer|min:1900|max:' . date('Y'),
             'current_job_category_id' => 'required|exists:job_categories,id',
-            // 'current_job_subcategory_id' => 'required|exists:job_categories,id',
+            'current_job_subcategory_id' => 'required|exists:job_categories,id',
         ]);
 
         if ($validator->fails()) {

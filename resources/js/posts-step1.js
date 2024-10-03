@@ -21,6 +21,30 @@ function setupJobCategories() {
 
     // 職種カテゴリーの設定コード
     // 必要に応じて、サブカテゴリーの処理を追加
+    const subCategories = JSON.parse(jobCategoriesElement.dataset.categories);
+    const jobCategoryElement = document.getElementById('job_category');
+    if (!jobCategoryElement) {
+        console.error('job_category element not found');
+        return;
+    }
+
+    jobCategoryElement.addEventListener('change', function () {
+        updateSubCategories(this.value, subCategories);
+    });
+}
+
+function updateSubCategories(selectedCategoryId, subCategories) {
+    const subCategorySelect = document.getElementById('job_subcategory');
+    subCategorySelect.innerHTML = '<option value="">選択してください</option>';
+
+    if (selectedCategoryId && subCategories[selectedCategoryId]) {
+        subCategories[selectedCategoryId].forEach(subCategory => {
+            const option = document.createElement('option');
+            option.value = subCategory.id;
+            option.textContent = subCategory.name;
+            subCategorySelect.appendChild(option);
+        });
+    }
 }
 
 function setupFormNavigation() {
@@ -116,7 +140,7 @@ function setupYearSelection() {
     const startYearSelect = document.getElementById('start_year');
     const endYearSelect = document.getElementById('end_year');
 
-    startYearSelect.addEventListener('change', function() {
+    startYearSelect.addEventListener('change', function () {
         updateEndYearOptions();
     });
 

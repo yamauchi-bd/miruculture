@@ -56,14 +56,12 @@
 
             @php
                 $cultureItems = [
-                    ['name' => '人間関係', 'a' => 'フォーマル', 'b' => 'カジュアル'],
-                    ['name' => '組織体系', 'a' => 'クローズ･階層的', 'b' => 'オープン･フラット'],
-                    ['name' => '判断基準', 'a' => 'ロジカル', 'b' => 'パッション'],
-                    ['name' => '事業の軸', 'a' => '収益･成長性', 'b' => 'ビジョン･理念'],
-                    ['name' => '組織特性', 'a' => '安定･保守', 'b' => '変革･挑戦'],
+                    ['name' => '人間関係', 'a' => 'ドライ', 'b' => 'ウェット'],
+                    ['name' => '業務スタイル', 'a' => 'ロジカル', 'b' => 'クリエイティブ'],
                     ['name' => '評価基準', 'a' => 'プロセス重視', 'b' => '結果重視'],
+                    ['name' => '組織スタイル', 'a' => '個人プレー', 'b' => 'チームプレー'],
                     ['name' => '意思決定', 'a' => 'トップダウン', 'b' => 'ボトムアップ'],
-                    ['name' => '仕事の進め方', 'a' => '個人プレー', 'b' => 'チームプレー'],
+                    ['name' => '行動スタイル', 'a' => '計画･確実性', 'b' => '実行･スピード'],
                     ['name' => '雰囲気', 'a' => 'モクモク･真面目', 'b' => 'ワイワイ･元気'],
                     ['name' => 'ワークライフ', 'a' => 'バランス重視', 'b' => 'ワーク重視'],
                 ];
@@ -110,16 +108,13 @@
                 </p>
                 @foreach ($cultureItems as $index => $item)
                     <div class="mb-12">
-                        <label for="culture_detail_{{ $index }}" class="block text-sm font-semibold text-gray-700 mb-2">
+                        <label for="culture_detail_{{ $index }}"
+                            class="block text-sm font-semibold text-gray-700 mb-2">
                             {{ $item['name'] }}について
                         </label>
-                        <textarea
-                            id="culture_detail_{{ $index }}"
-                            name="culture_detail_{{ $index }}"
-                            rows="3"
+                        <textarea id="culture_detail_{{ $index }}" name="culture_detail_{{ $index }}" rows="3"
                             class="shadow-sm focus:ring-cyan-500 focus:border-cyan-500 mt-1 block w-full sm:text-sm border-gray-300 rounded-md"
-                            {{-- placeholder="{{ $item['name'] }}について、具体的な例や詳細な説明を記入してください。" --}}
-                        ></textarea>
+                            {{-- placeholder="{{ $item['name'] }}について、具体的な例や詳細な説明を記入してください。" --}}></textarea>
                         <div class="mt-2 text-right text-xs text-gray-500">
                             合計文字数: <span id="culture_detail_count_{{ $index }}">0</span>/300文字以上
                         </div>

@@ -51,7 +51,8 @@
 </div>
 
 <div class="max-w-7xl mt-12 px-4 md:px-5 md:w-3/5 lg:w-2/5 lg:px-5 mx-auto">
-    <div id="job-categories" data-categories="{{ json_encode($jobCategories->pluck('children', 'id')) }}" style="display: none;"></div>
+    <div id="job-categories" data-categories="{{ json_encode($jobCategories->pluck('children', 'id')) }}"
+        style="display: none;"></div>
 
     <form action="{{ route('posts.store.step1') }}" method="POST">
         @csrf
@@ -65,12 +66,11 @@
                     <x-required-mark />
                     <p id="company_name-error" class="error-message text-red-500 text-xs" style="display: none;"></p>
                 </label>
-            
+
                 <div class="flex relative">
                     <input type="text" id="company-input" required
                         class="block w-full px-4 py-2 pr-12 border border-gray-300 text-base font-normal text-gray-700 bg-white rounded-md placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
-                        placeholder="投稿する企業を探す..."
-                        value="{{ $company ? $company->company_name : '' }}">
+                        placeholder="投稿する企業を探す..." value="{{ $company ? $company->company_name : '' }}">
                     <button type="button" id="input-button"
                         class="absolute right-0 top-0 h-full px-3 bg-cyan-500 text-white text-sm font-bold rounded-r-md transition-all hover:bg-cyan-700 flex items-center justify-center">
                         <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
@@ -83,10 +83,14 @@
                                 stroke="#ffffff" stroke-width="3" class="my-path"></path>
                         </svg>
                     </button>
-                    <div id="input-results" class="absolute z-10 bg-white border border-gray-300 rounded-md shadow-lg w-full left-0 top-full mt-1 text-sm hidden"></div>
+                    <div id="input-results"
+                        class="absolute z-10 bg-white border border-gray-300 rounded-md shadow-lg w-full left-0 top-full mt-1 text-sm hidden">
+                    </div>
                 </div>
-                <input type="hidden" id="company_name" name="company_name" value="{{ $company ? $company->company_name : '' }}">
-                <input type="hidden" id="corporate_number" name="corporate_number" value="{{ $company ? $company->corporate_number : '' }}">
+                <input type="hidden" id="company_name" name="company_name"
+                    value="{{ $company ? $company->company_name : '' }}">
+                <input type="hidden" id="corporate_number" name="corporate_number"
+                    value="{{ $company ? $company->corporate_number : '' }}">
             </div>
 
             <div class="mb-10">
@@ -152,7 +156,8 @@
             </div>
 
             <div class="mb-10">
-                <label for="job_category" class="flex gap-1 mb-2 items-center text-gray-700 text-sm font-bold leading-relaxed">
+                <label for="job_category"
+                    class="flex gap-1 mb-2 items-center text-gray-700 text-sm font-bold leading-relaxed">
                     職種
                     <x-required-mark />
                     <p id="job_category-error" class="error-message text-red-500 text-xs" style="display: none;"></p>
@@ -164,6 +169,23 @@
                         <option value="{{ $category->id }}">{{ $category->name }}</option>
                     @endforeach
                 </select>
+            </div>
+
+            <div class="w-full flex-col justify-start items-start mb-10 gap-1.5 flex">
+                <label for="job_subcategory"
+                    class="flex gap-1 mb-2 items-center text-gray-700 text-sm font-bold leading-relaxed">
+                    職種（小カテゴリー）
+                    <x-required-mark />
+                    <p id="job_subcategory-error" class="error-message text-red-500 text-xs" style="display: none;">
+                    </p>
+                </label>
+                <div class="w-full flex gap-4">
+                    <select id="job_subcategory" name="current_job_subcategory_id" required
+                        class="h-10 w-full px-4 border border-gray-300 text-base font-normal text-gray-700 bg-white rounded-md placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent">
+                        <option value="">選択してください</option>
+                        <!-- 大カテゴリー選択後にJavaScriptで動的に追加 -->
+                    </select>
+                </div>
             </div>
 
             <div class="flex justify-center mt-16">

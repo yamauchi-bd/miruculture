@@ -19,7 +19,7 @@ class Post extends Model
         'start_year',
         'end_year',
         'current_job_category_id',
-        // 'current_job_subcategory_id',
+        'current_job_subcategory_id',
         'deciding_factor_1',
         'factor_1_detail',
         'factor_1_satisfaction',
@@ -40,8 +40,6 @@ class Post extends Model
         'culture_5',
         'culture_6',
         'culture_7',
-        'culture_8',
-        'culture_9',
         'culture_detail_0',
         'culture_detail_1',
         'culture_detail_2',
@@ -50,8 +48,6 @@ class Post extends Model
         'culture_detail_5',
         'culture_detail_6',
         'culture_detail_7',
-        'culture_detail_8',
-        'culture_detail_9',
     ];
 
     public function user()
@@ -64,10 +60,10 @@ class Post extends Model
         return $this->belongsTo(JobCategory::class, 'current_job_category_id');
     }
     
-    // public function jobSubcategory()
-    // {
-    //     return $this->belongsTo(JobCategory::class, 'current_job_subcategory_id');
-    // }
+    public function jobSubcategory()
+    {
+        return $this->belongsTo(JobCategory::class, 'current_job_subcategory_id');
+    }
     
     public function getDecidingFactorsAttribute()
     {
@@ -93,20 +89,18 @@ class Post extends Model
     public function getCultureDetailsAttribute()
     {
         $cultureItems = [
-            ['name' => '人間関係', 'a' => 'フォーマル', 'b' => 'カジュアル'],
-            ['name' => '組織体系', 'a' => 'クローズ･階層的', 'b' => 'オープン･フラット'],
-            ['name' => '判断基準', 'a' => 'ロジカル', 'b' => 'パッション'],
-            ['name' => '事業の軸', 'a' => '収益･成長性', 'b' => 'ビジョン･理念'],
-            ['name' => '組織特性', 'a' => '安定･保守', 'b' => '変革･挑戦'],
+            ['name' => '人間関係', 'a' => 'ドライ', 'b' => 'ウェット'],
+            ['name' => '業務スタイル', 'a' => 'ロジカル', 'b' => 'クリエイティブ'],
             ['name' => '評価基準', 'a' => 'プロセス重視', 'b' => '結果重視'],
+            ['name' => '組織スタイル', 'a' => '個人プレー', 'b' => 'チームプレー'],
             ['name' => '意思決定', 'a' => 'トップダウン', 'b' => 'ボトムアップ'],
-            ['name' => '仕事の進め方', 'a' => '個人プレー', 'b' => 'チームプレー'],
+            ['name' => '行動スタイル', 'a' => '計画･確実性', 'b' => '実行･スピード'],
             ['name' => '雰囲気', 'a' => 'モクモク･真面目', 'b' => 'ワイワイ･元気'],
-            ['name' => 'ワークライフ', 'a' => 'バランス重視', 'b' => 'ワーク重視'],
+            ['name' => 'ワークライフ', 'a' => 'バランス重視', 'b' => 'ワーク重視'], 
         ];
 
         $details = [];
-        for ($i = 0; $i < 10; $i++) {
+        for ($i = 0; $i < 8; $i++) {
             $details[] = [
                 'name' => $cultureItems[$i]['name'],
                 'a' => $cultureItems[$i]['a'],
@@ -123,7 +117,6 @@ class Post extends Model
         return array_sum(array_map('strlen', array_filter([
             $this->culture_detail_0, $this->culture_detail_1, $this->culture_detail_2, $this->culture_detail_3,
             $this->culture_detail_4, $this->culture_detail_5, $this->culture_detail_6, $this->culture_detail_7,
-            $this->culture_detail_8, $this->culture_detail_9
         ])));
     }
 }
