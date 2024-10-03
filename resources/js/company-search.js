@@ -46,9 +46,9 @@ document.addEventListener('DOMContentLoaded', function () {
             return;
         }
 
-        const url = `${window.appUrl}/companies/search?query=${encodeURIComponent(query)}`;
+        const url = `/api/company-search?query=${encodeURIComponent(query)}`;
         showLoading(index);
-    
+
         fetch(url)
             .then(response => {
                 if (!response.ok) {
@@ -57,12 +57,27 @@ document.addEventListener('DOMContentLoaded', function () {
                 return response.json();
             })
             .then(data => {
-                cachedResults[query] = data;
-                displayResults(data, index);
+                console.log('API Response:', data);  // レスポンスをコンソールに出力
+
+                if (data.errors) {
+                    throw new Error(data.errors);
+                }
+
+                let companies = [];
+                if (data['hojin-infos'] && Array.isArray(data['hojin-infos'])) {
+                    companies = data['hojin-infos'].map(company => ({
+                        company_name: company.name,
+                        location: company.location,
+                        corporate_number: company.corporate_number
+                    }));
+                }
+
+                cachedResults[query] = companies;
+                displayResults(companies, index);
             })
             .catch(error => {
                 console.error('Error:', error);
-                searchResults[index].innerHTML = '<p class="p-2 text-red-500">検索中にエラーが発生しました。</p>';
+                searchResults[index].innerHTML = '<p class="p-2 text-red-500">検索中にエラーが発生しました。: ' + error.message + '</p>';
                 searchResults[index].classList.remove('hidden');
             })
             .finally(() => {

@@ -13,6 +13,8 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Foundation\Auth\EmailVerificationRequest;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 
 // 基本ルート
 Route::get('/', [WelcomeController::class, 'index'])->name('home');
@@ -101,5 +103,20 @@ Route::get('/legal', [InformationController::class, 'legal'])->name('legal');
 Route::get('/login', [AuthenticatedSessionController::class, 'create'])->name('login');
 Route::post('/login', [AuthenticatedSessionController::class, 'store']);
 Route::post('/logout', [AuthenticatedSessionController::class, 'destroy'])->name('logout');
+
+// 企業検索API
+Route::get('/api/company-search', function (Request $request) {
+    $query = $request->input('query');
+    $apiUrl = "https://info.gbiz.go.jp/hojin/v1/hojin?name=" . urlencode($query);
+
+    $response = Http::withHeaders([
+        'X-hojinInfo-api-token' => config('services.gbizinfo.api_key'),
+    ])->get($apiUrl);
+
+    $data = $response->json();
+    Log::info('API Response:', ['data' => $data]);  // 配列としてログに出力
+
+    return $data;
+});
 
 require __DIR__ . '/auth.php';
