@@ -69,12 +69,12 @@ class CompanyController extends Controller
                 'corporate_number' => $apiCompanyData['corporate_number'],
                 'company_name' => $apiCompanyData['name'],
                 'location' => $apiCompanyData['location'],
-                'company_url' => $apiCompanyData['company_url'] ?? null,
-                'employee_number' => $apiCompanyData['employee_number'] ?? null,
-                'date_of_establishment' => $apiCompanyData['date_of_establishment'] ?? null,
-                'capital_stock' => $apiCompanyData['capital_stock'] ?? null,
-                'representative_name' => $apiCompanyData['representative_name'] ?? null,
-                'business_summary' => $apiCompanyData['business_summary'] ?? null,
+                'company_url' => $dbCompanyData->company_url ?? $apiCompanyData['company_url'] ?? null,
+                'employee_number' => $dbCompanyData->employee_number ?? $apiCompanyData['employee_number'] ?? null,
+                'date_of_establishment' => $dbCompanyData->date_of_establishment ?? $apiCompanyData['date_of_establishment'] ?? null,
+                'capital_stock' => $dbCompanyData->capital_stock ?? $apiCompanyData['capital_stock'] ?? null,
+                'representative_name' => $dbCompanyData->representative_name ?? $apiCompanyData['representative_name'] ?? null,
+                'business_summary' => $dbCompanyData->business_summary ?? $apiCompanyData['business_summary'] ?? null,
                 // データベースから取得する追加情報
                 'company_mission' => $dbCompanyData->company_mission ?? null,
                 'company_vision' => $dbCompanyData->company_vision ?? null,
@@ -106,8 +106,26 @@ class CompanyController extends Controller
      */
     public function edit($corporateNumber)
     {
-        $company = Company::where('corporate_number', $corporateNumber)->firstOrFail();
-        $industries = Industry::all(); // 全ての業界を取得
+        $dbCompany = Company::where('corporate_number', $corporateNumber)->firstOrFail();
+        $industries = Industry::all();
+
+        $company = [
+            'corporate_number' => $dbCompany->corporate_number,
+            'company_name' => $dbCompany->company_name,
+            'business_summary' => $dbCompany->business_summary,
+            'company_mission' => $dbCompany->company_mission,
+            'company_vision' => $dbCompany->company_vision,
+            'company_values' => $dbCompany->company_values,
+            'company_url' => $dbCompany->company_url,
+            'location' => $dbCompany->location,
+            'employee_number' => $dbCompany->employee_number,
+            'date_of_establishment' => $dbCompany->date_of_establishment,
+            'capital_stock' => $dbCompany->capital_stock,
+            'representative_name' => $dbCompany->representative_name,
+            'industry_id' => $dbCompany->industry_id,
+            'listing_status' => $dbCompany->listing_status,
+        ];
+
         return view('companies.edit', compact('company', 'industries'));
     }
 
@@ -157,11 +175,38 @@ class CompanyController extends Controller
     {
         $query = $request->input('query');
 
-        $companies = Cache::remember("company_search:{$query}", now()->addMinutes(60), function () use ($query) {
-            return Company::search($query)->get();
-        });
+        try {
+            $apiUrl = "https://info.gbiz.go.jp/hojin/v1/hojin";
+            $response = Http::withHeaders([
+                'X-hojinInfo-api-token' => config('services.gbizinfo.api_key'),
+            ])->get($apiUrl, [
+                'name' => $query,
+                'limit' => 15, // 必要に応じて調整してください
+            ]);
 
-        return response()->json($companies);
+            $apiData = $response->json();
+
+            if (!isset($apiData['hojin-infos']) || empty($apiData['hojin-infos'])) {
+                return response()->json([]);
+            }
+
+            $companies = collect($apiData['hojin-infos'])->map(function ($apiCompanyData) {
+                // データベースから追加情報
+                $dbCompanyData = Company::where('corporate_number', $apiCompanyData['corporate_number'])->first();
+
+                return [
+                    'corporate_number' => $apiCompanyData['corporate_number'],
+                    'company_name' => $apiCompanyData['name'],
+                    'location' => $apiCompanyData['location'],
+                ];
+            })->values();
+
+            return response()->json($companies);
+
+        } catch (\Exception $e) {
+            Log::error('API search error: ' . $e->getMessage());
+            return response()->json(['error' => '検索中にエラーが発生しました。'], 500);
+        }
     }
 
     private function calculateDecidingFactorsData($posts)
@@ -202,16 +247,14 @@ class CompanyController extends Controller
     private function calculateCompanyCultureFactors($posts)
     {
         $cultureItems = [
-            ['name' => '人間関係', 'a' => 'フォーマル', 'b' => 'カジュアル'],
-            ['name' => '組織体系', 'a' => 'クローズ･階層的', 'b' => 'オープン･フラット'],
-            ['name' => '判断基準', 'a' => 'ロジカル', 'b' => 'パッション'],
-            ['name' => '事業の軸', 'a' => '収益･成長性', 'b' => 'ビジョン･理念'],
-            ['name' => '組織特性', 'a' => '安定･保守', 'b' => '変革･挑戦'],
+            ['name' => '人間関係', 'a' => 'ドライ', 'b' => 'ウェット'],
+            ['name' => '業務スタイル', 'a' => 'ロジカル', 'b' => 'クリエイティブ'],
             ['name' => '評価基準', 'a' => 'プロセス重視', 'b' => '結果重視'],
+            ['name' => '組織スタイル', 'a' => '個人プレー', 'b' => 'チームプレー'],
             ['name' => '意思決定', 'a' => 'トップダウン', 'b' => 'ボトムアップ'],
-            ['name' => '仕事の進め方', 'a' => '個人プレー', 'b' => 'チームプレー'],
+            ['name' => '行動スタイル', 'a' => '計画･確実性', 'b' => '実行･スピード'],
             ['name' => '雰囲気', 'a' => 'モクモク･真面目', 'b' => 'ワイワイ･元気'],
-            ['name' => 'ワークライフ', 'a' => 'バランス重視', 'b' => 'ワーク重視'],
+            ['name' => 'ワークライフ', 'a' => 'バランス重視', 'b' => 'ワーク重視'], 
         ];
     
         $factorData = [];

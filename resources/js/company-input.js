@@ -39,18 +39,35 @@ document.addEventListener('DOMContentLoaded', function () {
     });
 
     function fetchCompanies(query) {
-        const url = `${window.appUrl}/companies/search?query=${encodeURIComponent(query)}`;
+        const url = `/api/company-search?query=${encodeURIComponent(query)}`;
         
         showLoading();
 
         fetch(url)
-            .then(response => response.json())
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                return response.json();
+            })
             .then(data => {
-                displayResults(data);
+                console.log('API Response:', data);  // レスポンスをコンソールに出力
+                if (Array.isArray(data)) {
+                    displayResults(data);
+                } else if (data['hojin-infos'] && Array.isArray(data['hojin-infos'])) {
+                    const companies = data['hojin-infos'].map(company => ({
+                        corporate_number: company.corporate_number,
+                        company_name: company.name,
+                        location: company.location
+                    }));
+                    displayResults(companies);
+                } else {
+                    displayResults([]);
+                }
             })
             .catch(error => {
                 console.error('Error:', error);
-                searchResults.innerHTML = '<p class="p-2 text-red-500">検索中にエラーが発生しました。</p>';
+                searchResults.innerHTML = '<p class="p-2 text-red-500">検索中にエラーが発生しました。: ' + error.message + '</p>';
             })
             .finally(() => {
                 hideLoading();
@@ -76,7 +93,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function displayResults(companies) {
         searchResults.innerHTML = '';
-        if (companies.length === 0) {
+        if (!Array.isArray(companies) || companies.length === 0) {
             searchResults.innerHTML = '<p class="p-2">検索結果がありません。</p>';
         } else {
             const ul = document.createElement('ul');
