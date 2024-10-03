@@ -200,7 +200,7 @@
                                     <div class="flex justify-between items-center">
                                         <span class="text-2xs sm:text-xs leading-6 text-gray-500">
                                             {{ $post->jobCategory->name ?? '職種未設定' }}
-                                            {{-- {{ $post->jobSubcategory->name ?? '未設定' }} --}}
+                                            {{ $post->jobSubcategory->name ?? '未設定' }}
                                         </span>
                                         <span class="text-2xs sm:text-xs text-gray-500">
                                             投稿日: {{ $post->created_at->format('Y年m月d日') }}
@@ -295,7 +295,7 @@
                                     <div class="flex justify-between items-center">
                                         <span class="text-2xs sm:text-xs leading-6 text-gray-500">
                                             {{ $post->jobCategory->name ?? '職種未設定' }}
-                                            {{-- {{ $post->jobSubcategory->name ?? '未設定' }} --}}
+                                            {{ $post->jobSubcategory->name ?? '未設定' }}
                                         </span>
                                         <span class="text-2xs sm:text-xs text-gray-500">
                                             投稿日: {{ $post->created_at->format('Y年m月d日') }}

@@ -93,7 +93,7 @@
                                         <p>{{ $post->start_year ?? '◯◯' }}年
                                             {{ $post->entry_type ?? '未設定' }}（{{ $post->status ?? '未設定' }}）</p>
                                         <p>{{ $post->jobCategory->name ?? '職種未設定' }} 
-                                            {{-- {{ $post->jobSubcategory->name ?? '未設定' }} --}}
+                                            {{ $post->jobSubcategory->name ?? '未設定' }}
                                         </p>
                                     </div>
                                 </div>

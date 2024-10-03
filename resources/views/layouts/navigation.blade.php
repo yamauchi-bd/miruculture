@@ -42,7 +42,7 @@
                             class="block w-64 lg:w-96 px-4 py-2 text-sm font-normal shadow-xs text-gray-900 bg-white border border-gray-300 rounded-full placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent pr-12"
                             placeholder="気になる企業を検索する..." required="">
                         <button id="search-button"
-                            class="absolute right-1 top-1/2 transform -translate-y-1/2 p-2 rounded-full bg-cyan-500 text-white text-sm font-medium transition-all duration-300 hover:bg-cyan-600">
+                            class="absolute right-1 top-1/2 transform -translate-y-1/2 p-2 rounded-full bg-cyan-500 text-white text-sm font-medium transition-all duration-300">
                             <svg width="16px" height="16px" class="w-4 h-4" viewBox="0 0 24 24" fill="none"
                                 xmlns="http://www.w3.org/2000/svg">
                                 <path d="M17 17L21 21" stroke="#ffffff" stroke-width="3" stroke-linecap="round"
