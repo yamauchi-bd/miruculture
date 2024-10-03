@@ -11,15 +11,15 @@
             <div
                 class="w-full flex flex-col sm:flex-row justify-between items-start sm:items-center mb-4 lg:mb-12 sm:mb-6">
                 <h2 class="font-semibold text-lg sm:text-xl text-gray-700 mb-2 sm:mb-0">
-                    {{ $company->company_name }}
+                    {{ $company['company_name'] }}
                 </h2>
                 @auth
-                    <a href="{{ route('posts.create.step1', ['corporate_number' => $company->corporate_number]) }}"
+                    <a href="{{ route('posts.create.step1', ['corporate_number' => $company['corporate_number']]) }}"
                         class='block w-full sm:w-auto py-2 px-3 text-sm bg-cyan-500 text-white rounded-lg shadow-md cursor-pointer font-semibold text-center transition-all duration-300 ease-in-out hover:bg-cyan-700'>
                         入社エントリを投稿する
                     </a>
                 @else
-                    <a href="{{ route('register', ['redirect_to' => route('posts.create.step1', ['corporate_number' => $company->corporate_number])]) }}"
+                    <a href="{{ route('register', ['redirect_to' => route('posts.create.step1', ['corporate_number' => $company['corporate_number']])]) }}"
                         class='block w-full sm:w-auto py-2 px-3 text-sm bg-cyan-500 text-white rounded-lg shadow-md cursor-pointer font-semibold text-center transition-all duration-300 ease-in-out hover:bg-cyan-700'>
                         入社エントリを投稿する
                     </a>
@@ -70,12 +70,12 @@
                                     入社の決め手を投稿して、<br class="sm:hidden">従業員の価値観を<br class="hidden sm:inline md:hidden">可視化しよう！
                                 </p>
                                 @auth
-                                    <a href="{{ route('posts.create.step1', ['corporate_number' => $company->corporate_number]) }}"
+                                    <a href="{{ route('posts.create.step1', ['corporate_number' => $company['corporate_number']]) }}"
                                         class='block w-full sm:w-auto py-2 px-3 text-sm bg-cyan-500 text-white rounded-lg shadow-md cursor-pointer font-semibold text-center transition-all duration-300 ease-in-out hover:bg-cyan-700'>
                                         入社エントリを投稿する
                                     </a>
                                 @else
-                                    <a href="{{ route('register', ['redirect_to' => route('posts.create.step1', ['corporate_number' => $company->corporate_number])]) }}"
+                                    <a href="{{ route('register', ['redirect_to' => route('posts.create.step1', ['corporate_number' => $company['corporate_number']])]) }}"
                                         class='block w-full sm:w-auto py-2 px-3 text-sm bg-cyan-500 text-white rounded-lg shadow-md cursor-pointer font-semibold text-center transition-all duration-300 ease-in-out hover:bg-cyan-700'>
                                         入社エントリを投稿する
                                     </a>
@@ -99,12 +99,12 @@
                                     社風・雰囲気を投稿して、<br class="sm:hidden">企業カルチャーを<br class="hidden sm:inline md:hidden">可視化しよう！
                                 </p>
                                 @auth
-                                    <a href="{{ route('posts.create.step1', ['corporate_number' => $company->corporate_number]) }}"
+                                    <a href="{{ route('posts.create.step1', ['corporate_number' => $company['corporate_number']]) }}"
                                         class='block w-full sm:w-auto py-2 px-3 text-sm bg-cyan-500 text-white rounded-lg shadow-md cursor-pointer font-semibold text-center transition-all duration-300 ease-in-out hover:bg-cyan-700'>
                                         入社エントリを投稿する
                                     </a>
                                 @else
-                                    <a href="{{ route('register', ['redirect_to' => route('posts.create.step1', ['corporate_number' => $company->corporate_number])]) }}"
+                                    <a href="{{ route('register', ['redirect_to' => route('posts.create.step1', ['corporate_number' => $company['corporate_number']])]) }}"
                                         class='block w-full sm:w-auto py-2 px-3 text-sm bg-cyan-500 text-white rounded-lg shadow-md cursor-pointer font-semibold text-center transition-all duration-300 ease-in-out hover:bg-cyan-700'>
                                         入社エントリを投稿する
                                     </a>
@@ -196,10 +196,11 @@
                                 <div class="grid flex-grow">
                                     <h5 class="text-xs sm:text-sm text-gray-700 font-medium">
                                         {{ $post->start_year ?? '◯◯' }}年
-                                        {{ $post->entry_type ?? '未設定' }}（{{ $post->status ?? '未設定' }}）</h5>
+                                        {{ $post->entry_type ?? '未設定' }}（{{ $post->status ?? '未設定' }}）
+                                    </h5>
                                     <div class="flex justify-between items-center">
                                         <span class="text-2xs sm:text-xs leading-6 text-gray-500">
-                                            {{ $post->jobCategory->name ?? '職種未設定' }}
+                                            {{ $post->jobCategory->name ?? '職種未設定' }} >
                                             {{ $post->jobSubcategory->name ?? '未設定' }}
                                         </span>
                                         <span class="text-2xs sm:text-xs text-gray-500">
@@ -294,7 +295,7 @@
                                     </h5>
                                     <div class="flex justify-between items-center">
                                         <span class="text-2xs sm:text-xs leading-6 text-gray-500">
-                                            {{ $post->jobCategory->name ?? '職種未設定' }}
+                                            {{ $post->jobCategory->name ?? '職種未設定' }} >
                                             {{ $post->jobSubcategory->name ?? '未設定' }}
                                         </span>
                                         <span class="text-2xs sm:text-xs text-gray-500">
@@ -390,7 +391,7 @@
                     </a>
                 </div>
                 <div class="p-3 space-y-4">
-                    @if ($company->company_mission)
+                    @if ($company['company_mission'])
                         <div class="flex items-start space-x-4">
                             <div class="flex-shrink-0 mt-1">
                                 <svg class="w-6 h-6 text-cyan-500" fill="none" stroke="currentColor"
@@ -401,12 +402,12 @@
                             </div>
                             <div>
                                 <p class="text-xs font-medium text-gray-500">ミッション</p>
-                                <p class="text-xs text-gray-700">{{ $company->company_mission }}</p>
+                                <p class="text-xs text-gray-700">{{ $company['company_mission'] }}</p>
                             </div>
                         </div>
                     @endif
 
-                    @if ($company->company_vision)
+                    @if ($company['company_vision'])
                         <div class="flex items-start space-x-4">
                             <div class="flex-shrink-0 mt-1">
                                 <svg class="w-6 h-6 text-cyan-500" fill="none" stroke="currentColor"
@@ -419,13 +420,13 @@
                                 </svg>
                             </div>
                             <div>
-                                <p class="text-xs font-medium text-gray-500 pb-2">ビジョン</p>
-                                <p class="text-xs text-gray-700">{{ $company->company_vision }}</p>
+                                <p class="text-xs font-medium text-gray-500">ビジョン</p>
+                                <p class="text-xs text-gray-700">{{ $company['company_vision'] }}</p>
                             </div>
                         </div>
                     @endif
 
-                    @if ($company->company_values)
+                    @if ($company['company_values'])
                         <div class="flex items-start space-x-4">
                             <div class="flex-shrink-0 mt-1">
                                 <svg class="w-6 h-6 text-cyan-500" fill="none" stroke="currentColor"
@@ -436,13 +437,13 @@
                                 </svg>
                             </div>
                             <div>
-                                <p class="text-xs font-medium text-gray-500 pb-2">バリュー</p>
-                                <p class="text-xs text-gray-700">{{ $company->company_values }}</p>
+                                <p class="text-xs font-medium text-gray-500">バリュー</p>
+                                <p class="text-xs text-gray-700">{{ $company['company_values'] }}</p>
                             </div>
                         </div>
                     @endif
 
-                    @if ($company->business_summary)
+                    @if ($company['business_summary'])
                         <div class="flex items-start space-x-4">
                             <div class="flex-shrink-0 mt-1">
                                 <svg class="w-6 h-6 text-cyan-500" fill="none" stroke="currentColor"
@@ -453,15 +454,15 @@
                                 </svg>
                             </div>
                             <div>
-                                <p class="text-xs font-medium text-gray-500 pb-2">事業概要</p>
+                                <p class="text-xs font-medium text-gray-500">事業概要</p>
                                 <p class="text-xs text-gray-700">
-                                    {{ str_replace(["\r\n", "\r", "\n"], '　', e($company->business_summary)) }}
+                                    {{ str_replace(["\r\n", "\r", "\n"], '　', e($company['business_summary'])) }}
                                 </p>
                             </div>
                         </div>
                     @endif
 
-                    @if ($company->company_url)
+                    @if ($company['company_url'])
                         <div class="flex items-center space-x-4">
                             <div class="flex-shrink-0">
                                 <svg class="w-6 h-6 text-cyan-500" fill="none" stroke="currentColor"
@@ -473,13 +474,13 @@
                             </div>
                             <div>
                                 <p class="text-xs font-medium text-gray-500">ウェブサイト</p>
-                                <a href="{{ $company->company_url }}" target="_blank" rel="noopener noreferrer"
-                                    class="text-xs text-cyan-600 hover:text-cyan-800 transition duration-150 ease-in-out">{{ $company->company_url }}</a>
+                                <a href="{{ $company['company_url'] }}" target="_blank" rel="noopener noreferrer"
+                                    class="text-xs text-cyan-600 hover:text-cyan-800 transition duration-150 ease-in-out">{{ $company['company_url'] }}</a>
                             </div>
                         </div>
                     @endif
 
-                    @if ($company->location)
+                    @if ($company['location'])
                         <div class="flex items-center space-x-4">
                             <div class="flex-shrink-0">
                                 <svg class="w-6 h-6 text-cyan-500" fill="none" stroke="currentColor"
@@ -493,12 +494,12 @@
                             </div>
                             <div>
                                 <p class="text-xs font-medium text-gray-500">所在地</p>
-                                <p class="text-xs text-gray-700">{{ $company->location }}</p>
+                                <p class="text-xs text-gray-700">{{ $company['location'] }}</p>
                             </div>
                         </div>
                     @endif
 
-                    @if ($company->employee_number)
+                    @if ($company['employee_number'])
                         <div class="flex items-center space-x-4">
                             <div class="flex-shrink-0">
                                 <svg class="w-6 h-6 text-cyan-500" fill="none" stroke="currentColor"
@@ -511,13 +512,13 @@
                             <div>
                                 <p class="text-xs font-medium text-gray-500">従業員数</p>
                                 <p class="text-xs text-gray-700">
-                                    {{ number_format($company->employee_number) }} 人
+                                    {{ number_format($company['employee_number']) }} 人
                                 </p>
                             </div>
                         </div>
                     @endif
 
-                    @if ($company->date_of_establishment)
+                    @if ($company['date_of_establishment'])
                         <div class="flex items-center space-x-4">
                             <div class="flex-shrink-0">
                                 <svg class="w-6 h-6 text-cyan-500" fill="none" stroke="currentColor"
@@ -530,13 +531,13 @@
                             <div>
                                 <p class="text-xs font-medium text-gray-500">設立年</p>
                                 <p class="text-xs text-gray-700">
-                                    {{ \Carbon\Carbon::parse($company->date_of_establishment)->format('Y') }} 年
+                                    {{ \Carbon\Carbon::parse($company['date_of_establishment'])->format('Y') }} 年
                                 </p>
                             </div>
                         </div>
                     @endif
 
-                    @if ($company->capital_stock)
+                    @if ($company['capital_stock'])
                         <div class="flex items-center space-x-4">
                             <div class="flex-shrink-0">
                                 <svg class="w-6 h-6 text-cyan-500" fill="none" stroke="currentColor"
@@ -549,13 +550,13 @@
                             <div>
                                 <p class="text-xs font-medium text-gray-500">資本金</p>
                                 <p class="text-xs text-gray-700">
-                                    {{ number_format($company->capital_stock / 1000000) }}
+                                    {{ number_format($company['capital_stock'] / 1000000) }}
                                     百万円</p>
                             </div>
                         </div>
                     @endif
 
-                    @if ($company->representative_name)
+                    @if ($company['representative_name'])
                         <div class="flex items-center space-x-4">
                             <div class="flex-shrink-0">
                                 <svg class="w-6 h-6 text-cyan-500" fill="none" stroke="currentColor"
@@ -567,12 +568,12 @@
                             </div>
                             <div>
                                 <p class="text-xs font-medium text-gray-500">代表者</p>
-                                <p class="text-xs text-gray-700">{{ $company->representative_name }}</p>
+                                <p class="text-xs text-gray-700">{{ $company['representative_name'] }}</p>
                             </div>
                         </div>
                     @endif
 
-                    @if ($company->industry)
+                    @if ($company['industry'])
                         <div class="flex items-center space-x-4">
                             <div class="flex-shrink-0">
                                 <svg class="w-6 h-6 text-cyan-500" fill="none" stroke="currentColor"
@@ -584,12 +585,12 @@
                             </div>
                             <div>
                                 <p class="text-xs font-medium text-gray-500">業界</p>
-                                <p class="text-xs text-gray-700">{{ $company->industry->name }}</p>
+                                <p class="text-xs text-gray-700">{{ $company['industry'] }}</p>
                             </div>
                         </div>
                     @endif
 
-                    @if ($company->listing_status)
+                    @if ($company['listing_status'])
                         <div class="flex items-center space-x-4">
                             <div class="flex-shrink-0">
                                 <svg class="w-6 h-6 text-cyan-500" fill="none" stroke="currentColor"
@@ -601,7 +602,7 @@
                             </div>
                             <div>
                                 <p class="text-xs font-medium text-gray-500">上場区分</p>
-                                <p class="text-xs text-gray-700">{{ $company->listing_status }}</p>
+                                <p class="text-xs text-gray-700">{{ $company['listing_status'] }}</p>
                             </div>
                         </div>
                     @endif

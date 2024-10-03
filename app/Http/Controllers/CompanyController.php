@@ -8,6 +8,7 @@ use App\Models\Post;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Facades\Http;
 
 class CompanyController extends Controller
 {
@@ -38,20 +39,67 @@ class CompanyController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show($corporateNumber)
+    public function show($corporate_number)
     {
-        $company = Company::with('industry')->where('corporate_number', $corporateNumber)->firstOrFail();
-        $posts = Post::where('corporate_number', $corporateNumber)
-            ->orderBy('created_at', 'desc')
-            ->get();
+        Log::info('Showing company with corporate number: ' . $corporate_number);
+    
+        try {
+            // APIから企業データを取得
+            $apiUrl = "https://info.gbiz.go.jp/hojin/v1/hojin/" . $corporate_number;
+            $response = Http::withHeaders([
+                'X-hojinInfo-api-token' => config('services.gbizinfo.api_key'),
+            ])->get($apiUrl);
+    
+            Log::info('API Response:', $response->json());
+    
+            $apiData = $response->json();
+    
+            if (!isset($apiData['hojin-infos']) || empty($apiData['hojin-infos'])) {
+                Log::error('Company not found in API response');
+                abort(404, '企業情報が見つかりません。');
+            }
+    
+            $apiCompanyData = $apiData['hojin-infos'][0];
+    
+            // データベースから追加情報を取得
+            $dbCompanyData = Company::where('corporate_number', $corporate_number)->first();
+    
+            // APIデータとデータベースデータを結合
+            $company = [
+                'corporate_number' => $apiCompanyData['corporate_number'],
+                'company_name' => $apiCompanyData['name'],
+                'location' => $apiCompanyData['location'],
+                'company_url' => $apiCompanyData['company_url'] ?? null,
+                'employee_number' => $apiCompanyData['employee_number'] ?? null,
+                'date_of_establishment' => $apiCompanyData['date_of_establishment'] ?? null,
+                'capital_stock' => $apiCompanyData['capital_stock'] ?? null,
+                'representative_name' => $apiCompanyData['representative_name'] ?? null,
+                'business_summary' => $apiCompanyData['business_summary'] ?? null,
+                // データベースから取得する追加情報
+                'company_mission' => $dbCompanyData->company_mission ?? null,
+                'company_vision' => $dbCompanyData->company_vision ?? null,
+                'company_values' => $dbCompanyData->company_values ?? null,
+                'industry' => $dbCompanyData->industry ? $dbCompanyData->industry->name : null,
+                'listing_status' => $dbCompanyData->listing_status ?? null,
+            ];
+    
+            // 他の必要なデータ（posts, decidingFactorsData, companyCultureFactors）は
+            // 既存のコードを使用して取得
+            $posts = Post::where('corporate_number', $corporate_number)->get();
+            $decidingFactorsData = $this->calculateDecidingFactorsData($posts);
 
-        $decidingFactorsData = $this->calculateDecidingFactorsData($posts);
-
-        // 会社文化要因を計算
-        $companyCultureFactors = $this->calculateCompanyCultureFactors($posts);
-
-        return view('companies.show', compact('company', 'posts', 'decidingFactorsData', 'companyCultureFactors'));
+            // 会社文化要因を計算
+            $companyCultureFactors = $this->calculateCompanyCultureFactors($posts);
+    
+    
+            return view('companies.show', compact('company', 'posts', 'decidingFactorsData', 'companyCultureFactors'));
+    
+        } catch (\Exception $e) {
+            Log::error('Error in show method: ' . $e->getMessage());
+            abort(500, '内部サーバーエラーが発生しました。');
+        }
     }
+    
 
     /**
      * Show the form for editing the specified resource.
