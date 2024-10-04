@@ -7,6 +7,7 @@ use App\Models\Post;
 use App\Models\Company;
 use App\Models\JobCategory;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -46,20 +47,32 @@ class PostController extends Controller
         $company_name = null;
 
         if ($corporate_number) {
-            // APIを使用して企業情報を取得
-            $company = $this->getCompanyInfo($corporate_number);
-            if ($company) {
-                $company_name = $company['company_name'];
+            try {
+                // APIから企業データを取得
+                $apiUrl = "https://info.gbiz.go.jp/hojin/v1/hojin/" . $corporate_number;
+                $response = Http::withHeaders([
+                    'X-hojinInfo-api-token' => config('services.gbizinfo.api_key'),
+                ])->get($apiUrl);
+
+                Log::info('API Response:', $response->json());
+
+                $apiData = $response->json();
+
+                if (isset($apiData['hojin-infos']) && !empty($apiData['hojin-infos'])) {
+                    $apiCompanyData = $apiData['hojin-infos'][0];
+                    $company_name = $apiCompanyData['name'];
+                } else {
+                    Log::warning('Company not found in API response for corporate number: ' . $corporate_number);
+                }
+            } catch (\Exception $e) {
+                Log::error('Error fetching company data: ' . $e->getMessage());
             }
         }
 
-        return view('posts.create_step1', compact('jobCategories', 'corporate_number', 'company_name'));
-    }
+        // デバッグ用のログ出力
+        Log::info('Company Name: ' . ($company_name ?? 'Not set'));
 
-    private function getCompanyInfo($corporate_number)
-    {
-        // ここでAPIを使用して企業情報を取得する処理を実装
-        // 例: return API::getCompanyInfo($corporate_number);
+        return view('posts.create_step1', compact('jobCategories', 'corporate_number', 'company_name'));
     }
 
     public function storeStep1(Request $request)

@@ -5,13 +5,27 @@ document.addEventListener('DOMContentLoaded', function () {
     const companyNameHiddenInput = document.getElementById('company_name');
     const searchButton = document.getElementById('input-button');
 
-    // 検索ボタンを有効化
-    searchButton.disabled = false;
+    let debounceTimer = null;
 
-    let debounceTimer;
+    // URLからcorporate_numberを取得
+    const urlParams = new URLSearchParams(window.location.search);
+    const corporateNumber = urlParams.get('corporate_number');
+
+    if (corporateNumber) {
+        fetch(`/api/companies/${corporateNumber}`)
+            .then(response => response.json())
+            .then(data => {
+                searchInput.value = data.company_name;
+                companyNameHiddenInput.value = data.company_name;
+                corporateNumberInput.value = data.corporate_number;
+            })
+            .catch(error => console.error('Error:', error));
+    }
 
     searchInput.addEventListener('input', function () {
-        clearTimeout(debounceTimer);
+        if (debounceTimer !== null) {
+            clearTimeout(debounceTimer);
+        }
         debounceTimer = setTimeout(() => {
             const query = this.value.trim();
             if (query.length > 1) {
@@ -22,9 +36,7 @@ document.addEventListener('DOMContentLoaded', function () {
             }
         }, 300);
 
-        // 入力フィールドの値が変更されたときに隠しフィールドも更新する
         companyNameHiddenInput.value = this.value;
-        // 企業が選択されていない場合、corporate_numberをクリアする
         if (!corporateNumberInput.value) {
             corporateNumberInput.value = '';
         }
@@ -51,16 +63,8 @@ document.addEventListener('DOMContentLoaded', function () {
                 return response.json();
             })
             .then(data => {
-                console.log('API Response:', data);  // レスポンスをコンソールに出力
                 if (Array.isArray(data)) {
                     displayResults(data);
-                } else if (data['hojin-infos'] && Array.isArray(data['hojin-infos'])) {
-                    const companies = data['hojin-infos'].map(company => ({
-                        corporate_number: company.corporate_number,
-                        company_name: company.name,
-                        location: company.location
-                    }));
-                    displayResults(companies);
                 } else {
                     displayResults([]);
                 }
@@ -93,7 +97,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function displayResults(companies) {
         searchResults.innerHTML = '';
-        if (!Array.isArray(companies) || companies.length === 0) {
+        if (companies.length === 0) {
             searchResults.innerHTML = '<p class="p-2">検索結果がありません。</p>';
         } else {
             const ul = document.createElement('ul');
@@ -118,7 +122,6 @@ document.addEventListener('DOMContentLoaded', function () {
         searchResults.classList.remove('hidden');
     }
 
-    // 入力フィールドがフォーカスを受けたときに全選択する
     searchInput.addEventListener('focus', function() {
         this.select();
     });

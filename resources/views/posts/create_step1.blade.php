@@ -207,3 +207,6 @@
 @include('layouts.footer')
 @vite(['resources/js/company-input.js'])
 @vite(['resources/js/posts-step1.js'])
+
+<!-- デバッグ用の出力 -->
+<p>Debug: Company Name = {{ $company_name ?? 'Not set' }}</p>

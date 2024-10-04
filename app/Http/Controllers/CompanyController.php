@@ -84,7 +84,11 @@ class CompanyController extends Controller
     
             // 他の必要なデータ（posts, decidingFactorsData, companyCultureFactors）は
             // 既存のコードを使用して取得
-            $posts = Post::where('corporate_number', $corporate_number)->get();
+            // 投稿を取得する際に、created_atカラムで降順にソート
+            $posts = Post::where('corporate_number', $corporate_number)
+                         ->orderBy('created_at', 'desc')
+                         ->get();
+                         
             $decidingFactorsData = $this->calculateDecidingFactorsData($posts);
 
             // 会社文化要因を計算
