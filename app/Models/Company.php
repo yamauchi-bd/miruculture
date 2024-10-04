@@ -14,6 +14,7 @@ class Company extends Model
     protected $keyType = 'string';
 
     protected $fillable = [
+        'corporate_number',
         'company_name',
         'business_summary',
         'company_mission',

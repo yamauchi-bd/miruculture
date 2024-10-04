@@ -214,7 +214,7 @@
 
                             <div class="flex-grow">
                                 <h2 class="text-xs sm:text-sm lg:text-xs text-gray-700 mt-1 mb-4">
-                                    「<a href="{{ route('companies.show', $post->company) }}"
+                                    「<a href="{{ route('companies.show', ['corporate_number' => $post->corporate_number]) }}"
                                         class="text-cyan-600 hover:text-cyan-700 hover:underline">{{ $post->company_name }}</a>」への決め手
                                 </h2>
                                 @if ($post->decidingFactors && $post->decidingFactors->isNotEmpty())
@@ -309,7 +309,7 @@
 
                             <div class="flex-grow">
                                 <h2 class="text-xs sm:text-sm lg:text-xs text-gray-700 mt-1 mb-4">
-                                    「<a href="{{ route('companies.show', $post->company) }}"
+                                    「<a href="{{ route('companies.show', ['corporate_number' => $post->corporate_number]) }}"
                                         class="text-cyan-600 hover:text-cyan-700 hover:underline">{{ $post->company_name }}</a>」の社風
                                 </h2>
                                 @foreach ($post->getCultureDetailsAttribute() as $index => $culture)

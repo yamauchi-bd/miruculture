@@ -93,9 +93,9 @@ Route::middleware(['guest'])->group(function () {
 // });
 
 Route::get('/companies/search', [CompanyController::class, 'search'])->name('companies.search');
+Route::put('/companies/{corporate_number}', [CompanyController::class, 'update'])->name('companies.update');
 Route::get('/companies/{corporate_number}', [CompanyController::class, 'show'])->name('companies.show');
 Route::get('/companies/{corporate_number}/edit', [CompanyController::class, 'edit'])->name('companies.edit');
-Route::put('/companies/{corporate_number}', [CompanyController::class, 'update'])->name('companies.update');
 
 Route::get('/legal', [InformationController::class, 'legal'])->name('legal');
 

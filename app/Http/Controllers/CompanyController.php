@@ -44,6 +44,9 @@ class CompanyController extends Controller
         Log::info('Showing company with corporate number: ' . $corporate_number);
     
         try {
+            // データベースから企業データを取得
+            $dbCompany = Company::where('corporate_number', $corporate_number)->first();
+
             // APIから企業データを取得
             $apiUrl = "https://info.gbiz.go.jp/hojin/v1/hojin/" . $corporate_number;
             $response = Http::withHeaders([
@@ -53,34 +56,30 @@ class CompanyController extends Controller
             Log::info('API Response:', $response->json());
     
             $apiData = $response->json();
-    
+
             if (!isset($apiData['hojin-infos']) || empty($apiData['hojin-infos'])) {
                 Log::error('Company not found in API response');
                 abort(404, '企業情報が見つかりません。');
             }
-    
-            $apiCompanyData = $apiData['hojin-infos'][0];
-    
-            // データベースから追加情報を取得
-            $dbCompanyData = Company::where('corporate_number', $corporate_number)->first();
-    
-            // APIデータとデータベースデータを結合
+
+            $apiCompanyData = $apiData['hojin-infos'][0] ?? $apiData['hojin-infos'];
+
+            // データベースデータとAPIデータを結合（データベースデータを優先）
             $company = [
-                'corporate_number' => $apiCompanyData['corporate_number'],
-                'company_name' => $apiCompanyData['name'],
-                'location' => $apiCompanyData['location'],
-                'company_url' => $dbCompanyData->company_url ?? $apiCompanyData['company_url'] ?? null,
-                'employee_number' => $dbCompanyData->employee_number ?? $apiCompanyData['employee_number'] ?? null,
-                'date_of_establishment' => $dbCompanyData->date_of_establishment ?? $apiCompanyData['date_of_establishment'] ?? null,
-                'capital_stock' => $dbCompanyData->capital_stock ?? $apiCompanyData['capital_stock'] ?? null,
-                'representative_name' => $dbCompanyData->representative_name ?? $apiCompanyData['representative_name'] ?? null,
-                'business_summary' => $dbCompanyData->business_summary ?? $apiCompanyData['business_summary'] ?? null,
-                // データベースから取得する追加情報
-                'company_mission' => $dbCompanyData->company_mission ?? null,
-                'company_vision' => $dbCompanyData->company_vision ?? null,
-                'company_values' => $dbCompanyData->company_values ?? null,
-                'industry' => $dbCompanyData->industry ? $dbCompanyData->industry->name : null,
-                'listing_status' => $dbCompanyData->listing_status ?? null,
+                'corporate_number' => $corporate_number,
+                'company_name' => $dbCompany->company_name ?? $apiCompanyData['name'],
+                'location' => $dbCompany->location ?? $apiCompanyData['location'],
+                'company_url' => $dbCompany->company_url ?? $apiCompanyData['company_url'] ?? null,
+                'employee_number' => $dbCompany->employee_number ?? $apiCompanyData['employee_number'] ?? null,
+                'date_of_establishment' => $dbCompany->date_of_establishment ?? $apiCompanyData['date_of_establishment'] ?? null,
+                'capital_stock' => $dbCompany->capital_stock ?? $apiCompanyData['capital_stock'] ?? null,
+                'representative_name' => $dbCompany->representative_name ?? $apiCompanyData['representative_name'] ?? null,
+                'business_summary' => $dbCompany->business_summary ?? $apiCompanyData['business_summary'] ?? null,
+                'company_mission' => $dbCompany->company_mission ?? null,
+                'company_vision' => $dbCompany->company_vision ?? null,
+                'company_values' => $dbCompany->company_values ?? null,
+                'industry' => $dbCompany->industry->name ?? null,
+                'listing_status' => $dbCompany->listing_status ?? null,
             ];
     
             // 他の必要なデータ（posts, decidingFactorsData, companyCultureFactors）は
@@ -91,6 +90,11 @@ class CompanyController extends Controller
             // 会社文化要因を計算
             $companyCultureFactors = $this->calculateCompanyCultureFactors($posts);
     
+            // 投稿がない場合のデフォルト値を設定
+            if ($posts->isEmpty()) {
+                $decidingFactorsData = [];
+                $companyCultureFactors = [];
+            }
     
             return view('companies.show', compact('company', 'posts', 'decidingFactorsData', 'companyCultureFactors'));
     
@@ -106,25 +110,42 @@ class CompanyController extends Controller
      */
     public function edit($corporateNumber)
     {
-        $dbCompany = Company::where('corporate_number', $corporateNumber)->firstOrFail();
-        $industries = Industry::all();
+        // データベースから既存のデータを取得（存在しない場合は新規作成）
+        $dbCompany = Company::firstOrNew(['corporate_number' => $corporateNumber]);
 
+        // APIから企業データを取得
+        $apiUrl = "https://info.gbiz.go.jp/hojin/v1/hojin/" . $corporateNumber;
+        $response = Http::withHeaders([
+            'X-hojinInfo-api-token' => config('services.gbizinfo.api_key'),
+        ])->get($apiUrl);
+
+        $apiData = $response->json();
+
+        if (!isset($apiData['hojin-infos']) || empty($apiData['hojin-infos'])) {
+            abort(404, '企業情報が見つかりません。');
+        }
+
+        $apiCompanyData = $apiData['hojin-infos'][0];
+
+        // データベースデータとAPIデータを結合（データベースデータを優先）
         $company = [
-            'corporate_number' => $dbCompany->corporate_number,
-            'company_name' => $dbCompany->company_name,
-            'business_summary' => $dbCompany->business_summary,
+            'corporate_number' => $corporateNumber,
+            'company_name' => $dbCompany->company_name ?? $apiCompanyData['name'],
+            'business_summary' => $dbCompany->business_summary ?? $apiCompanyData['business_summary'] ?? null,
+            'company_url' => $dbCompany->company_url ?? $apiCompanyData['company_url'] ?? null,
+            'location' => $dbCompany->location ?? $apiCompanyData['location'] ?? null,
+            'employee_number' => $dbCompany->employee_number ?? $apiCompanyData['employee_number'] ?? null,
+            'date_of_establishment' => $dbCompany->date_of_establishment ?? $apiCompanyData['date_of_establishment'] ?? null,
+            'capital_stock' => $dbCompany->capital_stock ?? $apiCompanyData['capital_stock'] ?? null,
+            'representative_name' => $dbCompany->representative_name ?? $apiCompanyData['representative_name'] ?? null,
             'company_mission' => $dbCompany->company_mission,
             'company_vision' => $dbCompany->company_vision,
             'company_values' => $dbCompany->company_values,
-            'company_url' => $dbCompany->company_url,
-            'location' => $dbCompany->location,
-            'employee_number' => $dbCompany->employee_number,
-            'date_of_establishment' => $dbCompany->date_of_establishment,
-            'capital_stock' => $dbCompany->capital_stock,
-            'representative_name' => $dbCompany->representative_name,
             'industry_id' => $dbCompany->industry_id,
             'listing_status' => $dbCompany->listing_status,
         ];
+
+        $industries = Industry::all();
 
         return view('companies.edit', compact('company', 'industries'));
     }
@@ -134,7 +155,14 @@ class CompanyController extends Controller
      */
     public function update(Request $request, $corporate_number)
     {
-        $company = Company::where('corporate_number', $corporate_number)->firstOrFail();
+        Log::info('Update method called', [
+            'corporate_number' => $corporate_number,
+            'request_method' => $request->method(),
+            'request_data' => $request->all()
+        ]);
+
+        // 企業を検索し、存在しない場合は新規作成
+        $company = Company::firstOrNew(['corporate_number' => $corporate_number]);
 
         $validatedData = $request->validate([
             'company_name' => 'required|string|max:255',
@@ -153,12 +181,14 @@ class CompanyController extends Controller
         ]);
 
         try {
-            $company->update($validatedData);
-            Log::info('Company updated successfully', ['corporate_number' => $corporate_number]);
+            $company->fill($validatedData);
+            $company->save();
+            
+            Log::info('Company updated/created successfully', ['corporate_number' => $corporate_number]);
             return redirect()->route('companies.show', $company->corporate_number)
                 ->with('success', '企業情報が更新されました。');
         } catch (\Exception $e) {
-            Log::error('Failed to update company', ['error' => $e->getMessage(), 'corporate_number' => $corporate_number]);
+            Log::error('Failed to update/create company', ['error' => $e->getMessage(), 'corporate_number' => $corporate_number]);
             return back()->withInput()->with('error', '企業情報の更新に失敗しました。');
         }
     }
