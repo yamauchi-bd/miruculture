@@ -68,7 +68,8 @@
                                     <label class="inline-flex items-center">
                                         <input type="radio" class="form-radio hidden deciding-factor"
                                             name="deciding_factor_{{ $i }}" value="{{ $factor }}"
-                                            {{ $i == 1 ? 'required' : '' }}>
+                                            {{ $i == 1 ? 'required' : '' }}
+                                            {{ old("deciding_factor_$i", $formData["deciding_factor_$i"] ?? '') == $factor ? 'checked' : '' }}>
                                         <span
                                             class="factor-label sm:w-fit w-full px-2 py-1.5 transition-all rounded-full border cursor-pointer text-sm font-semibold bg-white hover:bg-gray-100 text-gray-700 border-gray-300">
                                             {{ $factor }}
@@ -90,7 +91,8 @@
                                             <label class="mx-1">
                                                 <input type="radio" name="factor_{{ $i }}_satisfaction"
                                                     value="{{ $j }}" class="hidden peer"
-                                                    {{ $i == 1 ? 'required' : '' }}>
+                                                    {{ $i == 1 ? 'required' : '' }}
+                                                    {{ old("factor_{$i}_satisfaction", $formData["factor_{$i}_satisfaction"] ?? '') == $j ? 'checked' : '' }}>
                                                 <svg class="w-8 h-8 fill-current text-gray-300 peer-checked:text-cyan-500 cursor-pointer"
                                                     viewBox="0 0 24 24">
                                                     <path
@@ -114,7 +116,7 @@
                                 <textarea id="factor_{{ $i }}_detail" name="factor_{{ $i }}_detail"
                                     class="block w-full px-4 py-2 border border-gray-300 text-base font-normal text-gray-700 bg-white rounded-md placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
                                     rows="3" {{ $i == 1 ? 'required' : '' }} minlength="100"
-                                    placeholder="入社の決め手や満足度について、詳しく教えてください。"></textarea>
+                                    placeholder="入社の決め手や満足度について、詳しく教えてください。">{{ old("factor_{$i}_detail", $formData["factor_{$i}_detail"] ?? '') }}</textarea>
                             </div>
                         </div>
                     </div>

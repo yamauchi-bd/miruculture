@@ -42,25 +42,21 @@ class PostController extends Controller
     public function createStep1(Request $request)
     {
         $jobCategories = JobCategory::whereNull('parent_id')->with('children')->get();
-        
-        $corporate_number = $request->query('corporate_number');
-        $company_name = null;
+        $formData = session('post_data', []);
+        $corporate_number = $request->query('corporate_number', $formData['corporate_number'] ?? null);
+        $company_name = $formData['company_name'] ?? null;
 
-        if ($corporate_number) {
+        if ($corporate_number && !$company_name) {
             try {
-                // APIから企業データを取得
                 $apiUrl = "https://info.gbiz.go.jp/hojin/v1/hojin/" . $corporate_number;
                 $response = Http::withHeaders([
                     'X-hojinInfo-api-token' => config('services.gbizinfo.api_key'),
                 ])->get($apiUrl);
 
-                Log::info('API Response:', $response->json());
-
                 $apiData = $response->json();
 
-                if (isset($apiData['hojin-infos']) && !empty($apiData['hojin-infos'])) {
-                    $apiCompanyData = $apiData['hojin-infos'][0];
-                    $company_name = $apiCompanyData['name'];
+                if (isset($apiData['hojin-infos'][0]['name'])) {
+                    $company_name = $apiData['hojin-infos'][0]['name'];
                 } else {
                     Log::warning('Company not found in API response for corporate number: ' . $corporate_number);
                 }
@@ -69,10 +65,12 @@ class PostController extends Controller
             }
         }
 
-        // デバッグ用のログ出力
-        Log::info('Company Name: ' . ($company_name ?? 'Not set'));
+        $formData = array_merge($formData, [
+            'corporate_number' => $corporate_number,
+            'company_name' => $company_name,
+        ]);
 
-        return view('posts.create_step1', compact('jobCategories', 'corporate_number', 'company_name'));
+        return view('posts.create_step1', compact('jobCategories', 'formData'));
     }
 
     public function storeStep1(Request $request)
@@ -88,18 +86,21 @@ class PostController extends Controller
             'current_job_subcategory_id' => 'required|exists:job_categories,id',
         ]);
 
-        $request->session()->put('post_step1', $validatedData);
+        $postData = session('post_data', []);
+        $postData = array_merge($postData, $validatedData);
+        $request->session()->put('post_data', $postData);
 
         return redirect()->route('posts.create.step2');
     }
 
     public function createStep2(Request $request)
     {
-        if (!$request->session()->has('post_step1')) {
+        if (!$request->session()->has('post_data')) {
             return redirect()->route('posts.create.step1');
         }
 
-        return view('posts.create_step2');
+        $formData = session('post_data', []);
+        return view('posts.create_step2', compact('formData'));
     }
 
     public function storeStep2(Request $request)
@@ -109,7 +110,7 @@ class PostController extends Controller
             'factor_1_satisfaction' => 'required|integer|min:1|max:5',
             'factor_1_detail' => 'required|string|min:100',
         ];
-    
+
         for ($i = 2; $i <= 3; $i++) {
             if ($request->has("deciding_factor_$i")) {
                 $rules["deciding_factor_$i"] = 'required|string';
@@ -117,33 +118,30 @@ class PostController extends Controller
                 $rules["factor_{$i}_detail"] = 'required|string|min:100';
             }
         }
-    
+
         $validatedData = $request->validate($rules);
-    
-        $request->session()->put('post_step2', $validatedData);
-    
+
+        $postData = session('post_data', []);
+        $postData = array_merge($postData, $validatedData);
+        $request->session()->put('post_data', $postData);
+
         return redirect()->route('posts.create.step3');
     }
 
     public function createStep3(Request $request)
     {
-        if (!$request->session()->has('post_step1') || !$request->session()->has('post_step2')) {
+        if (!$request->session()->has('post_data')) {
             return redirect()->route('posts.create.step1');
         }
 
-        $step1Data = $request->session()->get('post_step1');
-        $step2Data = $request->session()->get('post_step2');
-
-        return view('posts.create_step3', compact('step1Data', 'step2Data'));
+        $formData = session('post_data', []);
+        return view('posts.create_step3', compact('formData'));
     }
 
     public function store(Request $request)
     {
-        // セッションから以前のステップのデータを取得
-        $step1Data = $request->session()->get('post_step1', []);
-        $step2Data = $request->session()->get('post_step2', []);
+        $postData = session('post_data', []);
 
-        // 現在のステップ（ステップ3）のデータを検証
         $step3Data = $request->validate([
             'culture_0' => 'required|integer|min:1|max:5',
             'culture_1' => 'required|integer|min:1|max:5',
@@ -163,27 +161,23 @@ class PostController extends Controller
             'culture_detail_7' => 'nullable|string',
         ]);
 
-        // 補足の合計文字数を確認
-        $totalDetailLength = array_sum(array_map('strlen', array_filter($step3Data, function($key) {
+        $totalDetailLength = array_sum(array_map('strlen', array_filter($step3Data, function ($key) {
             return strpos($key, 'culture_detail_') === 0;
         }, ARRAY_FILTER_USE_KEY)));
 
         if ($totalDetailLength < 300) {
-            return back()->withErrors(['culture_detail' => '合計文字数は300文字以上である必要があります。']);
+            return back()->withErrors(['culture_detail' => '合計文字数は300文字以上である必要があります。'])
+                         ->withInput();
         }
 
-        // すべてのステップのデータをマージ
-        $postData = array_merge($step1Data, $step2Data, $step3Data);
+        $postData = array_merge($postData, $step3Data);
 
-        // 新しい投稿を作成
         $post = new Post($postData);
         $post->user_id = Auth::id();
         $post->save();
 
-        // セッションをクリア
-        $request->session()->forget(['post_step1', 'post_step2']);
+        $request->session()->forget('post_data');
 
-        // 保存後のリダイレクト
         return redirect()->route('companies.show', ['corporate_number' => $post->corporate_number])
             ->with('success', '投稿が正常に作成されました。');
     }
@@ -253,7 +247,6 @@ class PostController extends Controller
 
         $validator = Validator::make($request->all(), [
             'company_name' => 'required|string|max:255',
-            // 'employment_type' => 'required|in:正社員,契約社員,その他',
             'entry_type' => 'required|in:新卒入社,中途入社',
             'status' => 'required|in:在籍中,退職済み',
             'start_year' => 'required|integer|min:1900|max:' . date('Y'),
@@ -268,6 +261,46 @@ class PostController extends Controller
         }
 
         Log::info('Validation passed');
+        return response()->json(['success' => true]);
+    }
+
+    public function validateSection3(Request $request)
+    {
+        Log::info('Received data for section 3:', $request->all());
+
+        $validator = Validator::make($request->all(), [
+            'culture_0' => 'required|integer|min:1|max:5',
+            'culture_1' => 'required|integer|min:1|max:5',
+            'culture_2' => 'required|integer|min:1|max:5',
+            'culture_3' => 'required|integer|min:1|max:5',
+            'culture_4' => 'required|integer|min:1|max:5',
+            'culture_5' => 'required|integer|min:1|max:5',
+            'culture_6' => 'required|integer|min:1|max:5',
+            'culture_7' => 'required|integer|min:1|max:5',
+            'culture_detail_0' => 'nullable|string',
+            'culture_detail_1' => 'nullable|string',
+            'culture_detail_2' => 'nullable|string',
+            'culture_detail_3' => 'nullable|string',
+            'culture_detail_4' => 'nullable|string',
+            'culture_detail_5' => 'nullable|string',
+            'culture_detail_6' => 'nullable|string',
+            'culture_detail_7' => 'nullable|string',
+        ]);
+
+        if ($validator->fails()) {
+            Log::warning('Validation failed for section 3:', $validator->errors()->toArray());
+            return response()->json(['errors' => $validator->errors()], 422);
+        }
+
+        $totalDetailLength = array_sum(array_map('strlen', array_filter($request->all(), function ($key) {
+            return strpos($key, 'culture_detail_') === 0;
+        }, ARRAY_FILTER_USE_KEY)));
+
+        if ($totalDetailLength < 300) {
+            return response()->json(['errors' => ['culture_detail' => ['合計文字数は300文字以上である必要があります。']]], 422);
+        }
+
+        Log::info('Validation passed for section 3');
         return response()->json(['success' => true]);
     }
 }

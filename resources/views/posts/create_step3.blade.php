@@ -86,7 +86,8 @@
                             @foreach ($options as $value => $label)
                                 <label class="flex-1">
                                     <input type="radio" name="culture_{{ $index }}" value="{{ $value + 1 }}"
-                                        class="sr-only peer" required>
+                                        class="sr-only peer" required
+                                        {{ old("culture_$index", $formData["culture_$index"] ?? '') == $value + 1 ? 'checked' : '' }}>
                                     <div
                                         class="text-center py-1 border border-gray-300 rounded cursor-pointer transition-all duration-200 ease-in-out
                         peer-checked:bg-cyan-500 peer-checked:text-white peer-checked:border-cyan-500
@@ -113,8 +114,7 @@
                             {{ $item['name'] }}について
                         </label>
                         <textarea id="culture_detail_{{ $index }}" name="culture_detail_{{ $index }}" rows="3"
-                            class="shadow-sm focus:ring-cyan-500 focus:border-cyan-500 mt-1 block w-full sm:text-sm border-gray-300 rounded-md"
-                            {{-- placeholder="{{ $item['name'] }}について、具体的な例や詳細な説明を記入してください。" --}}></textarea>
+                            class="shadow-sm focus:ring-cyan-500 focus:border-cyan-500 mt-1 block w-full sm:text-sm border-gray-300 rounded-md">{{ old("culture_detail_$index", $formData["culture_detail_$index"] ?? '') }}</textarea>
                         <div class="mt-2 text-right text-xs text-gray-500">
                             合計文字数: <span id="culture_detail_count_{{ $index }}">0</span>/300文字以上
                         </div>
