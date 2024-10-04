@@ -70,7 +70,7 @@
                 <div class="flex relative">
                     <input type="text" id="company-input" required
                         class="block w-full px-4 py-2 pr-12 border border-gray-300 text-base font-normal text-gray-700 bg-white rounded-md placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
-                        placeholder="登録する企業を探す..." value="{{ $company ? $company->company_name : '' }}">
+                        placeholder="登録する企業を探す..." value="{{ old('company_name', $company_name ?? '') }}">
                     <button type="button" id="input-button"
                         class="absolute right-0 top-0 h-full px-3 bg-cyan-500 text-white text-sm font-bold rounded-r-md transition-all hover:bg-cyan-700 flex items-center justify-center">
                         <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
@@ -88,9 +88,9 @@
                     </div>
                 </div>
                 <input type="hidden" id="company_name" name="company_name"
-                    value="{{ $company ? $company->company_name : '' }}">
+                    value="{{ old('company_name', $company_name ?? '') }}">
                 <input type="hidden" id="corporate_number" name="corporate_number"
-                    value="{{ $company ? $company->corporate_number : '' }}">
+                    value="{{ old('corporate_number', $corporate_number ?? '') }}">
             </div>
 
             <div class="mb-10">

@@ -41,12 +41,25 @@ class PostController extends Controller
     public function createStep1(Request $request)
     {
         $jobCategories = JobCategory::whereNull('parent_id')->with('children')->get();
-        $company = null;
-        if ($request->has('corporate_number')) {
-            $company = Company::where('corporate_number', $request->corporate_number)->first();
+        
+        $corporate_number = $request->query('corporate_number');
+        $company_name = null;
+
+        if ($corporate_number) {
+            // APIを使用して企業情報を取得
+            $company = $this->getCompanyInfo($corporate_number);
+            if ($company) {
+                $company_name = $company['company_name'];
+            }
         }
 
-        return view('posts.create_step1', compact('jobCategories', 'company'));
+        return view('posts.create_step1', compact('jobCategories', 'corporate_number', 'company_name'));
+    }
+
+    private function getCompanyInfo($corporate_number)
+    {
+        // ここでAPIを使用して企業情報を取得する処理を実装
+        // 例: return API::getCompanyInfo($corporate_number);
     }
 
     public function storeStep1(Request $request)
