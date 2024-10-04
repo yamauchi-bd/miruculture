@@ -208,35 +208,32 @@ class CompanyController extends Controller
     public function search(Request $request)
     {
         $query = $request->input('query');
-
+    
         try {
             $apiUrl = "https://info.gbiz.go.jp/hojin/v1/hojin";
             $response = Http::withHeaders([
                 'X-hojinInfo-api-token' => config('services.gbizinfo.api_key'),
             ])->get($apiUrl, [
                 'name' => $query,
-                'limit' => 15, // 必要に応じて調整してください
+                'limit' => 15,
             ]);
-
+    
             $apiData = $response->json();
-
+    
             if (!isset($apiData['hojin-infos']) || empty($apiData['hojin-infos'])) {
                 return response()->json([]);
             }
-
+    
             $companies = collect($apiData['hojin-infos'])->map(function ($apiCompanyData) {
-                // データベースから追加情報
-                $dbCompanyData = Company::where('corporate_number', $apiCompanyData['corporate_number'])->first();
-
                 return [
                     'corporate_number' => $apiCompanyData['corporate_number'],
                     'company_name' => $apiCompanyData['name'],
-                    'location' => $apiCompanyData['location'],
+                    'location' => $apiCompanyData['location'] ?? null,
                 ];
             })->values();
-
+    
             return response()->json($companies);
-
+    
         } catch (\Exception $e) {
             Log::error('API search error: ' . $e->getMessage());
             return response()->json(['error' => '検索中にエラーが発生しました。'], 500);

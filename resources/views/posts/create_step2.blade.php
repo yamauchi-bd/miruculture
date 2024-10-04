@@ -70,7 +70,7 @@
                                             name="deciding_factor_{{ $i }}" value="{{ $factor }}"
                                             {{ $i == 1 ? 'required' : '' }}>
                                         <span
-                                            class="factor-label sm:w-fit w-full px-3 py-1.5 transition-all rounded-full border cursor-pointer text-sm font-bold bg-white hover:bg-gray-100 text-gray-700 border-gray-300">
+                                            class="factor-label sm:w-fit w-full px-2 py-1.5 transition-all rounded-full border cursor-pointer text-sm font-semibold bg-white hover:bg-gray-100 text-gray-700 border-gray-300">
                                             {{ $factor }}
                                         </span>
                                     </label>
@@ -106,14 +106,15 @@
                             <div class="mb-10">
                                 <label for="factor_{{ $i }}_detail"
                                     class="flex gap-1 mb-2 items-center text-gray-700 text-sm font-bold leading-relaxed">
-                                    補足（決め手の詳細や満足度の理由）
+                                    自由記述
+                                    <p class="text-xs">(決め手の詳細や満足度の理由)</p>
                                     <x-required-mark />
                                     <span class="text-xs text-gray-500 ml-2">(<span id="factor_{{ $i }}_detail_count">0</span>/100文字以上)</span>
                                 </label>
                                 <textarea id="factor_{{ $i }}_detail" name="factor_{{ $i }}_detail"
                                     class="block w-full px-4 py-2 border border-gray-300 text-base font-normal text-gray-700 bg-white rounded-md placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
                                     rows="3" {{ $i == 1 ? 'required' : '' }} minlength="100"
-                                    placeholder="決め手の詳細や満足度の理由について、具体的に記入してください。"></textarea>
+                                    placeholder="入社の決め手や満足度について、詳しく教えてください。"></textarea>
                             </div>
                         </div>
                     </div>

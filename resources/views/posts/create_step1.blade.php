@@ -59,7 +59,7 @@
 
         <div id="section-1">
             <h2 class="mt-4 mb-6 text-gray-700 font-bold">在籍情報 👤</h2>
-            <div class="mb-10">
+            <div class="mb-6">
                 <label for="company_name"
                     class="flex gap-1 mb-2 items-center text-gray-700 text-sm font-bold leading-relaxed">
                     対象企業
@@ -69,7 +69,7 @@
 
                 <div class="flex relative">
                     <input type="text" id="company-input" required
-                        class="block w-full px-4 py-2 pr-12 border border-gray-300 text-base font-normal text-gray-700 bg-white rounded-md placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
+                        class="block w-full px-4 py-2 pr-12 border border-gray-300 text-base sm:text-base font-normal text-gray-700 bg-white rounded-md placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
                         placeholder="登録する企業を探す..." value="{{ old('company_name', $company_name ?? '') }}">
                     <button type="button" id="input-button"
                         class="absolute right-0 top-0 h-full px-3 bg-cyan-500 text-white text-sm font-bold rounded-r-md transition-all hover:bg-cyan-700 flex items-center justify-center">
@@ -93,7 +93,7 @@
                     value="{{ old('corporate_number', $corporate_number ?? '') }}">
             </div>
 
-            <div class="mb-10">
+            <div class="mb-6">
                 <label class="flex gap-1 mb-2 items-center text-gray-700 text-sm font-bold leading-relaxed">
                     入社形態
                     <x-required-mark />
@@ -102,16 +102,16 @@
                 <div class="flex gap-8">
                     <label class="inline-flex items-center">
                         <input type="radio" class="form-radio" name="entry_type" value="新卒入社" required>
-                        <span class="ml-2">新卒入社</span>
+                        <span class="text-base sm:text-base ml-2">新卒入社</span>
                     </label>
                     <label class="inline-flex items-center">
                         <input type="radio" class="form-radio" name="entry_type" value="中途入社">
-                        <span class="ml-2">中途入社</span>
+                        <span class="text-base sm:text-base ml-2">中途入社</span>
                     </label>
                 </div>
             </div>
 
-            <div class="mb-10">
+            <div class="mb-6">
                 <label class="flex gap-1 mb-2 items-center text-gray-700 text-sm font-bold leading-relaxed">
                     在籍状況
                     <x-required-mark />
@@ -120,16 +120,17 @@
                 <div class="flex gap-12">
                     <label class="inline-flex items-center">
                         <input type="radio" class="form-radio" name="status" value="在籍中" required>
-                        <span class="ml-2">在籍中</span>
+                        <span class="text-base sm:text-base ml-2">在籍中</span>
+                        <span class="text-red-500 text-xs sm:text-xs ml-2">※在籍中の企業についてのみ登録できます</span>
                     </label>
-                    <label class="inline-flex items-center">
+                    {{-- <label class="inline-flex items-center">
                         <input type="radio" class="form-radio" name="status" value="退職済み">
                         <span class="ml-2">退職済み</span>
-                    </label>
+                    </label> --}}
                 </div>
             </div>
 
-            <div class="mb-10">
+            <div class="mb-6">
                 <label class="flex gap-1 mb-2 items-center text-gray-700 text-sm font-bold leading-relaxed">
                     在籍期間
                     <x-required-mark />
@@ -137,25 +138,25 @@
                 </label>
                 <div class="flex items-center">
                     <select id="start_year" name="start_year" required
-                        class="h-10 w-1/3 px-4 border border-gray-300 text-base font-normal text-gray-700 bg-white rounded-md placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent">
+                        class="h-10 w-1/3 px-4 border border-gray-300 text-base sm:text-base font-normal text-gray-700 bg-white rounded-md placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent">
                         <option value="">入社年</option>
                         @for ($year = date('Y'); $year >= date('Y') - 50; $year--)
                             <option value="{{ $year }}">{{ $year }}年</option>
                         @endfor
                     </select>
                     <span class="mx-2">〜</span>
-                    <select id="end_year" name="end_year"
+                    {{-- <select id="end_year" name="end_year"
                         class="h-10 w-1/3 px-4 border border-gray-300 text-base font-normal text-gray-700 bg-white rounded-md placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent">
                         <option value="" selected disabled>退職年</option>
                         @for ($year = date('Y'); $year >= date('Y') - 50; $year--)
                             <option value="{{ $year }}">{{ $year }}年</option>
                         @endfor
                     </select>
-                    <p id="end_year-error" class="error-message text-red-500 text-xs" style="display: none;"></p>
+                    <p id="end_year-error" class="error-message text-red-500 text-xs" style="display: none;"></p> --}}
                 </div>
             </div>
 
-            <div class="mb-10">
+            <div class="mb-6">
                 <label for="job_category"
                     class="flex gap-1 mb-2 items-center text-gray-700 text-sm font-bold leading-relaxed">
                     職種
@@ -163,7 +164,7 @@
                     <p id="job_category-error" class="error-message text-red-500 text-xs" style="display: none;"></p>
                 </label>
                 <select id="job_category" name="current_job_category_id" required
-                    class="h-10 w-full px-4 border border-gray-300 text-base font-normal text-gray-700 bg-white rounded-md placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent">
+                    class="h-10 w-full px-4 border border-gray-300 text-base sm:text-base font-normal text-gray-700 bg-white rounded-md placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent">
                     <option value="">選択してください</option>
                     @foreach ($jobCategories as $category)
                         <option value="{{ $category->id }}">{{ $category->name }}</option>
@@ -171,7 +172,7 @@
                 </select>
             </div>
 
-            <div class="w-full flex-col justify-start items-start mb-10 gap-1.5 flex">
+            <div class="w-full flex-col justify-start items-start mb-6 gap-1.5 flex">
                 <label for="job_subcategory"
                     class="flex gap-1 mb-2 items-center text-gray-700 text-sm font-bold leading-relaxed">
                     詳細な職種
@@ -181,14 +182,14 @@
                 </label>
                 <div class="w-full flex gap-4">
                     <select id="job_subcategory" name="current_job_subcategory_id" required
-                        class="h-10 w-full px-4 border border-gray-300 text-base font-normal text-gray-700 bg-white rounded-md placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent">
+                        class="h-10 w-full px-4 border border-gray-300 text-base sm:text-base font-normal text-gray-700 bg-white rounded-md placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent">
                         <option value="">選択してください</option>
                         <!-- 大カテゴリー選択後にJavaScriptで動的に追加 -->
                     </select>
                 </div>
             </div>
 
-            <div class="flex justify-center mt-16">
+            <div class="flex justify-center mt-10">
                 <button type="submit" id="next-button"
                     class="bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-3 px-8 rounded-full transform transition duration-300 ease-in-out hover:scale-105 flex items-center">
                     <span class="mr-1">次にすすむ</span>
@@ -207,6 +208,3 @@
 @include('layouts.footer')
 @vite(['resources/js/company-input.js'])
 @vite(['resources/js/posts-step1.js'])
-
-<!-- デバッグ用の出力 -->
-<p>Debug: Company Name = {{ $company_name ?? 'Not set' }}</p>
