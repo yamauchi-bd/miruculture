@@ -12,13 +12,13 @@
 @include('layouts.navigation')
 
 <div class="max-w-7xl mx-auto px-8 sm:px-8 lg:px-16 xl:px-16 pt-10 sm:pt-20 md:pt-14 lg:pt-28 pb-6 sm:pb-10 md:pb-8 lg:pb-16">
-    <h1 class="text-2xl font-bold mb-8 text-gray-700">vivivision 利用規約</h1> --}}
+    <h1 class="text-2xl font-bold mb-8 text-gray-700">miruculture 利用規約</h1> --}}
 
     <div class="terms-content space-y-8 text-gray-700">
         <section class="mb-4">
             <h2 class="text-base font-semibold mb-2">第1条（適用）</h2>
             <ol class="text-sm list-decimal pl-6 space-y-2">
-                <li>本規約は、vivivisionが提供する「vivivision」（以下「本サービス」）の利用に関する条件を定めるものです。</li>
+                <li>本規約は、ミルカルチャーが提供する「miruculture」（以下「本サービス」）の利用に関する条件を定めるものです。</li>
                 <li>ユーザーは本規約に同意の上、本サービスを利用するものとします。</li>
             </ol>
         </section>

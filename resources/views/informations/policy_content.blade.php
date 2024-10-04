@@ -12,11 +12,11 @@
 {{-- @include('layouts.navigation')
 
 <div class="max-w-7xl mx-auto px-8 sm:px-8 lg:px-16 xl:px-16 pt-10 sm:pt-20 md:pt-14 lg:pt-28 pb-6 sm:pb-10 md:pb-8 lg:pb-16">
-    <h1 class="text-2xl font-bold mb-8 text-gray-700">vivivision プライバシーポリシー</h1> --}}
+    <h1 class="text-2xl font-bold mb-8 text-gray-700">miruculture プライバシーポリシー</h1> --}}
 
     <div class="terms-content space-y-8 text-gray-700">
         <p class="text-sm mb-8">
-            vivivisionが提供するサービス「vivivision」（以下「本サービス」といいます）における、ユーザーの個人情報の取扱いについて、以下のとおりプライバシーポリシー（以下「本ポリシー」といいます）を定めます。
+            ミルカルチャーが提供するサービス「miruculture」（以下「本サービス」といいます）における、ユーザーの個人情報の取扱いについて、以下のとおりプライバシーポリシー（以下「本ポリシー」といいます）を定めます。
         </p>
 
         <section class="mb-4">
@@ -127,8 +127,8 @@
             <h2 class="text-base font-semibold mb-2">11. お問い合わせ窓口</h2>
             <p class="text-sm">
                 本ポリシーに関するお問い合わせは、下記の窓口までお願いいたします。<br>
-                株式会社vivivision 個人情報保護担当<br>
-                email: info@vivivision.jp
+                ミルカルチャー 個人情報保護担当<br>
+                email: info@miruculture.com
             </p>
         </section>
 

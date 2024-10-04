@@ -1,1 +1,1 @@
-<img src="{{ asset('items/vivivision-logo_default.png') }}" alt="ビビビジョン" class="w-40">
+<img src="{{ asset('items/miruculture_logo.png') }}" alt="ミルカルチャー" {{ $attributes }}>

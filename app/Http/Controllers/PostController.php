@@ -143,7 +143,7 @@ class PostController extends Controller
         }, ARRAY_FILTER_USE_KEY)));
 
         if ($totalDetailLength < 300) {
-            return back()->withErrors(['culture_detail' => '補足の合計文字数は300文字以上である必要があります。']);
+            return back()->withErrors(['culture_detail' => '合計文字数は300文字以上である必要があります。']);
         }
 
         // すべてのステップのデータをマージ

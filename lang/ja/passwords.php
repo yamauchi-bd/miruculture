@@ -25,6 +25,6 @@ return [
     'email_line_2' => 'このパスワードリセットリンクは :count 分後に有効期限が切れます。',
     'email_line_3' => 'パスワードリセットをリクエストしていない場合は、このメールを無視してください。',
     'email_salutation' => '敬具',
-    'email_from' => 'vivivision',
+    'email_from' => 'miruculture',
 
 ];

@@ -7,11 +7,11 @@
         <li><a href="{{ route('legal', ['tab' => 'policy']) }}" class="text-gray-500 hover:text-gray-900">プライバシーポリシー</a></li>
         {{-- <li><a href="#" class="text-gray-500 hover:text-gray-900">利用ポリシー</a></li> --}}
         {{-- <li><a href="#" class="text-gray-500 hover:text-gray-900">投稿ガイドライン</a></li> --}}
-        <li><a href="mailto:info@vivivision.jp" class="text-gray-500 hover:text-gray-900">報告•お問合せ</a></li>
+        <li><a href="mailto:info@miruculture.com" class="text-gray-500 hover:text-gray-900">報告•お問合せ</a></li>
       </ul>
 
       <span class="text-xs sm:text-sm text-gray-400 text-center block">
-        ©<a href="{{ route('home') }}" class="hover:underline">vivivision</a> 2024, All rights reserved.
+        ©<a href="{{ route('home') }}" class="hover:underline">miruculture</a> 2024, All rights reserved.
       </span>
     </div>
   </div>

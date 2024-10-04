@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="csrf-token" content="{{ csrf_token() }}">
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
         integrity="sha512-iecdLmaskl7CVkqkXNQ/ZH/XLlvWZOJyj7Yy7tcenmpD1ypASozpmT/E0iPtmFIB46ZmdtAc9eNBvH0H/ZpiBw=="
@@ -15,7 +16,7 @@
     @vite(['resources/css/style.css'])
     @vite(['resources/js/app.js'])
     @vite(['resources/css/app.css'])
-    <title>vivivision</title>
+    <title>ミルカルチャー｜企業の価値観･社風を見える化</title>
 </head>
 
 <body>
@@ -29,7 +30,7 @@
                     <div class="shrink-0 flex items-center">
                         <a href="{{ route('home') }}">
                             <x-application-logo
-                                class="block h-6 w-auto sm:h-9 fill-current text-gray-800 dark:text-gray-200" />
+                            class="block h-6 w-auto sm:h-6 fill-current text-gray-800 dark:text-gray-200" />
                         </a>
                     </div>
                 </div>
@@ -140,8 +141,8 @@
                     placeholder="気になる企業を検索する..." required="">
                 <button id="search-button-mobile"
                     class="absolute right-1 top-1/2 transform -translate-y-1/2 p-2 rounded-full bg-cyan-500 text-white text-sm font-medium transition-all duration-300 hover:bg-cyan-600">
-                    <svg width="16px" height="16px" class="w-4 h-4" viewBox="0 0 24 24"
-                        fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <svg width="16px" height="16px" class="w-4 h-4" viewBox="0 0 24 24" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
                         <path d="M17 17L21 21" stroke="#ffffff" stroke-width="3" stroke-linecap="round"
                             class="my-path"></path>
                         <path
