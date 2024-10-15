@@ -48,7 +48,7 @@
 </div>
 
 <div class="max-w-7xl mt-12 px-4 md:px-5 md:w-3/5 lg:w-2/5 lg:px-5 mx-auto">
-    <form action="{{ route('posts.store') }}" method="POST">
+    <form action="{{ route('company_cultures.store', $enrollmentRecord) }}" method="POST">
         @csrf
 
         <div id="section-3">
@@ -123,7 +123,7 @@
             </div>
 
             <div class="flex justify-center mt-16 space-x-4">
-                <a href="{{ route('posts.create.step2') }}" id="back-button"
+                <a href="{{ route('deciding_factors.create', $enrollmentRecord) }}" id="back-button"
                     class="bg-gray-300 hover:bg-gray-400 text-gray-700 font-bold py-3 px-8 rounded-full transform transition duration-300 ease-in-out hover:scale-105 flex items-center">
                     <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                         xmlns="http://www.w3.org/2000/svg">
@@ -150,4 +150,4 @@
 
 <div class="mt-20"></div>
 @include('layouts.footer')
-@vite(['resources/js/posts-step3.js'])
+@vite(['resources/js/create_company_cultures.js'])

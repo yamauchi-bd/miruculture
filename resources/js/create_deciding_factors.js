@@ -15,18 +15,16 @@ function setupDecidingFactors() {
 }
 
 function setupOptionalFactor(i) {
-    const factorInputs = document.querySelectorAll(`input[name="deciding_factor_${i}"]`);
-    const detail = document.getElementById(`factor_${i}_detail`);
-    const satisfaction = document.querySelectorAll(`input[name="factor_${i}_satisfaction"]`);
-    // const reason = document.getElementById(`factor_${i}_satisfaction_reason`);
+    const factorInputs = document.querySelectorAll(`input[name="factor_${i}"]`);
+    const detail = document.getElementById(`detail_${i}`);
+    const satisfaction = document.querySelectorAll(`input[name="satisfaction_${i}"]`);
 
     factorInputs.forEach(factor => {
         factor.addEventListener('change', function () {
-            const isSelected = document.querySelector(`input[name="deciding_factor_${i}"]:checked`) !== null;
+            const isSelected = document.querySelector(`input[name="factor_${i}"]:checked`) !== null;
             console.log(`Factor ${i} selected: ${isSelected}`);
             detail.required = isSelected;
             satisfaction.forEach(input => input.required = isSelected);
-            reason.required = isSelected;
         });
     });
 }
@@ -138,8 +136,10 @@ function setupStarRating() {
     const starContainers = document.querySelectorAll('.flex.items-center');
     starContainers.forEach(container => {
         const stars = container.querySelectorAll('svg');
+        const radioInputs = container.querySelectorAll('input[type="radio"]');
         stars.forEach((star, index) => {
             star.addEventListener('click', () => {
+                radioInputs[index].checked = true;
                 stars.forEach((s, i) => {
                     if (i <= index) {
                         s.classList.add('text-cyan-500');
@@ -171,10 +171,9 @@ function validateForm() {
 
     // 必須フィールドのバリデーション
     for (let i = 1; i <= 3; i++) {
-        const factorInputs = document.querySelectorAll(`input[name="deciding_factor_${i}"]`);
-        const detail = document.getElementById(`factor_${i}_detail`);
-        const satisfaction = document.querySelectorAll(`input[name="factor_${i}_satisfaction"]`);
-        // const reason = document.getElementById(`factor_${i}_satisfaction_reason`);
+        const factorInputs = document.querySelectorAll(`input[name="factor_${i}"]`);
+        const detail = document.getElementById(`detail_${i}`);
+        const satisfaction = document.querySelectorAll(`input[name="satisfaction_${i}"]`);
 
         const isFactorSelected = Array.from(factorInputs).some(input => input.checked);
         const isSatisfactionSelected = Array.from(satisfaction).some(input => input.checked);
@@ -182,31 +181,24 @@ function validateForm() {
         if (i === 1 || isFactorSelected) {
             if (!isFactorSelected) {
                 isValid = false;
-                showError(`deciding_factor_${i}-error`, '入社の決め手を選択してください。');
+                showError(`factor_${i}-error`, '入社の決め手を選択してください。');
             } else {
-                hideError(`deciding_factor_${i}-error`);
+                hideError(`factor_${i}-error`);
             }
 
             if (detail.value.length < 100) {
                 isValid = false;
-                showError(`factor_${i}_detail-error`, '詳細は100文字以上入力してください。');
+                showError(`detail_${i}-error`, '詳細は100文字以上入力してください。');
             } else {
-                hideError(`factor_${i}_detail-error`);
+                hideError(`detail_${i}-error`);
             }
 
             if (!isSatisfactionSelected) {
                 isValid = false;
-                showError(`factor_${i}_satisfaction-error`, '満足度を選択してください。');
+                showError(`satisfaction_${i}-error`, '満足度を選択してください。');
             } else {
-                hideError(`factor_${i}_satisfaction-error`);
+                hideError(`satisfaction_${i}-error`);
             }
-
-            // if (reason.value.length < 50) {
-            //     isValid = false;
-            //     showError(`factor_${i}_satisfaction_reason-error`, '満足度の理由は50文字以上入力してください。');
-            // } else {
-            //     hideError(`factor_${i}_satisfaction_reason-error`);
-            // }
         }
     }
 
@@ -230,21 +222,13 @@ function hideError(id) {
 
 function setupCharacterCount() {
     for (let i = 1; i <= 3; i++) {
-        const detailTextarea = document.getElementById(`factor_${i}_detail`);
-        const detailCount = document.getElementById(`factor_${i}_detail_count`);
-        // const reasonTextarea = document.getElementById(`factor_${i}_satisfaction_reason`);
-        // const reasonCount = document.getElementById(`factor_${i}_satisfaction_reason_count`);
-
+        const detailTextarea = document.getElementById(`detail_${i}`);
+        const detailCount = document.getElementById(`detail_${i}_count`);
+     
         if (detailTextarea && detailCount) {
             detailTextarea.addEventListener('input', function() {
                 detailCount.textContent = this.value.length;
             });
         }
-
-        // if (reasonTextarea && reasonCount) {
-        //     reasonTextarea.addEventListener('input', function() {
-        //         reasonCount.textContent = this.value.length;
-        //     });
-        // }
     }
 }

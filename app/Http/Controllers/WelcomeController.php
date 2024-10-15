@@ -2,14 +2,21 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\EnrollmentRecord;
 use Illuminate\Http\Request;
-use App\Models\Post;
 
 class WelcomeController extends Controller
 {
     public function index()
     {
-        $latestPosts = Post::latest()->take(6)->get();
-        return view('welcome', compact('latestPosts'));
+        $latestEnrollmentRecords = EnrollmentRecord::with(['decidingFactor', 'jobCategory', 'jobSubcategory', 'personalityTypes'])
+            ->whereHas('decidingFactor', function ($query) {
+                $query->whereNotNull('factor_1');
+            })
+            ->latest()
+            ->take(10)
+            ->get();
+
+        return view('welcome', compact('latestEnrollmentRecords'));
     }
 }
