@@ -22,13 +22,21 @@ class EnrollmentRecordController extends Controller
     public function create(Request $request)
     {
         $company = null;
+        $latestEnrollmentRecord = null;
+
         if ($request->has('corporate_number')) {
             $company = Company::where('corporate_number', $request->corporate_number)->first();
+        } else {
+            // ユーザーの最新の在籍情報を取得
+            $latestEnrollmentRecord = Auth::user()->enrollmentRecords()->latest()->first();
+            if ($latestEnrollmentRecord) {
+                $company = Company::where('corporate_number', $latestEnrollmentRecord->corporate_number)->first();
+            }
         }
 
         $jobCategories = JobCategory::whereNull('parent_id')->with('children')->get();
 
-        return view('posts.create_enrollment_record', compact('jobCategories', 'company'));
+        return view('posts.create_enrollment_record', compact('jobCategories', 'company', 'latestEnrollmentRecord'));
     }
 
     public function store(Request $request)
@@ -126,7 +134,7 @@ class EnrollmentRecordController extends Controller
             }
         }
 
-        // 会社文化の更新
+        // 会社文化���更新
         $cultureDatas = [];
         for ($i = 0; $i < 8; $i++) {
             $cultureDatas["culture_$i"] = $request->input("culture_$i");

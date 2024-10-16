@@ -70,7 +70,7 @@
                 <div class="flex relative">
                     <input type="text" id="company-input" required
                         class="block w-full px-4 py-2 pr-12 border border-gray-300 text-base sm:text-base font-normal text-gray-700 bg-white rounded-md placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
-                        placeholder="登録する企業を探す..." value="{{ old('company_name', $company->company_name ?? '') }}">
+                        placeholder="登録する企業を探す..." value="{{ old('company_name', $latestEnrollmentRecord->company_name ?? $company->company_name ?? '') }}">
                     <button type="button" id="input-button"
                         class="absolute right-0 top-0 h-full px-3 bg-cyan-500 text-white text-sm font-bold rounded-r-md transition-all hover:bg-cyan-700 flex items-center justify-center">
                         <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
@@ -88,9 +88,9 @@
                     </div>
                 </div>
                 <input type="hidden" id="company_name" name="company_name"
-                    value="{{ old('company_name', $company->company_name ?? '') }}">
+                    value="{{ old('company_name', $latestEnrollmentRecord->company_name ?? $company->company_name ?? '') }}">
                 <input type="hidden" id="corporate_number" name="corporate_number"
-                    value="{{ old('corporate_number', $company->corporate_number ?? '') }}">
+                    value="{{ old('corporate_number', $latestEnrollmentRecord->corporate_number ?? $company->corporate_number ?? '') }}">
             </div>
 
             <div class="mb-6">
@@ -102,12 +102,12 @@
                 <div class="flex gap-8">
                     <label class="inline-flex items-center">
                         <input type="radio" class="form-radio" name="entry_type" value="新卒入社" required
-                            {{ old('entry_type') == '新卒入社' ? 'checked' : '' }}>
+                            {{ old('entry_type', $latestEnrollmentRecord->entry_type ?? '') == '新卒入社' ? 'checked' : '' }}>
                         <span class="text-base sm:text-base ml-2">新卒入社</span>
                     </label>
                     <label class="inline-flex items-center">
                         <input type="radio" class="form-radio" name="entry_type" value="中途入社"
-                            {{ old('entry_type') == '中途入社' ? 'checked' : '' }}>
+                            {{ old('entry_type', $latestEnrollmentRecord->entry_type ?? '') == '中途入社' ? 'checked' : '' }}>
                         <span class="text-base sm:text-base ml-2">中途入社</span>
                     </label>
                 </div>
@@ -122,7 +122,7 @@
                 <div class="flex gap-12">
                     <label class="inline-flex items-center">
                         <input type="radio" class="form-radio" name="status" value="在籍中" required
-                            {{ old('status') == '在籍中' ? 'checked' : '' }}>
+                            {{ old('status', $latestEnrollmentRecord->status ?? '') == '在籍中' ? 'checked' : '' }}>
                         <span class="text-base sm:text-base ml-2">在籍中</span>
                         <span class="text-red-500 text-xs sm:text-xs ml-2">※在籍中の企業について登録ください</span>
                     </label>
@@ -140,7 +140,7 @@
                         class="h-10 w-1/3 px-4 border border-gray-300 text-base sm:text-base font-normal text-gray-700 bg-white rounded-md placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent">
                         <option value="">入社年</option>
                         @for ($year = date('Y'); $year >= date('Y') - 50; $year--)
-                            <option value="{{ $year }}" {{ old('start_year') == $year ? 'selected' : '' }}>
+                            <option value="{{ $year }}" {{ old('start_year', $latestEnrollmentRecord->start_year ?? '') == $year ? 'selected' : '' }}>
                                 {{ $year }}年
                             </option>
                         @endfor
@@ -160,7 +160,7 @@
                     class="h-10 w-full px-4 border border-gray-300 text-base sm:text-base font-normal text-gray-700 bg-white rounded-md placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent">
                     <option value="">選択してください</option>
                     @foreach ($jobCategories as $category)
-                        <option value="{{ $category->id }}" {{ old('current_job_category_id') == $category->id ? 'selected' : '' }}>
+                        <option value="{{ $category->id }}" {{ old('current_job_category_id', $latestEnrollmentRecord->current_job_category_id ?? '') == $category->id ? 'selected' : '' }}>
                             {{ $category->name }}
                         </option>
                     @endforeach
