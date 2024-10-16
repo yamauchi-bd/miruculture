@@ -25,16 +25,33 @@ class EnrollmentRecordController extends Controller
         $latestEnrollmentRecord = null;
 
         if ($request->has('corporate_number')) {
-            $company = Company::where('corporate_number', $request->corporate_number)->first();
-        } else {
-            // ユーザーの最新の在籍情報を取得
-            $latestEnrollmentRecord = Auth::user()->enrollmentRecords()->latest()->first();
-            if ($latestEnrollmentRecord) {
-                $company = Company::where('corporate_number', $latestEnrollmentRecord->corporate_number)->first();
-            }
+            $company = new \stdClass();
+            $company->corporate_number = $request->corporate_number;
+            $company->company_name = $request->company_name;
+
+            Log::info('Company info from request:', [
+                'company' => $company, 
+                'corporate_number' => $request->corporate_number,
+                'company_name' => $request->company_name
+            ]);
         }
 
+        if (!$company) {
+            Log::warning('Company info not provided in request');
+        }
+
+        // ユーザーの最新の在籍情報を取得
+        $latestEnrollmentRecord = Auth::user()->enrollmentRecords()
+            ->with(['jobCategory', 'jobSubcategory'])
+            ->latest()
+            ->first();
+
         $jobCategories = JobCategory::whereNull('parent_id')->with('children')->get();
+
+        Log::info('Data passed to view:', [
+            'company' => $company,
+            'latestEnrollmentRecord' => $latestEnrollmentRecord,
+        ]);
 
         return view('posts.create_enrollment_record', compact('jobCategories', 'company', 'latestEnrollmentRecord'));
     }
@@ -134,7 +151,7 @@ class EnrollmentRecordController extends Controller
             }
         }
 
-        // 会社文化���更新
+        // 会社文化更新
         $cultureDatas = [];
         for ($i = 0; $i < 8; $i++) {
             $cultureDatas["culture_$i"] = $request->input("culture_$i");

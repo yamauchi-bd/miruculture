@@ -14,12 +14,12 @@
                     {{ $company['company_name'] }}
                 </h2>
                 @auth
-                    <a href="{{ route('enrollment_records.create', ['corporate_number' => $company['corporate_number']]) }}"
+                    <a href="{{ route('enrollment_records.create', ['corporate_number' => $company['corporate_number'], 'company_name' => $company['company_name']]) }}"
                         class='block w-full sm:w-auto py-2 px-3 text-sm bg-cyan-500 text-white rounded-lg shadow-md cursor-pointer font-semibold text-center transition-all duration-300 ease-in-out hover:bg-cyan-700'>
                         企業カルチャーを登録する
                     </a>
                 @else
-                    <a href="{{ route('register', ['redirect_to' => route('enrollment_records.create', ['corporate_number' => $company['corporate_number']])]) }}"
+                    <a href="{{ route('register', ['redirect_to' => route('enrollment_records.create', ['corporate_number' => $company['corporate_number'], 'company_name' => $company['company_name']])]) }}"
                         class='block w-full sm:w-auto py-2 px-3 text-sm bg-cyan-500 text-white rounded-lg shadow-md cursor-pointer font-semibold text-center transition-all duration-300 ease-in-out hover:bg-cyan-700'>
                         企業カルチャーを登録する
                     </a>
@@ -84,12 +84,12 @@
                                                 class="hidden sm:inline md:hidden">可視化しよう！
                                         </p>
                                         @auth
-                                            <a href="{{ route('enrollment_records.create', ['corporate_number' => $company['corporate_number']]) }}"
+                                            <a href="{{ route('enrollment_records.create', ['corporate_number' => $company['corporate_number'], 'company_name' => $company['company_name']]) }}"
                                                 class='block w-full sm:w-auto py-2 px-3 text-sm bg-cyan-500 text-white rounded-lg shadow-md cursor-pointer font-semibold text-center transition-all duration-300 ease-in-out hover:bg-cyan-700'>
                                                 性格タイプを登録する
                                             </a>
                                         @else
-                                            <a href="{{ route('register', ['redirect_to' => route('enrollment_records.create', ['corporate_number' => $company['corporate_number']])]) }}"
+                                            <a href="{{ route('register', ['redirect_to' => route('enrollment_records.create', ['corporate_number' => $company['corporate_number'], 'company_name' => $company['company_name']])]) }}"
                                                 class='block w-full sm:w-auto py-2 px-3 text-sm bg-cyan-500 text-white rounded-lg shadow-md cursor-pointer font-semibold text-center transition-all duration-300 ease-in-out hover:bg-cyan-700'>
                                                 性格タイプを登録する
                                             </a>
@@ -116,12 +116,12 @@
                                             class="hidden sm:inline md:hidden">可視化しよう！
                                     </p>
                                     @auth
-                                        <a href="{{ route('enrollment_records.create', ['corporate_number' => $company['corporate_number']]) }}"
+                                        <a href="{{ route('enrollment_records.create', ['corporate_number' => $company['corporate_number'], 'company_name' => $company['company_name']]) }}"
                                             class='block w-full sm:w-auto py-2 px-3 text-sm bg-cyan-500 text-white rounded-lg shadow-md cursor-pointer font-semibold text-center transition-all duration-300 ease-in-out hover:bg-cyan-700'>
                                             入社の決め手を登録する
                                         </a>
                                     @else
-                                        <a href="{{ route('register', ['redirect_to' => route('enrollment_records.create', ['corporate_number' => $company['corporate_number']])]) }}"
+                                        <a href="{{ route('register', ['redirect_to' => route('enrollment_records.create', ['corporate_number' => $company['corporate_number'], 'company_name' => $company['company_name']])]) }}"
                                             class='block w-full sm:w-auto py-2 px-3 text-sm bg-cyan-500 text-white rounded-lg shadow-md cursor-pointer font-semibold text-center transition-all duration-300 ease-in-out hover:bg-cyan-700'>
                                             入社の決め手を登録する
                                         </a>
@@ -148,12 +148,12 @@
                                             class="hidden sm:inline md:hidden">可視化しよう！
                                     </p>
                                     @auth
-                                        <a href="{{ route('enrollment_records.create', ['corporate_number' => $company['corporate_number']]) }}"
+                                        <a href="{{ route('enrollment_records.create', ['corporate_number' => $company['corporate_number'], 'company_name' => $company['company_name']]) }}"
                                             class='block w-full sm:w-auto py-2 px-3 text-sm bg-cyan-500 text-white rounded-lg shadow-md cursor-pointer font-semibold text-center transition-all duration-300 ease-in-out hover:bg-cyan-700'>
                                             社風･雰囲気を登録する
                                         </a>
                                     @else
-                                        <a href="{{ route('register', ['redirect_to' => route('enrollment_records.create', ['corporate_number' => $company['corporate_number']])]) }}"
+                                        <a href="{{ route('register', ['redirect_to' => route('enrollment_records.create', ['corporate_number' => $company['corporate_number'], 'company_name' => $company['company_name']])]) }}"
                                             class='block w-full sm:w-auto py-2 px-3 text-sm bg-cyan-500 text-white rounded-lg shadow-md cursor-pointer font-semibold text-center transition-all duration-300 ease-in-out hover:bg-cyan-700'>
                                             社風･雰囲気を登録する
                                         </a>

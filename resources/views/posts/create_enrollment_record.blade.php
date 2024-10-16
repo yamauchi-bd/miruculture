@@ -58,7 +58,8 @@
         @csrf
 
         <div id="section-1">
-            <h2 class="mt-4 mb-6 text-gray-700 font-bold">在籍情報 👤</h2>
+            <h2 class="mt-4 mb-6 text-cyan-500 font-bold">▼ 対象企業・在籍情報 を登録する</h2>
+            
             <div class="mb-6">
                 <label for="company_name"
                     class="flex gap-1 mb-2 items-center text-gray-700 text-sm font-bold leading-relaxed">
@@ -70,7 +71,8 @@
                 <div class="flex relative">
                     <input type="text" id="company-input" required
                         class="block w-full px-4 py-2 pr-12 border border-gray-300 text-base sm:text-base font-normal text-gray-700 bg-white rounded-md placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
-                        placeholder="登録する企業を探す..." value="{{ old('company_name', $latestEnrollmentRecord->company_name ?? $company->company_name ?? '') }}">
+                        placeholder="登録する企業を探す..." 
+                        value="{{ old('company_name', $latestEnrollmentRecord->company_name ?? $company->company_name ?? '') }}">
                     <button type="button" id="input-button"
                         class="absolute right-0 top-0 h-full px-3 bg-cyan-500 text-white text-sm font-bold rounded-r-md transition-all hover:bg-cyan-700 flex items-center justify-center">
                         <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
@@ -172,12 +174,12 @@
                     class="flex gap-1 mb-2 items-center text-gray-700 text-sm font-bold leading-relaxed">
                     詳細な職種
                     <x-required-mark />
-                    <p id="job_subcategory-error" class="error-message text-red-500 text-xs" style="display: none;">
-                    </p>
+                    <p id="job_subcategory-error" class="error-message text-red-500 text-xs" style="display: none;"></p>
                 </label>
                 <div class="w-full flex gap-4">
                     <select id="job_subcategory" name="current_job_subcategory_id" required
-                        class="h-10 w-full px-4 border border-gray-300 text-base sm:text-base font-normal text-gray-700 bg-white rounded-md placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent">
+                        class="h-10 w-full px-4 border border-gray-300 text-base sm:text-base font-normal text-gray-700 bg-white rounded-md placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
+                        data-current-subcategory-id="{{ old('current_job_subcategory_id', $latestEnrollmentRecord->current_job_subcategory_id ?? '') }}">
                         <option value="">選択してください</option>
                         <!-- 大カテゴリー選択後にJavaScriptで動的に追加 -->
                     </select>

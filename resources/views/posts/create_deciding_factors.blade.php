@@ -53,7 +53,7 @@
         @csrf
 
         <div id="section-2">
-            <h2 class="mt-4 mb-6 text-gray-700 font-bold">入社の決め手 🤝</h2>
+            <h2 class="mt-4 mb-6 text-cyan-500 font-bold">▼ 入社の決め手 を登録する</h2>
 
             <div id="deciding-factors">
                 @for ($i = 1; $i <= 3; $i++)

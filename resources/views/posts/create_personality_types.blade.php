@@ -49,10 +49,10 @@
 </div>
 
 <div class="max-w-7xl mt-12 px-4 md:px-5 md:w-3/5 lg:w-2/5 lg:px-5 mx-auto">
-    <h2 class="mt-4 text-gray-700 font-bold">MBTI<span class="text-2xs">※</span> (16タイプ性格診断) 🧠</h2>
-    <p class="mb-6 text-2xs text-gray-500">※認知度から便宜上「MBTI」という表記を使用していますが、実際は16タイプ性格診断を指します。</p>
-    <p class="mb-6 text-sm text-gray-700">
-        無料でMBTI(16タイプ性格診断)を受けてみる</br>▶︎
+    <h2 class="mt-4 text-cyan-500 font-bold">▼ MBTI<span class="text-2xs">※</span>(16タイプ性格診断) を登録する</h2>
+    <p class="text-2xs text-gray-500">※認知度から便宜上「MBTI」という表記を使用していますが、実際は16タイプ性格診断を指します。</p>
+    <p class="mt-1 mb-10 text-sm text-gray-700 font-bold">
+        無料で診断してみる👉
         <a href="https://www.16personalities.com/ja/%E6%80%A7%E6%A0%BC%E8%A8%BA%E6%96%AD%E3%83%86%E3%82%B9%E3%83%88" target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:text-blue-700 underline">
             https://www.16personalities.com
         </a>

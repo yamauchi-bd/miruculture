@@ -52,7 +52,7 @@
         @csrf
 
         <div id="section-3">
-            <h2 class="mt-4 mb-6 text-gray-700 font-bold">社風・雰囲気 🏢</h2>
+            <h2 class="mt-4 mb-6 text-cyan-500 font-bold">▼ 社風・雰囲気 を登録する</h2>
 
             @php
                 $cultureItems = [
