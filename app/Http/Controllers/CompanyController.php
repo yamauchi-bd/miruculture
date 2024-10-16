@@ -6,6 +6,7 @@ use App\Models\Company;
 use App\Models\Industry;
 use App\Models\EnrollmentRecord;
 use App\Models\CompanyCulture;
+use App\Models\PersonalityType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Cache;
@@ -121,7 +122,13 @@ class CompanyController extends Controller
             Log::info('Company Culture Records:', ['count' => $companyCultureRecords->count()]);
             Log::info('Deciding Factors Data:', $decidingFactorsData);
     
-            return view('companies.show', compact('company', 'decidingFactorRecords', 'companyCultureRecords', 'decidingFactorsData', 'companyCultureFactors'));
+            $personalityTypeRecords = EnrollmentRecord::where('corporate_number', $corporate_number)
+                ->with('personalityTypes')
+                ->get();
+
+            $personalityTypeData = $this->getPersonalityTypeData($personalityTypeRecords);
+
+            return view('companies.show', compact('company', 'decidingFactorRecords', 'companyCultureRecords', 'decidingFactorsData', 'companyCultureFactors', 'personalityTypeRecords', 'personalityTypeData'));
     
         } catch (\Exception $e) {
             Log::error('Error in show method: ' . $e->getMessage());
@@ -320,5 +327,30 @@ class CompanyController extends Controller
         }
 
         return $aggregatedData;
+    }
+
+    private function getPersonalityTypeData($records)
+    {
+        $typeCounts = [];
+        $totalCount = 0;
+
+        foreach ($records as $record) {
+            $type = $record->personalityTypes->first()->type ?? null;
+            if ($type) {
+                $typeCounts[$type] = ($typeCounts[$type] ?? 0) + 1;
+                $totalCount++;
+            }
+        }
+
+        $data = [];
+        foreach ($typeCounts as $type => $count) {
+            $data[] = [
+                'type' => $type,
+                'count' => $count,
+                'percentage' => round(($count / $totalCount) * 100, 1)
+            ];
+        }
+
+        return $data;
     }
 }

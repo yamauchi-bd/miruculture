@@ -31,7 +31,17 @@
                 <div class="border-b border-gray-200">
                     <nav class="-mb-px flex" aria-label="Tabs">
                         <button
-                            class="tab-button w-1/2 py-3 px-1 text-center border-b-2 font-semibold text-xs sm:text-sm flex items-center justify-center transition-all duration-200 ease-in-out cursor-pointer"
+                            class="tab-button w-1/3 py-3 px-1 text-center border-b-2 font-semibold text-xs sm:text-sm flex items-center justify-center transition-all duration-200 ease-in-out cursor-pointer"
+                            data-tab="personality-types">
+                            <span>性格タイプ(MBTI)</span>
+                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <button
+                            class="tab-button w-1/3 py-3 px-1 text-center border-b-2 font-semibold text-xs sm:text-sm flex items-center justify-center transition-all duration-200 ease-in-out cursor-pointer"
                             data-tab="deciding-factors">
                             <span>入社の決め手</span>
                             <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -41,7 +51,7 @@
                             </svg>
                         </button>
                         <button
-                            class="tab-button w-1/2 py-3 px-1 text-center border-b-2 font-semibold text-xs sm:text-sm flex items-center justify-center transition-all duration-200 ease-in-out cursor-pointer"
+                            class="tab-button w-1/3 py-3 px-1 text-center border-b-2 font-semibold text-xs sm:text-sm flex items-center justify-center transition-all duration-200 ease-in-out cursor-pointer"
                             data-tab="company-culture">
                             <span>社風･雰囲気</span>
                             <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -57,6 +67,40 @@
             {{-- グラフ部分 --}}
             <section class="py-2 sm:py-2 md:py-8 lg:py-2 mt-4 sm:mt-4">
                 <div class="border border-gray-200 rounded-lg overflow-hidden">
+
+                    {{-- 性格タイプグラフ --}}
+                    <div id="personality-types-content" class="tab-content hidden">
+                        <div class="border border-gray-200 rounded-lg overflow-hidden">
+                            <div class="flex items-center px-3 py-2 sm:px-4 sm:py-3 bg-gray-100">
+                                <h3 class="text-xs sm:text-sm font-semibold text-gray-700">性格タイプ</h3>
+                                <h2 class="text-2xs sm:text-xs text-gray-600">（従業員の性格傾向）</h2>
+                            </div>
+                            <div class="px-4 sm:px-8 py-3 sm:py-4 relative h-[30vh] w-full lg:h-[45vh] sm:h-[30vh]">
+                                @if ($personalityTypeRecords->isEmpty())
+                                    <div class="absolute inset-0 flex flex-col items-center justify-center">
+                                        <p
+                                            class="text-sm sm:text-base md:text-lg lg:text-xl text-cyan-500 font-bold text-center leading-tight sm:leading-normal mb-4">
+                                            「性格タイプ(MBTI)」を登録して、<br class="sm:hidden">従業員の性格傾向を<br
+                                                class="hidden sm:inline md:hidden">可視化しよう！
+                                        </p>
+                                        @auth
+                                            <a href="{{ route('enrollment_records.create', ['corporate_number' => $company['corporate_number']]) }}"
+                                                class='block w-full sm:w-auto py-2 px-3 text-sm bg-cyan-500 text-white rounded-lg shadow-md cursor-pointer font-semibold text-center transition-all duration-300 ease-in-out hover:bg-cyan-700'>
+                                                性格タイプを登録する
+                                            </a>
+                                        @else
+                                            <a href="{{ route('register', ['redirect_to' => route('enrollment_records.create', ['corporate_number' => $company['corporate_number']])]) }}"
+                                                class='block w-full sm:w-auto py-2 px-3 text-sm bg-cyan-500 text-white rounded-lg shadow-md cursor-pointer font-semibold text-center transition-all duration-300 ease-in-out hover:bg-cyan-700'>
+                                                性格タイプを登録する
+                                            </a>
+                                        @endauth
+                                    </div>
+                                @endif
+                                <canvas id="personalityTypesChart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
                     {{-- 決め手グラフ --}}
                     <div id="deciding-factors-content" class="tab-content">
                         <div class="flex items-center px-3 py-2 sm:px-4 sm:py-3 bg-gray-100">
@@ -150,7 +194,12 @@
                 </div>
             </section>
 
-            {{-- 会社文化データをJavaScriptに渡す --}}
+            {{-- 性格タイプデータをJavaScriptに渡す --}}
+            <script id="personalityTypeData" type="application/json">
+                {!! json_encode($personalityTypeData) !!}
+            </script>
+
+            {{-- 社風データをJavaScriptに渡す --}}
             <script id="companyCultureData" type="application/json">
                 {!! json_encode($companyCultureFactors) !!}
             </script>
@@ -160,7 +209,17 @@
                 <div class="border-b border-gray-200">
                     <nav class="-mb-px flex" aria-label="Tabs">
                         <button
-                            class="tab-button w-1/2 py-3 px-1 text-center border-b-2 font-semibold text-xs sm:text-sm flex items-center justify-center transition-all duration-200 ease-in-out cursor-pointer"
+                            class="tab-button w-1/3 py-3 px-1 text-center border-b-2 font-semibold text-xs sm:text-sm flex items-center justify-center transition-all duration-200 ease-in-out cursor-pointer"
+                            data-tab="personality-types">
+                            <span>性格タイプ(MBTI)</span>
+                            <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                                xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                    d="M19 9l-7 7-7-7"></path>
+                            </svg>
+                        </button>
+                        <button
+                            class="tab-button w-1/3 py-3 px-1 text-center border-b-2 font-semibold text-xs sm:text-sm flex items-center justify-center transition-all duration-200 ease-in-out cursor-pointer"
                             data-tab="deciding-factors">
                             <span>入社の決め手</span>
                             <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -171,7 +230,7 @@
                             </svg>
                         </button>
                         <button
-                            class="tab-button w-1/2 py-3 px-1 text-center border-b-2 font-semibold text-xs sm:text-sm flex items-center justify-center transition-all duration-200 ease-in-out cursor-pointer"
+                            class="tab-button w-1/3 py-3 px-1 text-center border-b-2 font-semibold text-xs sm:text-sm flex items-center justify-center transition-all duration-200 ease-in-out cursor-pointer"
                             data-tab="company-culture">
                             <span>社風･雰囲気</span>
                             <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -315,7 +374,7 @@
                                         </span>
                                         <div class="flex justify-between items-center">
                                             <span class="text-2xs sm:text-xs leading-tight text-gray-500">
-                                                性格タイプ(MBTI) :
+                                                性格タイプ(MBTI):
                                                 {{ $enrollmentRecord->personalityTypes->first()->type ?? '未設定' }}
                                             </span>
                                             <span class="text-2xs sm:text-xs text-gray-500">
