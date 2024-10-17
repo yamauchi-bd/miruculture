@@ -1,1 +1,1 @@
-<img src="{{ asset('items/miruculture_logo.png') }}" alt="ミルカルチャー" {{ $attributes }}>
+<img src="{{ asset('items/miruculture_logox.png') }}" alt="ミルカルチャー" {{ $attributes }}>
