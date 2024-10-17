@@ -4,28 +4,30 @@
 
 @include('layouts.navigation')
 
-<section class="relative py-4 lg:py-14 lg:pt-28 lg:pb-16 bg-cover" style="background-image: url('{{ asset('items/top-background.jpg') }}'); background-position: center 100%;">
+<section class="relative py-2 lg:py-14 lg:pt-28 lg:pb-16 bg-cover" style="background-image: url('{{ asset('items/top-background.jpg') }}'); background-position: center 100%;">
     <div class="w-full max-w-7xl mx-auto px-4 lg:px-8">
         <div class="w-full max-w-4xl mx-auto sm:px-12 mb-10 lg:mb-10">
-            <h1 class="text-xl font-bold sm:text-xl md:text-3xl lg:text-3xl leading-relaxed sm:leading-loose tracking-wide sm:tracking-wider text-center mb-4 mt-6 sm:mb-6 md:mb-8 lg:mb-10 sm:mt-10 lg:mt-10 text-gray-800">
-                想い<span class="text-base sm:text-2xl md:text-2xl lg:text-2xl">と</span>働きがい<span class="text-base sm:text-xl md:text-2xl lg:text-2xl">が</span>あふれる社会へ</h1>
-                <h2 class="text-xs font-semibold sm:text-sm md:text-sm lg:text-sm leading-relaxed sm:leading-loose tracking-wide sm:tracking-wider text-center mb-4 mt-6 sm:mb-6 md:mb-8 lg:mb-10 sm:mt-10 lg:mt-10 text-gray-800">
+            <h1 class="text-base font-bold sm:text-xl md:text-3xl lg:text-3xl leading-relaxed sm:leading-loose tracking-wide sm:tracking-wider text-center mb-4 mt-6 sm:mb-6 md:mb-8 lg:mb-10 sm:mt-10 lg:mt-10 text-gray-800">
+                想い<span class="text-sm sm:text-2xl md:text-2xl lg:text-2xl">と</span>働きがい<span class="text-sm sm:text-xl md:text-2xl lg:text-2xl">が</span>あふれる社会へ</h1>
+                <h2 class="text-2xs font-semibold sm:text-sm md:text-sm lg:text-sm leading-relaxed sm:leading-loose tracking-wide sm:tracking-wider text-center mb-4 mt-6 sm:mb-6 md:mb-8 lg:mb-10 sm:mt-10 lg:mt-10 text-gray-800">
                     <span class="leading-relaxed sm:leading-relaxed md:leading-relaxed lg:leading-relaxed xl:leading-relaxed">
-                        <p class="mb-3">なんと、働く人の60％が企業カルチャーが要因で退職...</p>
-                        <p>"価値観"や"社風"といった見えないものを可視化し、<br>働きがいあるカルチャーフィットな転職を実現しましょう！</p>
+                        <p class="mb-3">実は、約60％の人が企業カルチャーのミスマッチで退職しています...</p>
+                        <p>あなたの会社にカルチャーフィットな転職をしてもらえるように、</p>
+                        <p class="mb-3">「性格･価値観･社風」を登録し、企業カルチャーを可視化してみませんか？</p>
+                        
                     </span>
                 </h2>
 
-            <div class="flex justify-center mt-4 sm:mt-6 md:mt-8 lg:mt-12 xl:mt-16">
+            <div class="flex justify-center mt-6 sm:mt-6 md:mt-8 lg:mt-12 xl:mt-16">
                 @auth
                     <a href="{{ route('enrollment_records.create') }}"
-                        class='py-2 px-4 sm:py-2 sm:px-8 md:py-3 md:px-10 lg:py-3 lg:px-12 xl:py-4 xl:px-16 text-xs sm:text-sm md:text-base lg:text-base bg-cyan-500 text-white rounded-full cursor-pointer font-semibold text-center shadow-xl duration-200 hover:bg-cyan-700 hover:shadow-xl hover:scale-105'>
-                        企業カルチャーを登録する
+                        class='py-2 px-6 sm:py-2 sm:px-10 md:py-3 md:px-10 lg:py-3 lg:px-16 xl:py-4 xl:px-16 text-xs sm:text-sm md:text-base lg:text-base bg-cyan-500 text-white rounded-full cursor-pointer font-semibold text-center shadow-xl duration-200 hover:bg-cyan-700 hover:shadow-xl hover:scale-105'>
+                        登録してみる
                     </a>
                 @else
                     <a href="{{ route('register') }}"
-                        class='py-2 px-4 sm:py-2 sm:px-8 md:py-3 md:px-10 lg:py-3 lg:px-12 xl:py-4 xl:px-16 text-xs sm:text-sm md:text-base lg:text-base bg-cyan-500 text-white rounded-full cursor-pointer font-semibold text-center shadow-xl duration-200 hover:bg-cyan-700 hover:shadow-xl hover:scale-105'>
-                        企業カルチャーを登録する
+                        class='py-2 px-6 sm:py-2 sm:px-10 md:py-3 md:px-10 lg:py-3 lg:px-16 xl:py-4 xl:px-16 text-xs sm:text-sm md:text-base lg:text-base bg-cyan-500 text-white rounded-full cursor-pointer font-semibold text-center shadow-xl duration-200 hover:bg-cyan-700 hover:shadow-xl hover:scale-105'>
+                        登録してみる
                     </a>
                 @endauth
             </div>
@@ -57,7 +59,7 @@
                         <a href="{{ route('companies.show', ['corporate_number' => $enrollmentRecord->corporate_number]) }}" class="block">
                             <div class="group bg-white border-2 border-solid border-gray-300 mt-2 rounded-xl p-4 sm:p-5 md:p-6 transition-all duration-300 hover:border-cyan-500 hover:shadow-lg relative h-[275px] sm:h-[325px] md:h-[325px] flex flex-col cursor-pointer transform hover:-translate-y-1">
                                 <h6 class="text-gray-700 text-xs sm:text-xs md:text-xs font-medium mb-3 sm:mb-4">
-                                    「<span class="text-cyan-600 hover:text-cyan-700">{{ $enrollmentRecord->company_name }}</span>」への決め手
+                                    「<span class="text-cyan-600 hover:text-cyan-700">{{ $enrollmentRecord->company_name }}</span>」への入社の決め手
                                 </h6>
                                 <div class="mb-1 sm:mb-2 flex-grow overflow-y-auto">
                                     @if($enrollmentRecord->decidingFactor)

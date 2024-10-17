@@ -84,5 +84,5 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // 初期状態でのアクティブタブの設定
-    setActiveTab('personality-types');
+    setActiveTab('deciding-factors');
 });

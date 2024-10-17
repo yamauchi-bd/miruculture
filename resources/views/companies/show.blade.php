@@ -31,7 +31,7 @@
                 <div class="border-b border-gray-200">
                     <nav class="-mb-px flex" aria-label="Tabs">
                         <button
-                            class="tab-button w-1/3 py-3 px-1 text-center border-b-2 font-semibold text-xs sm:text-sm flex items-center justify-center transition-all duration-200 ease-in-out cursor-pointer"
+                            class="tab-button w-1/3 py-3 px-1 text-center border-b-2 border-x-2 border-x-white font-semibold text-xs sm:text-sm flex items-center justify-center transition-all duration-200 ease-in-out cursor-pointer"
                             data-tab="personality-types">
                             <span>性格タイプ(MBTI)</span>
                             <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -41,7 +41,7 @@
                             </svg>
                         </button>
                         <button
-                            class="tab-button w-1/3 py-3 px-1 text-center border-b-2 font-semibold text-xs sm:text-sm flex items-center justify-center transition-all duration-200 ease-in-out cursor-pointer"
+                            class="tab-button w-1/3 py-3 px-1 text-center border-b-2 border-x-2 border-x-white font-semibold text-xs sm:text-sm flex items-center justify-center transition-all duration-200 ease-in-out cursor-pointer"
                             data-tab="deciding-factors">
                             <span>入社の決め手</span>
                             <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -51,7 +51,7 @@
                             </svg>
                         </button>
                         <button
-                            class="tab-button w-1/3 py-3 px-1 text-center border-b-2 font-semibold text-xs sm:text-sm flex items-center justify-center transition-all duration-200 ease-in-out cursor-pointer"
+                            class="tab-button w-1/3 py-3 px-1 text-center border-b-2 border-x-2 border-x-white font-semibold text-xs sm:text-sm flex items-center justify-center transition-all duration-200 ease-in-out cursor-pointer"
                             data-tab="company-culture">
                             <span>社風･雰囲気</span>
                             <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -136,7 +136,7 @@
                     <div id="company-culture-content" class="tab-content hidden">
                         <div class="flex items-center px-3 py-2 sm:px-4 sm:py-3 bg-gray-100">
                             <h3 class="text-xs sm:text-sm font-semibold text-gray-700">社風･雰囲気</h3>
-                            <h2 class="text-2xs sm:text-xs text-gray-600">（企業のカルチャー）</h2>
+                            <h2 class="text-2xs sm:text-xs text-gray-600">（環境や仕事の進め方）</h2>
                         </div>
                         <div class="px-4 sm:px-12 py-3 sm:py-6 relative w-full">
                             @if ($companyCultureRecords->isEmpty())
@@ -209,7 +209,7 @@
                 <div class="border-b border-gray-200">
                     <nav class="-mb-px flex" aria-label="Tabs">
                         <button
-                            class="tab-button w-1/3 py-3 px-1 text-center border-b-2 font-semibold text-xs sm:text-sm flex items-center justify-center transition-all duration-200 ease-in-out cursor-pointer"
+                            class="tab-button w-1/3 py-3 px-1 text-center border-b-2 border-x-2 border-x-white font-semibold text-xs sm:text-sm flex items-center justify-center transition-all duration-200 ease-in-out cursor-pointer"
                             data-tab="personality-types">
                             <span>性格タイプ(MBTI)</span>
                             <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -219,7 +219,7 @@
                             </svg>
                         </button>
                         <button
-                            class="tab-button w-1/3 py-3 px-1 text-center border-b-2 font-semibold text-xs sm:text-sm flex items-center justify-center transition-all duration-200 ease-in-out cursor-pointer"
+                            class="tab-button w-1/3 py-3 px-1 text-center border-b-2 border-x-2 border-x-white font-semibold text-xs sm:text-sm flex items-center justify-center transition-all duration-200 ease-in-out cursor-pointer"
                             data-tab="deciding-factors">
                             <span>入社の決め手</span>
                             <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -230,7 +230,7 @@
                             </svg>
                         </button>
                         <button
-                            class="tab-button w-1/3 py-3 px-1 text-center border-b-2 font-semibold text-xs sm:text-sm flex items-center justify-center transition-all duration-200 ease-in-out cursor-pointer"
+                            class="tab-button w-1/3 py-3 px-1 text-center border-b-2 border-x-2 border-x-white font-semibold text-xs sm:text-sm flex items-center justify-center transition-all duration-200 ease-in-out cursor-pointer"
                             data-tab="company-culture">
                             <span>社風･雰囲気</span>
                             <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24"
@@ -335,7 +335,7 @@
                                     <div class="flex-grow">
                                         <h2 class="text-xs sm:text-sm lg:text-xs text-gray-700 mt-1 mb-4">
                                             「<a href="{{ route('companies.show', ['corporate_number' => $enrollmentRecord->corporate_number]) }}"
-                                                class="text-cyan-600 hover:text-cyan-700 hover:underline">{{ $enrollmentRecord->company_name }}</a>」への決め手
+                                                class="text-cyan-600 hover:text-cyan-700 hover:underline">{{ $enrollmentRecord->company_name }}</a>」への入社の決め手
                                         </h2>
                                         @for ($i = 1; $i <= 3; $i++)
                                             @if ($enrollmentRecord->decidingFactor->{"factor_$i"})
@@ -528,7 +528,7 @@
                         </a>
                     </div>
                     <div class="p-3 space-y-4">
-                        @if ($company['company_mission'])
+                        {{-- @if ($company['company_mission']) --}}
                             <div class="flex items-start space-x-4">
                                 <div class="flex-shrink-0 mt-1">
                                     <svg class="w-6 h-6 text-cyan-500" fill="none" stroke="currentColor"
@@ -542,9 +542,9 @@
                                     <p class="text-xs text-gray-700">{{ $company['company_mission'] }}</p>
                                 </div>
                             </div>
-                        @endif
+                        {{-- @endif --}}
 
-                        @if ($company['company_vision'])
+                        {{-- @if ($company['company_vision']) --}}
                             <div class="flex items-start space-x-4">
                                 <div class="flex-shrink-0 mt-1">
                                     <svg class="w-6 h-6 text-cyan-500" fill="none" stroke="currentColor"
@@ -561,9 +561,9 @@
                                     <p class="text-xs text-gray-700">{{ $company['company_vision'] }}</p>
                                 </div>
                             </div>
-                        @endif
+                        {{-- @endif --}}
 
-                        @if ($company['company_values'])
+                        {{-- @if ($company['company_values']) --}}
                             <div class="flex items-start space-x-4">
                                 <div class="flex-shrink-0 mt-1">
                                     <svg class="w-6 h-6 text-cyan-500" fill="none" stroke="currentColor"
@@ -578,7 +578,7 @@
                                     <p class="text-xs text-gray-700">{{ $company['company_values'] }}</p>
                                 </div>
                             </div>
-                        @endif
+                        {{-- @endif --}}
 
                         @if ($company['business_summary'])
                             <div class="flex items-start space-x-4">
