@@ -244,6 +244,52 @@
                 </div>
             </div>
 
+            {{-- 性格タイプタブコンテンツ --}}
+<div id="personality-types-content" class="tab-content hidden">
+    <section class="py-6 sm:py-6 md:py-6">
+        <div class="mx-auto max-w-full">
+            @foreach ($personalityTypeRecords as $enrollmentRecord)
+                @if ($enrollmentRecord->personalityTypes->isNotEmpty())
+                    <div class="post-container group bg-white border border-solid border-gray-200 rounded-lg px-4 sm:px-6 md:px-8 py-4 mb-6 transition-all duration-300 hover:border-cyan-500 hover:shadow-lg relative flex flex-col cursor-pointer transform hover:-translate-y-1"
+                        data-post-id="{{ $enrollmentRecord->id }}">
+
+                        <div class="flex items-center gap-2">
+                            <svg xmlns="http://www.w3.org/2000/svg"
+                                class="h-10 w-10 sm:h-12 sm:w-12 text-gray-500" viewBox="0 0 20 20"
+                                fill="currentColor">
+                                <path fill-rule="evenodd"
+                                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z"
+                                    clip-rule="evenodd" />
+                            </svg>
+                            <div class="grid flex-grow">
+                                <h5 class="text-xs sm:text-sm text-gray-700 font-medium">
+                                    {{ $enrollmentRecord->start_year ?? '◯◯' }}年
+                                    {{ $enrollmentRecord->entry_type ?? '未設定' }}（{{ $enrollmentRecord->status ?? '未設定' }}）
+                                </h5>
+
+                                <span class="text-2xs sm:text-xs leading-tight text-gray-500">
+                                    {{ $enrollmentRecord->jobCategory->name ?? '職種未設定' }} >
+                                    {{ $enrollmentRecord->jobSubcategory->name ?? '未設定' }}
+                                </span>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-2xs sm:text-xs leading-tight text-gray-500">
+                                        性格タイプ(MBTI) :
+                                        {{ $enrollmentRecord->personalityTypes->first()->type ?? '未設定' }}
+                                    </span>
+                                    <span class="text-2xs sm:text-xs text-gray-500">
+                                        投稿日:
+                                        {{ $enrollmentRecord->personalityTypes->first()->created_at->format('Y年m月d日') }}
+                                    </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                @endif
+            @endforeach
+        </div>
+    </section>
+</div>
+
             {{-- 決め手タブコンテンツ --}}
             <div id="deciding-factors-content" class="tab-content">
                 <section class="py-6 sm:py-6 md:py-6">
