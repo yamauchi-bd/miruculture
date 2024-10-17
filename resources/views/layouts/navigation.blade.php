@@ -16,7 +16,7 @@
     @vite(['resources/css/style.css'])
     @vite(['resources/js/app.js'])
     @vite(['resources/css/app.css'])
-    <title>ミルカルチャー｜企業の価値観･社風を見える化</title>
+    <title>ミルカルチャー｜企業カルチャーを見える化</title>
 </head>
 
 <body>
