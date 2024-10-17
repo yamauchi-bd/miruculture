@@ -49,11 +49,11 @@
 </div>
 
 <div class="max-w-7xl mt-12 px-4 md:px-5 md:w-3/5 lg:w-2/5 lg:px-5 mx-auto">
-    <form action="{{ route('posts.store.step2') }}" method="POST">
+    <form action="{{ route('deciding_factors.store', $enrollmentRecord) }}" method="POST">
         @csrf
 
         <div id="section-2">
-            <h2 class="mt-4 mb-6 text-gray-700 font-bold">入社の決め手 🤝</h2>
+            <h2 class="mt-4 mb-6 text-cyan-500 font-bold">▼ 入社の決め手 を登録する</h2>
 
             <div id="deciding-factors">
                 @for ($i = 1; $i <= 3; $i++)
@@ -61,18 +61,20 @@
                         <div class="card-body mb-10">
                             <h3 class="flex gap-1 mb-3 items-center text-gray-700 text-sm font-bold leading-relaxed">
                                 {{ $i }} 位
-                                <x-required-mark />
+                                @if ($i == 1)
+                                    <x-required-mark />
+                                @endif
                             </h3>
                             <div class="justify-start mb-10 items-start gap-3 flex flex-wrap">
-                                @foreach (['企業ビジョンへの共感', '革新的なビジネスモデル', '優秀で熱意のある仲間', '成長できる環境･チャンス', '柔軟な働き方･場所', '給与･報酬など', 'その他'] as $factor)
+                                @foreach ($factors as $factor => $label)
                                     <label class="inline-flex items-center">
                                         <input type="radio" class="form-radio hidden deciding-factor"
-                                            name="deciding_factor_{{ $i }}" value="{{ $factor }}"
+                                            name="factor_{{ $i }}" value="{{ $factor }}"
                                             {{ $i == 1 ? 'required' : '' }}
-                                            {{ old("deciding_factor_$i", $formData["deciding_factor_$i"] ?? '') == $factor ? 'checked' : '' }}>
+                                            {{ old("factor_$i", $formData["factor_$i"] ?? '') == $factor ? 'checked' : '' }}>
                                         <span
                                             class="factor-label sm:w-fit w-full px-2 py-1.5 transition-all rounded-full border cursor-pointer text-sm font-semibold bg-white hover:bg-gray-100 text-gray-700 border-gray-300">
-                                            {{ $factor }}
+                                            {{ $label }}
                                         </span>
                                     </label>
                                 @endforeach
@@ -82,17 +84,19 @@
                                 <label
                                     class="flex gap-1 mb-2 items-center text-gray-700 text-sm font-bold leading-relaxed">
                                     決め手についての満足度
-                                    <x-required-mark />
+                                    @if ($i == 1)
+                                        <x-required-mark />
+                                    @endif
                                 </label>
                                 <div class="flex items-center">
                                     <span class="text-sm text-gray-600">低い</span>
                                     <div class="flex items-center mx-4">
                                         @for ($j = 1; $j <= 5; $j++)
                                             <label class="mx-1">
-                                                <input type="radio" name="factor_{{ $i }}_satisfaction"
+                                                <input type="radio" name="satisfaction_{{ $i }}"
                                                     value="{{ $j }}" class="hidden peer"
                                                     {{ $i == 1 ? 'required' : '' }}
-                                                    {{ old("factor_{$i}_satisfaction", $formData["factor_{$i}_satisfaction"] ?? '') == $j ? 'checked' : '' }}>
+                                                    {{ old("satisfaction_$i", $formData["satisfaction_$i"] ?? '') == $j ? 'checked' : '' }}>
                                                 <svg class="w-8 h-8 fill-current text-gray-300 peer-checked:text-cyan-500 cursor-pointer"
                                                     viewBox="0 0 24 24">
                                                     <path
@@ -106,17 +110,19 @@
                             </div>
             
                             <div class="mb-10">
-                                <label for="factor_{{ $i }}_detail"
+                                <label for="detail_{{ $i }}"
                                     class="flex gap-1 mb-2 items-center text-gray-700 text-sm font-bold leading-relaxed">
                                     自由記述
                                     <p class="text-xs">(決め手の詳細や満足度の理由)</p>
-                                    <x-required-mark />
-                                    <span class="text-xs text-gray-500 ml-2">(<span id="factor_{{ $i }}_detail_count">0</span>/100文字以上)</span>
+                                    @if ($i == 1)
+                                        <x-required-mark />
+                                    @endif
+                                    <span class="text-xs text-gray-500 ml-2">(<span id="detail_{{ $i }}_count">0</span>/100文字以上)</span>
                                 </label>
-                                <textarea id="factor_{{ $i }}_detail" name="factor_{{ $i }}_detail"
+                                <textarea id="detail_{{ $i }}" name="detail_{{ $i }}"
                                     class="block w-full px-4 py-2 border border-gray-300 text-base font-normal text-gray-700 bg-white rounded-md placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
                                     rows="3" {{ $i == 1 ? 'required' : '' }} minlength="100"
-                                    placeholder="入社の決め手や満足度について、詳しく教えてください。">{{ old("factor_{$i}_detail", $formData["factor_{$i}_detail"] ?? '') }}</textarea>
+                                    placeholder="入社の決め手や満足度について、詳しく教えてください。">{{ old("detail_$i", $formData["detail_$i"] ?? '') }}</textarea>
                             </div>
                         </div>
                     </div>
@@ -138,23 +144,13 @@
             </div>
 
             <div class="flex justify-center mt-16 space-x-4">
-                <a href="{{ route('posts.create.step1') }}" id="back-button"
+                <a href="{{ route('company_cultures.create', $enrollmentRecord) }}" id="skip-button"
                     class="bg-gray-300 hover:bg-gray-400 text-gray-700 font-bold py-3 px-8 rounded-full transform transition duration-300 ease-in-out hover:scale-105 flex items-center">
-                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M10 19l-7-7m0 0l7-7m-7 7h18" stroke="gray"></path>
-                    </svg>
-                    <span>戻る</span>
+                    <span>スキップ</span>
                 </a>
                 <button type="submit" id="next-button"
                     class="bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-3 px-8 rounded-full transform transition duration-300 ease-in-out hover:scale-105 flex items-center">
-                    <span class="mr-1">次にすすむ</span>
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M14 5l7 7m0 0l-7 7m7-7H3" stroke="white"></path>
-                    </svg>
+                    <span class="mr-1">{{ $isUpdate ? '更新する' : '登録する' }}</span>
                 </button>
             </div>
         </div>
@@ -163,4 +159,4 @@
 
 <div class="mt-20"></div>
 @include('layouts.footer')
-@vite(['resources/js/posts-step2.js'])
+@vite(['resources/js/create_deciding_factors.js'])

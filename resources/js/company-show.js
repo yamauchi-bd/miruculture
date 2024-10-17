@@ -4,6 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const tabContents = document.querySelectorAll('.tab-content');
     const decidingFactorsSection = document.getElementById('deciding-factors-content');
     const companyCultureSection = document.getElementById('company-culture-content');
+    const personalityTypesSection = document.getElementById('personality-types-content');
     const postContainers = document.querySelectorAll('.post-container');
     
     function toggleDetails(container, isExpanding) {
@@ -14,32 +15,43 @@ document.addEventListener('DOMContentLoaded', function() {
         const hiddenCultureDetails = container.querySelectorAll('.culture-detail');
         const toggleText = container.querySelector('.toggle-text');
 
-        arrowDown.classList.toggle('hidden', isExpanding);
-        arrowUp.classList.toggle('hidden', !isExpanding);
+        if (arrowDown && arrowUp && toggleText) {
+            arrowDown.classList.toggle('hidden', isExpanding);
+            arrowUp.classList.toggle('hidden', !isExpanding);
+            toggleText.textContent = isExpanding ? '閉じる' : 'もっと見る';
+        }
+
         summaries.forEach(summary => summary.classList.toggle('hidden', isExpanding));
         fulls.forEach(full => full.classList.toggle('hidden', !isExpanding));
         hiddenCultureDetails.forEach(detail => detail.classList.toggle('hidden', !isExpanding));
-        toggleText.textContent = isExpanding ? '閉じる' : 'もっと見る';
     }
 
     postContainers.forEach(container => {
         const toggleButton = container.querySelector('.toggle-details');
         
-        toggleButton.addEventListener('click', function(e) {
-            e.stopPropagation();
-            const isExpanding = this.querySelector('.toggle-text').textContent === 'もっと見る';
-            toggleDetails(container, isExpanding);
-        });
-        
-        container.addEventListener('click', function() {
-            toggleButton.click();
-        });
+        if (toggleButton) {
+            toggleButton.addEventListener('click', function(e) {
+                e.stopPropagation();
+                const isExpanding = this.querySelector('.toggle-text').textContent === 'もっと見る';
+                toggleDetails(container, isExpanding);
+            });
+            
+            container.addEventListener('click', function() {
+                toggleButton.click();
+            });
+        }
     });
 
     let decidingFactorsChartInstance = null;
+    let personalityTypesChartInstance = null;
 
     function initDecidingFactorsChart() {
         // 既存の決め手グラフの初期化コード
+        // ...
+    }
+
+    function initPersonalityTypesChart() {
+        // 性格タイプグラフの初期化コード
         // ...
     }
 
@@ -60,6 +72,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
         if (tabName === 'deciding-factors' && !decidingFactorsChartInstance) {
             initDecidingFactorsChart();
+        } else if (tabName === 'personality-types' && !personalityTypesChartInstance) {
+            initPersonalityTypesChart();
         }
     }
 

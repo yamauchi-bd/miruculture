@@ -48,11 +48,11 @@
 </div>
 
 <div class="max-w-7xl mt-12 px-4 md:px-5 md:w-3/5 lg:w-2/5 lg:px-5 mx-auto">
-    <form action="{{ route('posts.store') }}" method="POST">
+    <form action="{{ route('company_cultures.store', $enrollmentRecord) }}" method="POST">
         @csrf
 
         <div id="section-3">
-            <h2 class="mt-4 mb-6 text-gray-700 font-bold">社風・雰囲気 🏢</h2>
+            <h2 class="mt-4 mb-6 text-cyan-500 font-bold">▼ 社風・雰囲気 を登録する</h2>
 
             @php
                 $cultureItems = [
@@ -83,19 +83,18 @@
                             @php
                                 $options = ['A寄り', 'ややA寄り', 'どちらとも', 'ややB寄り', 'B寄り'];
                             @endphp
-                            @foreach ($options as $value => $label)
-                                <label class="flex-1">
-                                    <input type="radio" name="culture_{{ $index }}" value="{{ $value + 1 }}"
-                                        class="sr-only peer" required
-                                        {{ old("culture_$index", $formData["culture_$index"] ?? '') == $value + 1 ? 'checked' : '' }}>
-                                    <div
-                                        class="text-center py-1 border border-gray-300 rounded cursor-pointer transition-all duration-200 ease-in-out
-                        peer-checked:bg-cyan-500 peer-checked:text-white peer-checked:border-cyan-500
-                        hover:bg-gray-100">
-                                        <span class="text-xs">{{ $label }}</span>
-                                    </div>
-                                </label>
-                            @endforeach
+              @foreach ($options as $value => $label)
+              <label class="flex-1">
+                  <input type="radio" name="culture_{{ $index }}" value="{{ $value + 1 }}"
+                      class="sr-only peer" required
+                      {{ old("culture_$index", $formData["culture_$index"] ?? '') == $value + 1 ? 'checked' : '' }}>
+                  <div class="text-center py-1 border border-gray-300 rounded cursor-pointer transition-all duration-200 ease-in-out
+                      peer-checked:bg-cyan-500 peer-checked:text-white peer-checked:border-cyan-500
+                      hover:bg-gray-100">
+                      <span class="text-xs">{{ $label }}</span>
+                  </div>
+              </label>
+          @endforeach
                         </div>
                     </div>
                 @endforeach
@@ -104,43 +103,32 @@
             <div class="mt-20">
                 <h3 class="text-lg font-semibold text-gray-700 mb-4">自由記述 📝</h3>
                 <p class="text-sm text-gray-600 mb-8">
-                    社風について、具体的な例や詳細な説明があれば回答ください。<br>
+                    社風について、具体的な例や説明があれば、ぜひとも回答お願いします！<br>
                     すべてに回答しなくても構いませんが、合計で300文字以上の回答が必要です。
                 </p>
                 @foreach ($cultureItems as $index => $item)
-                    <div class="mb-12">
-                        <label for="culture_detail_{{ $index }}"
-                            class="block text-sm font-semibold text-gray-700 mb-2">
-                            {{ $item['name'] }}について
-                        </label>
-                        <textarea id="culture_detail_{{ $index }}" name="culture_detail_{{ $index }}" rows="3"
-                            class="shadow-sm focus:ring-cyan-500 focus:border-cyan-500 mt-1 block w-full sm:text-sm border-gray-300 rounded-md">{{ old("culture_detail_$index", $formData["culture_detail_$index"] ?? '') }}</textarea>
-                        <div class="mt-2 text-right text-xs text-gray-500">
-                            合計文字数: <span id="culture_detail_count_{{ $index }}">0</span>/300文字以上
-                        </div>
+                <div class="mb-6">
+                    <label for="culture_detail_{{ $index }}" class="block text-sm font-semibold text-gray-700 mb-2">
+                        {{ $item['name'] }}について
+                    </label>
+                    <textarea id="culture_detail_{{ $index }}" name="culture_detail_{{ $index }}" rows="3"
+                        class="shadow-sm focus:ring-cyan-500 focus:border-cyan-500 mt-1 block w-full sm:text-sm border-gray-300 rounded-md">{{ old("culture_detail_$index", $formData["culture_detail_$index"] ?? '') }}</textarea>
+                    <div class="mt-2 text-right text-xs text-gray-500">
+                        合計文字数: <span id="culture_detail_count_{{ $index }}">0</span>/300文字以上
                     </div>
-                @endforeach
+                </div>
+            @endforeach
             </div>
 
             <div class="flex justify-center mt-16 space-x-4">
-                <a href="{{ route('posts.create.step2') }}" id="back-button"
+                <a href="{{ route('companies.show', ['corporate_number' => $enrollmentRecord->corporate_number]) }}" id="skip-button"
                     class="bg-gray-300 hover:bg-gray-400 text-gray-700 font-bold py-3 px-8 rounded-full transform transition duration-300 ease-in-out hover:scale-105 flex items-center">
-                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M10 19l-7-7m0 0l7-7m-7 7h18" stroke="gray"></path>
-                    </svg>
-                    <span>戻る</span>
+                    <span>スキップ</span>
                 </a>
                 <button type="submit" id="submit-button"
-                    class="bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-3 px-8 rounded-full transform transition duration-300 ease-in-out hover:scale-105 flex items-center">
-                    <span class="mr-1">投稿する</span>
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M14 5l7 7m0 0l-7 7m7-7H3" stroke="white"></path>
-                    </svg>
-                </button>
+                class="bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-3 px-8 rounded-full transform transition duration-300 ease-in-out hover:scale-105 flex items-center">
+                <span class="mr-1">{{ $isUpdate ? '更新する' : '登録する' }}</span>
+            </button>
             </div>
         </div>
     </form>
@@ -150,4 +138,4 @@
 
 <div class="mt-20"></div>
 @include('layouts.footer')
-@vite(['resources/js/posts-step3.js'])
+@vite(['resources/js/create_company_cultures.js'])

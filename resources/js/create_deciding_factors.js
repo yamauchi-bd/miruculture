@@ -6,6 +6,7 @@ document.addEventListener('DOMContentLoaded', function () {
     setupStarRating();
     setupFormNavigation();
     setupCharacterCount();
+    initializeExistingData(); // 新しく追加した関数
 });
 
 function setupDecidingFactors() {
@@ -15,18 +16,16 @@ function setupDecidingFactors() {
 }
 
 function setupOptionalFactor(i) {
-    const factorInputs = document.querySelectorAll(`input[name="deciding_factor_${i}"]`);
-    const detail = document.getElementById(`factor_${i}_detail`);
-    const satisfaction = document.querySelectorAll(`input[name="factor_${i}_satisfaction"]`);
-    // const reason = document.getElementById(`factor_${i}_satisfaction_reason`);
+    const factorInputs = document.querySelectorAll(`input[name="factor_${i}"]`);
+    const detail = document.getElementById(`detail_${i}`);
+    const satisfaction = document.querySelectorAll(`input[name="satisfaction_${i}"]`);
 
     factorInputs.forEach(factor => {
         factor.addEventListener('change', function () {
-            const isSelected = document.querySelector(`input[name="deciding_factor_${i}"]:checked`) !== null;
+            const isSelected = document.querySelector(`input[name="factor_${i}"]:checked`) !== null;
             console.log(`Factor ${i} selected: ${isSelected}`);
             detail.required = isSelected;
             satisfaction.forEach(input => input.required = isSelected);
-            reason.required = isSelected;
         });
     });
 }
@@ -123,6 +122,15 @@ function setupUniqueFactorSelection() {
                     label.classList.remove('opacity-50', 'cursor-not-allowed');
                     label.style.pointerEvents = 'auto';
                 }
+
+                // 選択状態に応じてスタイルを更新
+                if (factor.checked) {
+                    label.classList.add('bg-cyan-500', 'text-white');
+                    label.classList.remove('bg-white', 'text-gray-700');
+                } else {
+                    label.classList.remove('bg-cyan-500', 'text-white');
+                    label.classList.add('bg-white', 'text-gray-700');
+                }
             });
         });
     }
@@ -138,8 +146,10 @@ function setupStarRating() {
     const starContainers = document.querySelectorAll('.flex.items-center');
     starContainers.forEach(container => {
         const stars = container.querySelectorAll('svg');
+        const radioInputs = container.querySelectorAll('input[type="radio"]');
         stars.forEach((star, index) => {
             star.addEventListener('click', () => {
+                radioInputs[index].checked = true;
                 stars.forEach((s, i) => {
                     if (i <= index) {
                         s.classList.add('text-cyan-500');
@@ -171,10 +181,9 @@ function validateForm() {
 
     // 必須フィールドのバリデーション
     for (let i = 1; i <= 3; i++) {
-        const factorInputs = document.querySelectorAll(`input[name="deciding_factor_${i}"]`);
-        const detail = document.getElementById(`factor_${i}_detail`);
-        const satisfaction = document.querySelectorAll(`input[name="factor_${i}_satisfaction"]`);
-        // const reason = document.getElementById(`factor_${i}_satisfaction_reason`);
+        const factorInputs = document.querySelectorAll(`input[name="factor_${i}"]`);
+        const detail = document.getElementById(`detail_${i}`);
+        const satisfaction = document.querySelectorAll(`input[name="satisfaction_${i}"]`);
 
         const isFactorSelected = Array.from(factorInputs).some(input => input.checked);
         const isSatisfactionSelected = Array.from(satisfaction).some(input => input.checked);
@@ -182,31 +191,24 @@ function validateForm() {
         if (i === 1 || isFactorSelected) {
             if (!isFactorSelected) {
                 isValid = false;
-                showError(`deciding_factor_${i}-error`, '入社の決め手を選択してください。');
+                showError(`factor_${i}-error`, '入社の決め手を選択してください。');
             } else {
-                hideError(`deciding_factor_${i}-error`);
+                hideError(`factor_${i}-error`);
             }
 
             if (detail.value.length < 100) {
                 isValid = false;
-                showError(`factor_${i}_detail-error`, '詳細は100文字以上入力してください。');
+                showError(`detail_${i}-error`, '詳細は100文字以上入力してください。');
             } else {
-                hideError(`factor_${i}_detail-error`);
+                hideError(`detail_${i}-error`);
             }
 
             if (!isSatisfactionSelected) {
                 isValid = false;
-                showError(`factor_${i}_satisfaction-error`, '満足度を選択してください。');
+                showError(`satisfaction_${i}-error`, '満足度を選択してください。');
             } else {
-                hideError(`factor_${i}_satisfaction-error`);
+                hideError(`satisfaction_${i}-error`);
             }
-
-            // if (reason.value.length < 50) {
-            //     isValid = false;
-            //     showError(`factor_${i}_satisfaction_reason-error`, '満足度の理由は50文字以上入力してください。');
-            // } else {
-            //     hideError(`factor_${i}_satisfaction_reason-error`);
-            // }
         }
     }
 
@@ -230,21 +232,63 @@ function hideError(id) {
 
 function setupCharacterCount() {
     for (let i = 1; i <= 3; i++) {
-        const detailTextarea = document.getElementById(`factor_${i}_detail`);
-        const detailCount = document.getElementById(`factor_${i}_detail_count`);
-        // const reasonTextarea = document.getElementById(`factor_${i}_satisfaction_reason`);
-        // const reasonCount = document.getElementById(`factor_${i}_satisfaction_reason_count`);
-
+        const detailTextarea = document.getElementById(`detail_${i}`);
+        const detailCount = document.getElementById(`detail_${i}_count`);
+     
         if (detailTextarea && detailCount) {
             detailTextarea.addEventListener('input', function() {
                 detailCount.textContent = this.value.length;
             });
         }
-
-        // if (reasonTextarea && reasonCount) {
-        //     reasonTextarea.addEventListener('input', function() {
-        //         reasonCount.textContent = this.value.length;
-        //     });
-        // }
     }
+}
+
+// 新しく追加する関数
+function initializeExistingData() {
+    for (let i = 1; i <= 3; i++) {
+        const factorInputs = document.querySelectorAll(`input[name="factor_${i}"]`);
+        factorInputs.forEach(input => {
+            if (input.checked) {
+                const label = input.nextElementSibling;
+                label.classList.add('bg-cyan-500', 'text-white');
+                label.classList.remove('bg-white', 'text-gray-700');
+
+                // 2位と3位の場合、対応するカードを表示
+                if (i > 1) {
+                    const factorCard = document.getElementById(`factor-${i}`);
+                    if (factorCard) {
+                        factorCard.classList.remove('hidden');
+                    }
+                }
+            }
+        });
+
+        // 満足度の星を更新
+        const satisfactionInput = document.querySelector(`input[name="satisfaction_${i}"]:checked`);
+        if (satisfactionInput) {
+            const stars = satisfactionInput.closest('.flex.items-center').querySelectorAll('svg');
+            const rating = parseInt(satisfactionInput.value);
+            stars.forEach((star, index) => {
+                if (index < rating) {
+                    star.classList.add('text-cyan-500');
+                    star.classList.remove('text-gray-300');
+                } else {
+                    star.classList.add('text-gray-300');
+                    star.classList.remove('text-cyan-500');
+                }
+            });
+        }
+    }
+
+    // 「他にも入社の決め手がある」ボタンの表示/非表示を更新
+    const factor2 = document.getElementById('factor-2');
+    const factor3 = document.getElementById('factor-3');
+    const addFactorButton = document.getElementById('add-factor-button');
+
+    if (!factor2.classList.contains('hidden') && !factor3.classList.contains('hidden')) {
+        addFactorButton.style.display = 'none';
+    }
+
+    // 利用可能なオプションを更新
+    updateAvailableOptions();
 }

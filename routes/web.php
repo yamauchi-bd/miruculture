@@ -5,6 +5,10 @@ use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\GoogleLoginController;
 use App\Http\Controllers\CareerController;
 use App\Http\Controllers\PostController;
+use App\Http\Controllers\EnrollmentRecordController;
+use App\Http\Controllers\PersonalityTypeController;
+use App\Http\Controllers\DecidingFactorController;
+use App\Http\Controllers\CompanyCultureController;
 use App\Http\Controllers\WelcomeController;
 use App\Http\Controllers\Auth\RegisteredUserController;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
@@ -19,10 +23,6 @@ use Illuminate\Support\Facades\Log;
 // 基本ルート
 Route::get('/', [WelcomeController::class, 'index'])->name('home');
 
-// Route::get('/dashboard', function () {
-//     return view('dashboard');
-// })->middleware(['auth', 'verified'])->name('dashboard');
-
 // 認証済みユーザー用ルート
 Route::middleware(['auth', 'verified'])->group(function () {
     // プロフィール関連
@@ -36,6 +36,21 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/careers/{career}/edit', [CareerController::class, 'edit'])->name('careers.edit');
     Route::put('/careers/{career}', [CareerController::class, 'update'])->name('careers.update');
     
+    // 在籍情報関連
+    Route::resource('enrollment_records', EnrollmentRecordController::class);
+
+    // 16タイプ関連
+    Route::get('/personality-types/create/{enrollmentRecord}', [PersonalityTypeController::class, 'create'])->name('personality_types.create');
+    Route::post('/personality-types/{enrollmentRecord}', [PersonalityTypeController::class, 'store'])->name('personality_types.store');
+    
+    // 入社の決め手関連
+    Route::get('/deciding-factors/create/{enrollmentRecord}', [DecidingFactorController::class, 'create'])->name('deciding_factors.create');
+    Route::post('/deciding-factors/{enrollmentRecord}', [DecidingFactorController::class, 'store'])->name('deciding_factors.store');
+
+    // 社風•雰囲気関連
+    Route::get('/company-cultures/create/{enrollmentRecord}', [CompanyCultureController::class, 'create'])->name('company_cultures.create');
+    Route::post('/company-cultures/{enrollmentRecord}', [CompanyCultureController::class, 'store'])->name('company_cultures.store');
+
     // 投稿関連
     Route::get('/posts/create/step1', [PostController::class, 'createStep1'])->name('posts.create.step1');
     Route::post('/posts/create/step1', [PostController::class, 'storeStep1'])->name('posts.store.step1');
@@ -120,3 +135,4 @@ Route::get('/api/company-search', function (Request $request) {
 });
 
 require __DIR__ . '/auth.php';
+

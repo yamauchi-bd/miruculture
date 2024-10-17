@@ -10,6 +10,7 @@ use Illuminate\Notifications\Notifiable;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use App\Notifications\EmailChangeNotification;
 use App\Models\Post;
+use App\Models\EnrollmentRecord;
 
 class User extends Authenticatable
 {
@@ -63,5 +64,13 @@ class User extends Authenticatable
     public function posts(): HasMany
     {
         return $this->hasMany(Post::class);
+    }
+
+    /**
+     * Get the enrollment records for the user.
+     */
+    public function enrollmentRecords()
+    {
+        return $this->hasMany(EnrollmentRecord::class);
     }
 }

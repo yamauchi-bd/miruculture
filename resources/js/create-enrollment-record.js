@@ -19,13 +19,23 @@ function setupJobCategories() {
         return;
     }
 
-    // 職種カテゴリーの設定コード
-    // 必要に応じて、サブカテゴリーの処理を追加
     const subCategories = JSON.parse(jobCategoriesElement.dataset.categories);
     const jobCategoryElement = document.getElementById('job_category');
-    if (!jobCategoryElement) {
-        console.error('job_category element not found');
+    const jobSubcategoryElement = document.getElementById('job_subcategory');
+    if (!jobCategoryElement || !jobSubcategoryElement) {
+        console.error('job_category or job_subcategory element not found');
         return;
+    }
+
+    // 初期表示時にサブカテゴリーを設定
+    if (jobCategoryElement.value) {
+        updateSubCategories(jobCategoryElement.value, subCategories);
+        
+        // サーバーから渡された現在のサブカテゴリーIDを取得
+        const currentSubcategoryId = jobSubcategoryElement.dataset.currentSubcategoryId;
+        if (currentSubcategoryId) {
+            jobSubcategoryElement.value = currentSubcategoryId;
+        }
     }
 
     jobCategoryElement.addEventListener('change', function () {
@@ -44,6 +54,12 @@ function updateSubCategories(selectedCategoryId, subCategories) {
             option.textContent = subCategory.name;
             subCategorySelect.appendChild(option);
         });
+    }
+
+    // 現在選択されているサブカテゴリーIDを保持
+    const currentSubcategoryId = subCategorySelect.dataset.currentSubcategoryId;
+    if (currentSubcategoryId) {
+        subCategorySelect.value = currentSubcategoryId;
     }
 }
 

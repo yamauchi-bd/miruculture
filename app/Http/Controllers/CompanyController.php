@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Models\Company;
 use App\Models\Industry;
-use App\Models\Post;
+use App\Models\EnrollmentRecord;
+use App\Models\CompanyCulture;
+use App\Models\PersonalityType;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Cache;
@@ -82,25 +84,51 @@ class CompanyController extends Controller
                 'listing_status' => $dbCompany->listing_status ?? null,
             ];
     
-            // 他の必要なデータ（posts, decidingFactorsData, companyCultureFactors）は
-            // 既存のコードを使用して取得
-            // 投稿を取得する際に、created_atカラムで降順にソート
-            $posts = Post::where('corporate_number', $corporate_number)
-                         ->orderBy('created_at', 'desc')
-                         ->get();
-                         
-            $decidingFactorsData = $this->calculateDecidingFactorsData($posts);
+            // 決め手が存在する投稿を取得
+            $decidingFactorRecords = EnrollmentRecord::where('corporate_number', $corporate_number)
+                ->with(['personalityTypes', 'decidingFactor', 'jobCategory', 'jobSubcategory'])
+                ->whereHas('decidingFactor', function ($query) {
+                    $query->whereNotNull('factor_1');
+                })
+                ->get()
+                ->sortByDesc(function ($record) {
+                    return $record->decidingFactor->created_at;
+                })
+                ->values(); // インデックスをリセット
 
-            // 会社文化要因を計算
-            $companyCultureFactors = $this->calculateCompanyCultureFactors($posts);
+            // 社風が存在する投稿を取得
+            $companyCultureRecords = EnrollmentRecord::where('corporate_number', $corporate_number)
+                ->with(['personalityTypes', 'companyCultures', 'jobCategory', 'jobSubcategory'])
+                ->whereHas('companyCultures', function ($query) {
+                    $query->where(function ($q) {
+                        for ($i = 0; $i < 8; $i++) {
+                            $q->orWhereNotNull("culture_{$i}");
+                        }
+                    });
+                })
+                ->get()
+                ->map(function ($record) {
+                    $record->latest_culture_date = $record->companyCultures->max('created_at');
+                    return $record;
+                })
+                ->sortByDesc('latest_culture_date')
+                ->values(); // インデックスをリセット
+
+            $decidingFactorsData = $this->calculateDecidingFactorsData($decidingFactorRecords);
+            $companyCultureFactors = $this->aggregateCompanyCultureData($companyCultureRecords);
+
+            // デバッグ用のログ出力
+            Log::info('Deciding Factor Records:', ['count' => $decidingFactorRecords->count()]);
+            Log::info('Company Culture Records:', ['count' => $companyCultureRecords->count()]);
+            Log::info('Deciding Factors Data:', $decidingFactorsData);
     
-            // 投稿がない場合のデフォルト値を設定
-            if ($posts->isEmpty()) {
-                $decidingFactorsData = [];
-                $companyCultureFactors = [];
-            }
-    
-            return view('companies.show', compact('company', 'posts', 'decidingFactorsData', 'companyCultureFactors'));
+            $personalityTypeRecords = EnrollmentRecord::where('corporate_number', $corporate_number)
+                ->with('personalityTypes')
+                ->get();
+
+            $personalityTypeData = $this->getPersonalityTypeData($personalityTypeRecords);
+
+            return view('companies.show', compact('company', 'decidingFactorRecords', 'companyCultureRecords', 'decidingFactorsData', 'companyCultureFactors', 'personalityTypeRecords', 'personalityTypeData'));
     
         } catch (\Exception $e) {
             Log::error('Error in show method: ' . $e->getMessage());
@@ -131,7 +159,7 @@ class CompanyController extends Controller
 
         $apiCompanyData = $apiData['hojin-infos'][0];
 
-        // データベースデータとAPIデータを結合（データベースデータを優先）
+        // データベースデータとAPIデータを結合（データベースデータを優）
         $company = [
             'corporate_number' => $corporateNumber,
             'company_name' => $dbCompany->company_name ?? $apiCompanyData['name'],
@@ -240,19 +268,23 @@ class CompanyController extends Controller
         }
     }
 
-    private function calculateDecidingFactorsData($posts)
+    private function calculateDecidingFactorsData($latestEnrollmentRecords)
     {
         $factorCounts = [];
-        $totalPosts = $posts->count();
+        $totalPosts = $latestEnrollmentRecords->count();
     
-        foreach ($posts as $post) {
-            $factors = $post->decidingFactors->take(3)->values();
-            foreach ($factors as $index => $factor) {
-                $factorName = $factor->factor;
-                if (!isset($factorCounts[$factorName])) {
-                    $factorCounts[$factorName] = [0, 0, 0];
+        foreach ($latestEnrollmentRecords as $enrollmentRecord) {
+            $decidingFactor = $enrollmentRecord->decidingFactor;
+            if ($decidingFactor) {
+                for ($i = 1; $i <= 3; $i++) {
+                    $factorName = $decidingFactor->{"factor_$i"};
+                    if ($factorName) {
+                        if (!isset($factorCounts[$factorName])) {
+                            $factorCounts[$factorName] = [0, 0, 0];
+                        }
+                        $factorCounts[$factorName][$i - 1]++;
+                    }
                 }
-                $factorCounts[$factorName][$index]++;
             }
         }
     
@@ -272,36 +304,53 @@ class CompanyController extends Controller
             return $b['total'] <=> $a['total'];
         });
     
-        return $factorData; // 全ての要因を返す
+        return $factorData;
     }
 
-    private function calculateCompanyCultureFactors($posts)
+    private function aggregateCompanyCultureData($enrollmentRecords)
     {
-        $cultureItems = [
-            ['name' => '人間関係', 'a' => 'ドライ', 'b' => 'ウェット'],
-            ['name' => '業務スタイル', 'a' => 'ロジカル', 'b' => 'クリエイティブ'],
-            ['name' => '評価基準', 'a' => 'プロセス重視', 'b' => '結果重視'],
-            ['name' => '組織スタイル', 'a' => '個人プレー', 'b' => 'チームプレー'],
-            ['name' => '意思決定', 'a' => 'トップダウン', 'b' => 'ボトムアップ'],
-            ['name' => '行動スタイル', 'a' => '計画･確実性', 'b' => '実行･スピード'],
-            ['name' => '雰囲気', 'a' => 'モクモク･真面目', 'b' => 'ワイワイ･元気'],
-            ['name' => 'ワークライフ', 'a' => 'バランス重視', 'b' => 'ワーク重視'], 
-        ];
-    
-        $factorData = [];
-    
+        $cultureItems = CompanyCulture::getCultureItems();
+        $aggregatedData = [];
+
         foreach ($cultureItems as $index => $item) {
-            $scores = $posts->pluck("culture_{$index}")->filter()->values();
-            $averageScore = $scores->avg() ?? 3; // デフォルト値を3（中間）に設定
-    
-            $factorData[] = [
+            $values = $enrollmentRecords->flatMap(function ($record) use ($index) {
+                return $record->companyCultures->pluck("culture_{$index}");
+            });
+
+            $averageScore = $values->avg();
+            $aggregatedData[] = [
                 'name' => $item['name'],
                 'a' => $item['a'],
                 'b' => $item['b'],
-                'average_score' => round($averageScore, 1),
+                'average_score' => $averageScore,
             ];
         }
-    
-        return collect($factorData);
+
+        return $aggregatedData;
+    }
+
+    private function getPersonalityTypeData($records)
+    {
+        $typeCounts = [];
+        $totalCount = 0;
+
+        foreach ($records as $record) {
+            $type = $record->personalityTypes->first()->type ?? null;
+            if ($type) {
+                $typeCounts[$type] = ($typeCounts[$type] ?? 0) + 1;
+                $totalCount++;
+            }
+        }
+
+        $data = [];
+        foreach ($typeCounts as $type => $count) {
+            $data[] = [
+                'type' => $type,
+                'count' => $count,
+                'percentage' => round(($count / $totalCount) * 100, 1)
+            ];
+        }
+
+        return $data;
     }
 }

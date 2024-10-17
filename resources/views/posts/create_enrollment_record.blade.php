@@ -54,11 +54,12 @@
     <div id="job-categories" data-categories="{{ json_encode($jobCategories->pluck('children', 'id')) }}"
         style="display: none;"></div>
 
-    <form action="{{ route('posts.store.step1') }}" method="POST">
+    <form action="{{ route('enrollment_records.store') }}" method="POST">
         @csrf
 
         <div id="section-1">
-            <h2 class="mt-4 mb-6 text-gray-700 font-bold">在籍情報 👤</h2>
+            <h2 class="mt-4 mb-6 text-cyan-500 font-bold">▼ 対象企業・在籍情報 を登録する</h2>
+            
             <div class="mb-6">
                 <label for="company_name"
                     class="flex gap-1 mb-2 items-center text-gray-700 text-sm font-bold leading-relaxed">
@@ -70,7 +71,8 @@
                 <div class="flex relative">
                     <input type="text" id="company-input" required
                         class="block w-full px-4 py-2 pr-12 border border-gray-300 text-base sm:text-base font-normal text-gray-700 bg-white rounded-md placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
-                        placeholder="登録する企業を探す..." value="{{ old('company_name', $formData['company_name'] ?? '') }}">
+                        placeholder="登録する企業を探す..." 
+                        value="{{ old('company_name', $latestEnrollmentRecord->company_name ?? $company->company_name ?? '') }}">
                     <button type="button" id="input-button"
                         class="absolute right-0 top-0 h-full px-3 bg-cyan-500 text-white text-sm font-bold rounded-r-md transition-all hover:bg-cyan-700 flex items-center justify-center">
                         <svg width="20px" height="20px" viewBox="0 0 24 24" fill="none"
@@ -88,9 +90,9 @@
                     </div>
                 </div>
                 <input type="hidden" id="company_name" name="company_name"
-                    value="{{ old('company_name', $formData['company_name'] ?? '') }}">
+                    value="{{ old('company_name', $latestEnrollmentRecord->company_name ?? $company->company_name ?? '') }}">
                 <input type="hidden" id="corporate_number" name="corporate_number"
-                    value="{{ old('corporate_number', $formData['corporate_number'] ?? '') }}">
+                    value="{{ old('corporate_number', $latestEnrollmentRecord->corporate_number ?? $company->corporate_number ?? '') }}">
             </div>
 
             <div class="mb-6">
@@ -102,12 +104,12 @@
                 <div class="flex gap-8">
                     <label class="inline-flex items-center">
                         <input type="radio" class="form-radio" name="entry_type" value="新卒入社" required
-                            {{ old('entry_type', $step2Data['entry_type'] ?? '') == '新卒入社' ? 'checked' : '' }}>
+                            {{ old('entry_type', $latestEnrollmentRecord->entry_type ?? '') == '新卒入社' ? 'checked' : '' }}>
                         <span class="text-base sm:text-base ml-2">新卒入社</span>
                     </label>
                     <label class="inline-flex items-center">
                         <input type="radio" class="form-radio" name="entry_type" value="中途入社"
-                            {{ old('entry_type', $step2Data['entry_type'] ?? '') == '中途入社' ? 'checked' : '' }}>
+                            {{ old('entry_type', $latestEnrollmentRecord->entry_type ?? '') == '中途入社' ? 'checked' : '' }}>
                         <span class="text-base sm:text-base ml-2">中途入社</span>
                     </label>
                 </div>
@@ -122,15 +124,10 @@
                 <div class="flex gap-12">
                     <label class="inline-flex items-center">
                         <input type="radio" class="form-radio" name="status" value="在籍中" required
-                            {{ old('status', $step2Data['status'] ?? '') == '在籍中' ? 'checked' : '' }}>
+                            {{ old('status', $latestEnrollmentRecord->status ?? '') == '在籍中' ? 'checked' : '' }}>
                         <span class="text-base sm:text-base ml-2">在籍中</span>
-                        <span class="text-red-500 text-xs sm:text-xs ml-2">※在籍中の企業についてのみ登録できます</span>
+                        <span class="text-red-500 text-xs sm:text-xs ml-2">※在籍中の企業について登録ください</span>
                     </label>
-                    {{-- <label class="inline-flex items-center">
-                        <input type="radio" class="form-radio" name="status" value="退職済み"
-                            {{ old('status', session('step2_data.status')) == '退職済み' ? 'checked' : '' }}>
-                        <span class="ml-2">退職済み</span>
-                    </label> --}}
                 </div>
             </div>
 
@@ -145,22 +142,12 @@
                         class="h-10 w-1/3 px-4 border border-gray-300 text-base sm:text-base font-normal text-gray-700 bg-white rounded-md placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent">
                         <option value="">入社年</option>
                         @for ($year = date('Y'); $year >= date('Y') - 50; $year--)
-                            <option value="{{ $year }}" {{ old('start_year', $step2Data['start_year'] ?? '') == $year ? 'selected' : '' }}>
+                            <option value="{{ $year }}" {{ old('start_year', $latestEnrollmentRecord->start_year ?? '') == $year ? 'selected' : '' }}>
                                 {{ $year }}年
                             </option>
                         @endfor
                     </select>
                     <span class="mx-2">〜</span>
-                    {{-- <select id="end_year" name="end_year"
-                        class="h-10 w-1/3 px-4 border border-gray-300 text-base font-normal text-gray-700 bg-white rounded-md placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent">
-                        <option value="" selected disabled>退職年</option>
-                        @for ($year = date('Y'); $year >= date('Y') - 50; $year--)
-                            <option value="{{ $year }}" {{ old('end_year', session('step2_data.end_year')) == $year ? 'selected' : '' }}>
-                                {{ $year }}年
-                            </option>
-                        @endfor
-                    </select>
-                    <p id="end_year-error" class="error-message text-red-500 text-xs" style="display: none;"></p> --}}
                 </div>
             </div>
 
@@ -175,7 +162,7 @@
                     class="h-10 w-full px-4 border border-gray-300 text-base sm:text-base font-normal text-gray-700 bg-white rounded-md placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent">
                     <option value="">選択してください</option>
                     @foreach ($jobCategories as $category)
-                        <option value="{{ $category->id }}" {{ old('current_job_category_id', $step2Data['current_job_category_id'] ?? '') == $category->id ? 'selected' : '' }}>
+                        <option value="{{ $category->id }}" {{ old('current_job_category_id', $latestEnrollmentRecord->current_job_category_id ?? '') == $category->id ? 'selected' : '' }}>
                             {{ $category->name }}
                         </option>
                     @endforeach
@@ -187,12 +174,12 @@
                     class="flex gap-1 mb-2 items-center text-gray-700 text-sm font-bold leading-relaxed">
                     詳細な職種
                     <x-required-mark />
-                    <p id="job_subcategory-error" class="error-message text-red-500 text-xs" style="display: none;">
-                    </p>
+                    <p id="job_subcategory-error" class="error-message text-red-500 text-xs" style="display: none;"></p>
                 </label>
                 <div class="w-full flex gap-4">
                     <select id="job_subcategory" name="current_job_subcategory_id" required
-                        class="h-10 w-full px-4 border border-gray-300 text-base sm:text-base font-normal text-gray-700 bg-white rounded-md placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent">
+                        class="h-10 w-full px-4 border border-gray-300 text-base sm:text-base font-normal text-gray-700 bg-white rounded-md placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
+                        data-current-subcategory-id="{{ old('current_job_subcategory_id', $latestEnrollmentRecord->current_job_subcategory_id ?? '') }}">
                         <option value="">選択してください</option>
                         <!-- 大カテゴリー選択後にJavaScriptで動的に追加 -->
                     </select>
@@ -217,4 +204,4 @@
 <div class="mt-20"></div>
 @include('layouts.footer')
 @vite(['resources/js/company-input.js'])
-@vite(['resources/js/posts-step1.js'])
+@vite(['resources/js/create-enrollment-record.js'])
