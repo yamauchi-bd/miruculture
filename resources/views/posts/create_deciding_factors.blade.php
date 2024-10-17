@@ -71,7 +71,7 @@
                                         <input type="radio" class="form-radio hidden deciding-factor"
                                             name="factor_{{ $i }}" value="{{ $factor }}"
                                             {{ $i == 1 ? 'required' : '' }}
-                                            {{ old("factor_$i") == $factor ? 'checked' : '' }}>
+                                            {{ old("factor_$i", $formData["factor_$i"] ?? '') == $factor ? 'checked' : '' }}>
                                         <span
                                             class="factor-label sm:w-fit w-full px-2 py-1.5 transition-all rounded-full border cursor-pointer text-sm font-semibold bg-white hover:bg-gray-100 text-gray-700 border-gray-300">
                                             {{ $label }}
@@ -96,7 +96,7 @@
                                                 <input type="radio" name="satisfaction_{{ $i }}"
                                                     value="{{ $j }}" class="hidden peer"
                                                     {{ $i == 1 ? 'required' : '' }}
-                                                    {{ old("satisfaction_$i") == $j ? 'checked' : '' }}>
+                                                    {{ old("satisfaction_$i", $formData["satisfaction_$i"] ?? '') == $j ? 'checked' : '' }}>
                                                 <svg class="w-8 h-8 fill-current text-gray-300 peer-checked:text-cyan-500 cursor-pointer"
                                                     viewBox="0 0 24 24">
                                                     <path
@@ -122,7 +122,7 @@
                                 <textarea id="detail_{{ $i }}" name="detail_{{ $i }}"
                                     class="block w-full px-4 py-2 border border-gray-300 text-base font-normal text-gray-700 bg-white rounded-md placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
                                     rows="3" {{ $i == 1 ? 'required' : '' }} minlength="100"
-                                    placeholder="入社の決め手や満足度について、詳しく教えてください。">{{ old("detail_$i") }}</textarea>
+                                    placeholder="入社の決め手や満足度について、詳しく教えてください。">{{ old("detail_$i", $formData["detail_$i"] ?? '') }}</textarea>
                             </div>
                         </div>
                     </div>
@@ -144,23 +144,13 @@
             </div>
 
             <div class="flex justify-center mt-16 space-x-4">
-                <a href="{{ route('personality_types.create', $enrollmentRecord) }}" id="back-button"
+                <a href="{{ route('company_cultures.create', $enrollmentRecord) }}" id="skip-button"
                     class="bg-gray-300 hover:bg-gray-400 text-gray-700 font-bold py-3 px-8 rounded-full transform transition duration-300 ease-in-out hover:scale-105 flex items-center">
-                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M10 19l-7-7m0 0l7-7m-7 7h18" stroke="gray"></path>
-                    </svg>
-                    <span>戻る</span>
+                    <span>スキップ</span>
                 </a>
                 <button type="submit" id="next-button"
                     class="bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-3 px-8 rounded-full transform transition duration-300 ease-in-out hover:scale-105 flex items-center">
-                    <span class="mr-1">次にすすむ</span>
-                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                        xmlns="http://www.w3.org/2000/svg">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                            d="M14 5l7 7m0 0l-7 7m7-7H3" stroke="white"></path>
-                    </svg>
+                    <span class="mr-1">{{ $isUpdate ? '更新する' : '登録する' }}</span>
                 </button>
             </div>
         </div>

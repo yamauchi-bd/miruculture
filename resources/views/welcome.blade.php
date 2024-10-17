@@ -89,7 +89,7 @@
                                     @endif
                                 </div>
                                 <div class="flex justify-end items-center mt-auto">
-                                <span class="text-2xs sm:text-xs text-gray-500">
+                                <span class="text-2xs sm:text-2xs text-gray-500">
                                     投稿日: {{ $enrollmentRecord->decidingFactor->created_at->format('Y年m月d日') }}
                                 </span>
                             </div>

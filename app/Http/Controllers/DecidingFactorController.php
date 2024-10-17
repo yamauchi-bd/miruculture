@@ -11,54 +11,63 @@ class DecidingFactorController extends Controller
     public function create(EnrollmentRecord $enrollmentRecord)
     {
         $factors = DecidingFactor::getFactors();
-        return view('posts.create_deciding_factors', compact('enrollmentRecord', 'factors'));
+        $existingFactor = $enrollmentRecord->decidingFactor;
+        $isUpdate = $existingFactor !== null;
+
+        $formData = [];
+        if ($isUpdate) {
+            for ($i = 1; $i <= 3; $i++) {
+                $formData["factor_$i"] = $existingFactor["factor_$i"];
+                $formData["detail_$i"] = $existingFactor["detail_$i"];
+                $formData["satisfaction_$i"] = $existingFactor["satisfaction_$i"];
+            }
+        }
+
+        return view('posts.create_deciding_factors', compact('enrollmentRecord', 'factors', 'isUpdate', 'formData'));
     }
 
     public function store(Request $request, EnrollmentRecord $enrollmentRecord)
     {
-        $validatedData = $request->validate([
-            'factor_1' => 'required|string|in:' . implode(',', array_keys(DecidingFactor::getFactors())),
-            'detail_1' => 'required|string|min:100',
-            'satisfaction_1' => 'required|integer|min:1|max:5',
-            'factor_2' => 'nullable|string|in:' . implode(',', array_keys(DecidingFactor::getFactors())),
-            'detail_2' => 'required_with:factor_2|nullable|string|min:100',
-            'satisfaction_2' => 'required_with:factor_2|nullable|integer|min:1|max:5',
-            'factor_3' => 'nullable|string|in:' . implode(',', array_keys(DecidingFactor::getFactors())),
-            'detail_3' => 'required_with:factor_3|nullable|string|min:100',
-            'satisfaction_3' => 'required_with:factor_3|nullable|integer|min:1|max:5',
-        ]);
+        $validatedData = $this->validateDecidingFactor($request);
 
-        $enrollmentRecord->decidingFactor()->create($validatedData);
+        $existingFactor = $enrollmentRecord->decidingFactor;
+        if ($existingFactor) {
+            // 既存の決め手がある場合
+            $updated = false;
+            for ($i = 1; $i <= 3; $i++) {
+                if (isset($validatedData["factor_$i"])) {
+                    $existingFactor["factor_$i"] = $validatedData["factor_$i"];
+                    $existingFactor["detail_$i"] = $validatedData["detail_$i"];
+                    $existingFactor["satisfaction_$i"] = $validatedData["satisfaction_$i"];
+                    $updated = true;
+                }
+            }
+            $existingFactor->save();
+            $message = $updated ? 'この企業の入社の決め手が更新されました。' : '変更はありませんでした。';
+        } else {
+            // 新規作成の場合
+            $enrollmentRecord->decidingFactor()->create($validatedData);
+            $message = 'この企業の入社の決め手が新しく登録されました。';
+        }
 
-        // 次のステップ（企業文化の入力）にリダイレクト
         return redirect()->route('company_cultures.create', $enrollmentRecord)
-            ->with('success', '入社の決め手が登録されました。続いて社風•雰囲気を入力してください。');
+            ->with('success', $message . '続いて社風•雰囲気を入力してください。');
     }
 
-    public function edit(EnrollmentRecord $enrollmentRecord)
+    private function validateDecidingFactor(Request $request)
     {
-        $decidingFactor = $enrollmentRecord->decidingFactor;
-        $factors = DecidingFactor::getFactors();
-        return view('deciding_factors.edit', compact('enrollmentRecord', 'decidingFactor', 'factors'));
-    }
-
-    public function update(Request $request, EnrollmentRecord $enrollmentRecord)
-    {
-        $validatedData = $request->validate([
+        $rules = [
             'factor_1' => 'required|string|in:' . implode(',', array_keys(DecidingFactor::getFactors())),
             'detail_1' => 'required|string|min:100',
             'satisfaction_1' => 'required|integer|min:1|max:5',
-            'factor_2' => 'nullable|string|in:' . implode(',', array_keys(DecidingFactor::getFactors())),
-            'detail_2' => 'required_with:factor_2|nullable|string|min:100',
-            'satisfaction_2' => 'required_with:factor_2|nullable|integer|min:1|max:5',
-            'factor_3' => 'nullable|string|in:' . implode(',', array_keys(DecidingFactor::getFactors())),
-            'detail_3' => 'required_with:factor_3|nullable|string|min:100',
-            'satisfaction_3' => 'required_with:factor_3|nullable|integer|min:1|max:5',
-        ]);
+        ];
 
-        $enrollmentRecord->decidingFactor()->update($validatedData);
+        for ($i = 2; $i <= 3; $i++) {
+            $rules["factor_$i"] = 'nullable|string|in:' . implode(',', array_keys(DecidingFactor::getFactors()));
+            $rules["detail_$i"] = 'required_with:factor_' . $i . '|nullable|string|min:100';
+            $rules["satisfaction_$i"] = 'required_with:factor_' . $i . '|nullable|integer|min:1|max:5';
+        }
 
-        return redirect()->route('enrollment_records.show', $enrollmentRecord)
-            ->with('success', '入社の決め手が更新されました。');
+        return $request->validate($rules);
     }
 }

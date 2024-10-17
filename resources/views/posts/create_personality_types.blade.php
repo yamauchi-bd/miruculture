@@ -65,7 +65,8 @@
                 <h3 class="text-sm font-bold text-gray-700 mb-2">外交官</h3>
                 @foreach(['INFP', 'INFJ', 'ENFP', 'ENFJ'] as $type)
                     <div class="mb-2 flex items-center">
-                        <input type="radio" name="type" id="{{ $type }}" value="{{ $type }}" class="mr-2" required>
+                        <input type="radio" name="type" id="{{ $type }}" value="{{ $type }}" class="mr-2" required
+                               {{ old('type', $formData['type'] ?? '') == $type ? 'checked' : '' }}>
                         <label for="{{ $type }}" class="flex-1 text-gray-700">{{ $sixteenTypes[$type] }}</label>
                     </div>
                 @endforeach
@@ -74,7 +75,8 @@
                 <h3 class="text-sm font-bold text-gray-700 mb-2">分析家</h3>
                 @foreach(['INTP', 'INTJ', 'ENTP', 'ENTJ'] as $type)
                     <div class="mb-2 flex items-center">
-                        <input type="radio" name="type" id="{{ $type }}" value="{{ $type }}" class="mr-2" required>
+                        <input type="radio" name="type" id="{{ $type }}" value="{{ $type }}" class="mr-2" required
+                               {{ old('type', $formData['type'] ?? '') == $type ? 'checked' : '' }}>
                         <label for="{{ $type }}" class="flex-1 text-gray-700">{{ $sixteenTypes[$type] }}</label>
                     </div>
                 @endforeach
@@ -83,7 +85,8 @@
                 <h3 class="text-sm font-bold text-gray-700 mb-2">探検家</h3>
                 @foreach(['ISTP', 'ISFP', 'ESTP', 'ESFP'] as $type)
                     <div class="mb-2 flex items-center">
-                        <input type="radio" name="type" id="{{ $type }}" value="{{ $type }}" class="mr-2" required>
+                        <input type="radio" name="type" id="{{ $type }}" value="{{ $type }}" class="mr-2" required
+                               {{ old('type', $formData['type'] ?? '') == $type ? 'checked' : '' }}>
                         <label for="{{ $type }}" class="flex-1 text-gray-700">{{ $sixteenTypes[$type] }}</label>
                     </div>
                 @endforeach
@@ -92,30 +95,21 @@
                 <h3 class="text-sm font-bold text-gray-700 mb-2">番人</h3>
                 @foreach(['ISTJ', 'ISFJ', 'ESTJ', 'ESFJ'] as $type)
                     <div class="mb-2 flex items-center">
-                        <input type="radio" name="type" id="{{ $type }}" value="{{ $type }}" class="mr-2" required>
+                        <input type="radio" name="type" id="{{ $type }}" value="{{ $type }}" class="mr-2" required
+                               {{ old('type', $formData['type'] ?? '') == $type ? 'checked' : '' }}>
                         <label for="{{ $type }}" class="flex-1 text-gray-700">{{ $sixteenTypes[$type] }}</label>
                     </div>
                 @endforeach
             </div>
         </div>
         <div class="flex justify-center mt-16 space-x-4">
-            <a href="{{ route('enrollment_records.create') }}" id="back-button"
+            <a href="{{ route('deciding_factors.create', ['enrollmentRecord' => $enrollmentRecord]) }}" id="skip-button"
                 class="bg-gray-300 hover:bg-gray-400 text-gray-700 font-bold py-3 px-8 rounded-full transform transition duration-300 ease-in-out hover:scale-105 flex items-center">
-                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M10 19l-7-7m0 0l7-7m-7 7h18" stroke="gray"></path>
-                </svg>
-                <span>戻る</span>
+                <span>スキップ</span>
             </a>
             <button type="submit" id="next-button"
                 class="bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-3 px-8 rounded-full transform transition duration-300 ease-in-out hover:scale-105 flex items-center">
-                <span class="mr-1">次にすすむ</span>
-                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                    xmlns="http://www.w3.org/2000/svg">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                        d="M14 5l7 7m0 0l-7 7m7-7H3" stroke="white"></path>
-                </svg>
+                <span class="mr-1">{{ $isUpdate ? '更新する' : '登録する' }}</span>
             </button>
         </div>
     </form>

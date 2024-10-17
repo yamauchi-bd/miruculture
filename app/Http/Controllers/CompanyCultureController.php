@@ -12,7 +12,18 @@ class CompanyCultureController extends Controller
     public function create(EnrollmentRecord $enrollmentRecord)
     {
         $cultureItems = CompanyCulture::getCultureItems();
-        return view('posts.create_company_cultures', compact('enrollmentRecord', 'cultureItems'));
+        $existingCulture = $enrollmentRecord->companyCultures()->first();
+        $isUpdate = $existingCulture !== null;
+
+        $formData = [];
+        if ($isUpdate) {
+            foreach (range(0, 7) as $index) {
+                $formData["culture_$index"] = $existingCulture["culture_$index"];
+                $formData["culture_detail_$index"] = $existingCulture["culture_detail_$index"];
+            }
+        }
+
+        return view('posts.create_company_cultures', compact('enrollmentRecord', 'cultureItems', 'isUpdate', 'formData'));
     }
 
     public function store(Request $request, EnrollmentRecord $enrollmentRecord)
@@ -36,10 +47,28 @@ class CompanyCultureController extends Controller
             'culture_detail_7' => 'nullable|string',
         ]);
 
-        $enrollmentRecord->companyCultures()->create($validatedData);
+        $existingCulture = $enrollmentRecord->companyCultures()->latest()->first();
 
-        return redirect()->route('home')
-            ->with('success', '社風•雰囲気が登録されました。在籍情報の登録が完了しました。');
+        if ($existingCulture) {
+            $isItemChanged = $this->isItemChanged($existingCulture, $validatedData);
+
+            if ($isItemChanged) {
+                // 項目が変更された場合は新規保存
+                $enrollmentRecord->companyCultures()->create($validatedData);
+                $message = '社風•雰囲気が新しく登録されました。';
+            } else {
+                // 詳細のみが変更された場合は上書き保存
+                $existingCulture->update($validatedData);
+                $message = '社風•雰囲気が更新されました。';
+            }
+        } else {
+            // 初めての登録の場合
+            $enrollmentRecord->companyCultures()->create($validatedData);
+            $message = '社風•雰囲気が登録されました。';
+        }
+
+        return redirect()->route('companies.show', ['corporate_number' => $enrollmentRecord->corporate_number])
+            ->with('success', $message);
     }
 
     public function edit(EnrollmentRecord $enrollmentRecord)
@@ -67,5 +96,15 @@ class CompanyCultureController extends Controller
 
         return redirect()->route('enrollment_records.show', $enrollmentRecord)
             ->with('success', '社風•雰囲気が更新されました。');
+    }
+
+    private function isItemChanged($existingCulture, $newData)
+    {
+        for ($i = 0; $i <= 7; $i++) {
+            if ($existingCulture["culture_$i"] != $newData["culture_$i"]) {
+                return true;
+            }
+        }
+        return false;
     }
 }
