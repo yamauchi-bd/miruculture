@@ -9,7 +9,7 @@
         <div class="w-full max-w-4xl mx-auto sm:px-12 mb-10 lg:mb-10">
             <h1 class="text-base font-bold sm:text-xl md:text-3xl lg:text-3xl leading-relaxed sm:leading-loose tracking-wide sm:tracking-wider text-center mb-4 mt-6 sm:mb-6 md:mb-8 lg:mb-10 sm:mt-10 lg:mt-10 text-gray-800">
                 想い<span class="text-sm sm:text-2xl md:text-2xl lg:text-2xl">と</span>働きがい<span class="text-sm sm:text-xl md:text-2xl lg:text-2xl">が</span>あふれる社会へ</h1>
-                <h2 class="text-2xs font-semibold sm:text-sm md:text-sm lg:text-sm leading-relaxed sm:leading-loose tracking-wide sm:tracking-wider text-center mb-4 mt-6 sm:mb-6 md:mb-8 lg:mb-10 sm:mt-10 lg:mt-10 text-gray-800">
+                <h2 class="text-2xs font-semibold sm:text-base md:text-base lg:text-base leading-relaxed sm:leading-loose tracking-wide sm:tracking-wider text-center mb-4 mt-6 sm:mb-6 md:mb-8 lg:mb-10 sm:mt-10 lg:mt-10 text-gray-800">
                     <span class="leading-relaxed sm:leading-relaxed md:leading-relaxed lg:leading-relaxed xl:leading-relaxed">
                         <p class="mb-3">実は、約60％の人が企業カルチャーのミスマッチで退職しています...</p>
                         <p>あなたの会社にカルチャーフィットな転職をしてもらえるように、</p>

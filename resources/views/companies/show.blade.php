@@ -15,12 +15,12 @@
                 </h2>
                 @auth
                     <a href="{{ route('enrollment_records.create', ['corporate_number' => $company['corporate_number'], 'company_name' => $company['company_name']]) }}"
-                        class='block w-full sm:w-auto py-2 px-3 text-sm bg-cyan-500 text-white rounded-lg shadow-md cursor-pointer font-semibold text-center transition-all duration-300 ease-in-out hover:bg-cyan-700'>
+                        class='block w-full sm:w-auto py-3 px-6 text-sm bg-cyan-500 text-white rounded-lg shadow-md cursor-pointer font-semibold text-center transition-all duration-300 ease-in-out hover:bg-cyan-700'>
                         企業カルチャーを登録する
                     </a>
                 @else
                     <a href="{{ route('register', ['redirect_to' => route('enrollment_records.create', ['corporate_number' => $company['corporate_number'], 'company_name' => $company['company_name']])]) }}"
-                        class='block w-full sm:w-auto py-2 px-3 text-sm bg-cyan-500 text-white rounded-lg shadow-md cursor-pointer font-semibold text-center transition-all duration-300 ease-in-out hover:bg-cyan-700'>
+                        class='block w-full sm:w-auto py-3 px-6 text-sm bg-cyan-500 text-white rounded-lg shadow-md cursor-pointer font-semibold text-center transition-all duration-300 ease-in-out hover:bg-cyan-700'>
                         企業カルチャーを登録する
                     </a>
                 @endauth
@@ -80,17 +80,17 @@
                                     <div class="absolute inset-0 flex flex-col items-center justify-center">
                                         <p
                                             class="text-sm sm:text-base md:text-lg lg:text-xl text-cyan-500 font-bold text-center leading-tight sm:leading-normal mb-4">
-                                            「性格タイプ(MBTI)」を登録して、<br class="sm:hidden">従業員の性格傾向を<br
+                                            「性格タイプ(MBTI)」を登録して、<br class="sm:hidden">企業カルチャーを<br
                                                 class="hidden sm:inline md:hidden">可視化しよう！
                                         </p>
                                         @auth
                                             <a href="{{ route('enrollment_records.create', ['corporate_number' => $company['corporate_number'], 'company_name' => $company['company_name']]) }}"
-                                                class='block w-full sm:w-auto py-2 px-3 text-sm bg-cyan-500 text-white rounded-lg shadow-md cursor-pointer font-semibold text-center transition-all duration-300 ease-in-out hover:bg-cyan-700'>
+                                                class='block sm:w-auto py-3 px-6 text-sm bg-cyan-500 text-white rounded-lg shadow-md cursor-pointer font-semibold text-center transition-all duration-300 ease-in-out hover:bg-cyan-700'>
                                                 性格タイプを登録する
                                             </a>
                                         @else
                                             <a href="{{ route('register', ['redirect_to' => route('enrollment_records.create', ['corporate_number' => $company['corporate_number'], 'company_name' => $company['company_name']])]) }}"
-                                                class='block w-full sm:w-auto py-2 px-3 text-sm bg-cyan-500 text-white rounded-lg shadow-md cursor-pointer font-semibold text-center transition-all duration-300 ease-in-out hover:bg-cyan-700'>
+                                                class='block sm:w-auto py-3 px-6 text-sm bg-cyan-500 text-white rounded-lg shadow-md cursor-pointer font-semibold text-center transition-all duration-300 ease-in-out hover:bg-cyan-700'>
                                                 性格タイプを登録する
                                             </a>
                                         @endauth
@@ -112,17 +112,17 @@
                                 <div class="absolute inset-0 flex flex-col items-center justify-center">
                                     <p
                                         class="text-sm sm:text-base md:text-lg lg:text-xl text-cyan-500 font-bold text-center leading-tight sm:leading-normal mb-4">
-                                        「入社の決め手」を登録して、<br class="sm:hidden">従業員の価値観を<br
+                                        「入社の決め手」を登録して、<br class="sm:hidden">企業カルチャーを<br
                                             class="hidden sm:inline md:hidden">可視化しよう！
                                     </p>
                                     @auth
                                         <a href="{{ route('enrollment_records.create', ['corporate_number' => $company['corporate_number'], 'company_name' => $company['company_name']]) }}"
-                                            class='block w-full sm:w-auto py-2 px-3 text-sm bg-cyan-500 text-white rounded-lg shadow-md cursor-pointer font-semibold text-center transition-all duration-300 ease-in-out hover:bg-cyan-700'>
+                                            class='block sm:w-auto py-3 px-6 text-sm bg-cyan-500 text-white rounded-lg shadow-md cursor-pointer font-semibold text-center transition-all duration-300 ease-in-out hover:bg-cyan-700'>
                                             入社の決め手を登録する
                                         </a>
                                     @else
                                         <a href="{{ route('register', ['redirect_to' => route('enrollment_records.create', ['corporate_number' => $company['corporate_number'], 'company_name' => $company['company_name']])]) }}"
-                                            class='block w-full sm:w-auto py-2 px-3 text-sm bg-cyan-500 text-white rounded-lg shadow-md cursor-pointer font-semibold text-center transition-all duration-300 ease-in-out hover:bg-cyan-700'>
+                                            class='block sm:w-auto py-3 px-6 text-sm bg-cyan-500 text-white rounded-lg shadow-md cursor-pointer font-semibold text-center transition-all duration-300 ease-in-out hover:bg-cyan-700'>
                                             入社の決め手を登録する
                                         </a>
                                     @endauth
@@ -149,12 +149,12 @@
                                     </p>
                                     @auth
                                         <a href="{{ route('enrollment_records.create', ['corporate_number' => $company['corporate_number'], 'company_name' => $company['company_name']]) }}"
-                                            class='block w-full sm:w-auto py-2 px-3 text-sm bg-cyan-500 text-white rounded-lg shadow-md cursor-pointer font-semibold text-center transition-all duration-300 ease-in-out hover:bg-cyan-700'>
+                                            class='block sm:w-auto py-3 px-6 text-sm bg-cyan-500 text-white rounded-lg shadow-md cursor-pointer font-semibold text-center transition-all duration-300 ease-in-out hover:bg-cyan-700'>
                                             社風･雰囲気を登録する
                                         </a>
                                     @else
                                         <a href="{{ route('register', ['redirect_to' => route('enrollment_records.create', ['corporate_number' => $company['corporate_number'], 'company_name' => $company['company_name']])]) }}"
-                                            class='block w-full sm:w-auto py-2 px-3 text-sm bg-cyan-500 text-white rounded-lg shadow-md cursor-pointer font-semibold text-center transition-all duration-300 ease-in-out hover:bg-cyan-700'>
+                                            class='block sm:w-auto py-3 px-6 text-sm bg-cyan-500 text-white rounded-lg shadow-md cursor-pointer font-semibold text-center transition-all duration-300 ease-in-out hover:bg-cyan-700'>
                                             社風･雰囲気を登録する
                                         </a>
                                     @endauth
