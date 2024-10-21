@@ -76,8 +76,11 @@ class CompanyCultureController extends Controller
             $message = '社風•雰囲気が登録されました。';
         }
 
+        $companyName = $enrollmentRecord->company_name ?? '企業';
+
         return redirect()->route('companies.show', ['corporate_number' => $enrollmentRecord->corporate_number])
-            ->with('success', $message);
+            ->with('success', $message)
+            ->with('companyName', $companyName);
     }
 
     public function edit(EnrollmentRecord $enrollmentRecord)

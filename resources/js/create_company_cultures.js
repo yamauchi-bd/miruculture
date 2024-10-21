@@ -2,6 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
     setupSliders();
     setupFormValidation();
     updateTotalCount(); // 初期表示時にも文字数をカウント
+    setupShareModal();
 });
 
 function setupSliders() {
@@ -116,3 +117,41 @@ function updateTotalCount() {
         span.classList.toggle('text-red-500', totalCount < 200);
     });
 }
+
+// function setupShareModal() {
+//     const form = document.querySelector('form');
+//     const skipButton = document.getElementById('skip-button');
+//     const submitButton = document.getElementById('submit-button');
+//     const shareModal = document.getElementById('shareModal');
+//     const closeModal = document.getElementById('closeModal');
+
+//     function showModal(e) {
+//         e.preventDefault();
+//         shareModal.classList.remove('hidden');
+//     }
+
+//     function hideModalAndSubmit() {
+//         shareModal.classList.add('hidden');
+//         if (this === submitButton) {
+//             form.submit(); // フォームを送信
+//         } else {
+//             window.location.href = skipButton.href; // スキップページに遷移
+//         }
+//     }
+
+//     skipButton.addEventListener('click', showModal);
+//     submitButton.addEventListener('click', function(e) {
+//         if (validateForm()) {
+//             showModal(e);
+//         }
+//     });
+
+//     closeModal.addEventListener('click', hideModalAndSubmit);
+
+//     // モーダル外をクリックしても閉じる
+//     shareModal.addEventListener('click', function(e) {
+//         if (e.target === shareModal) {
+//             hideModalAndSubmit.call(this);
+//         }
+//     });
+// }

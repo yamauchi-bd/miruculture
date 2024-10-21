@@ -4,7 +4,8 @@
     <div class="flex pb-2">
         <!-- ステップ1: 企業･在籍情報 -->
         <div class="flex-1 flex flex-col items-center">
-            <div class="w-10 h-10 bg-white border-2 border-grey-light mx-auto rounded-full text-lg text-gray-300 flex items-center justify-center">
+            <div
+                class="w-10 h-10 bg-white border-2 border-grey-light mx-auto rounded-full text-lg text-gray-300 flex items-center justify-center">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                     xmlns="http://www.w3.org/2000/svg">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -104,18 +105,19 @@
                             @php
                                 $options = ['A寄り', 'ややA寄り', 'どちらとも', 'ややB寄り', 'B寄り'];
                             @endphp
-              @foreach ($options as $value => $label)
-              <label class="flex-1">
-                  <input type="radio" name="culture_{{ $index }}" value="{{ $value + 1 }}"
-                      class="sr-only peer" required
-                      {{ old("culture_$index", $formData["culture_$index"] ?? '') == $value + 1 ? 'checked' : '' }}>
-                  <div class="text-center py-1 border border-gray-300 rounded cursor-pointer transition-all duration-200 ease-in-out
+                            @foreach ($options as $value => $label)
+                                <label class="flex-1">
+                                    <input type="radio" name="culture_{{ $index }}" value="{{ $value + 1 }}"
+                                        class="sr-only peer" required
+                                        {{ old("culture_$index", $formData["culture_$index"] ?? '') == $value + 1 ? 'checked' : '' }}>
+                                    <div
+                                        class="text-center py-1 border border-gray-300 rounded cursor-pointer transition-all duration-200 ease-in-out
                       peer-checked:bg-cyan-500 peer-checked:text-white peer-checked:border-cyan-500
                       hover:bg-gray-100">
-                      <span class="text-xs">{{ $label }}</span>
-                  </div>
-              </label>
-          @endforeach
+                                        <span class="text-xs">{{ $label }}</span>
+                                    </div>
+                                </label>
+                            @endforeach
                         </div>
                     </div>
                 @endforeach
@@ -128,30 +130,72 @@
                     すべてに回答しなくても構いませんが、合計で200文字以上の回答が必要です。
                 </p>
                 @foreach ($cultureItems as $index => $item)
-                <div class="mb-6">
-                    <label for="culture_detail_{{ $index }}" class="block text-sm font-semibold text-gray-700 mb-2">
-                        {{ $item['name'] }}について
-                    </label>
-                    <textarea id="culture_detail_{{ $index }}" name="culture_detail_{{ $index }}" rows="3"
-                        class="shadow-sm focus:ring-cyan-500 focus:border-cyan-500 mt-1 block w-full sm:text-sm border-gray-300 rounded-md">{{ old("culture_detail_$index", $formData["culture_detail_$index"] ?? '') }}</textarea>
-                    <div class="mt-2 text-right text-xs text-gray-500">
-                        合計文字数: <span id="culture_detail_count_{{ $index }}">0</span>/200文字以上
+                    <div class="mb-6">
+                        <label for="culture_detail_{{ $index }}"
+                            class="block text-sm font-semibold text-gray-700 mb-2">
+                            {{ $item['name'] }}について
+                        </label>
+                        <textarea id="culture_detail_{{ $index }}" name="culture_detail_{{ $index }}" rows="3"
+                            class="shadow-sm focus:ring-cyan-500 focus:border-cyan-500 mt-1 block w-full sm:text-sm border-gray-300 rounded-md">{{ old("culture_detail_$index", $formData["culture_detail_$index"] ?? '') }}</textarea>
+                        <div class="mt-2 text-right text-xs text-gray-500">
+                            合計文字数: <span id="culture_detail_count_{{ $index }}">0</span>/200文字以上
+                        </div>
                     </div>
-                </div>
-            @endforeach
+                @endforeach
             </div>
 
             <div class="flex justify-center mt-16 space-x-4">
-                <a href="{{ route('companies.show', ['corporate_number' => $enrollmentRecord->corporate_number]) }}" id="skip-button"
+                <a href="{{ route('companies.show', ['corporate_number' => $enrollmentRecord->corporate_number]) }}"
+                    id="skip-button"
                     class="bg-gray-300 hover:bg-gray-400 text-gray-700 font-bold py-3 px-8 rounded-full transform transition duration-300 ease-in-out hover:scale-105 flex items-center">
                     <span>スキップ</span>
                 </a>
                 <button type="submit" id="submit-button"
-                class="bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-3 px-8 rounded-full transform transition duration-300 ease-in-out hover:scale-105 flex items-center">
-                <span class="mr-1">{{ $isUpdate ? '更新する' : '登録する' }}</span>
-            </button>
+                    class="bg-cyan-500 hover:bg-cyan-600 text-white font-bold py-3 px-8 rounded-full transform transition duration-300 ease-in-out hover:scale-105 flex items-center">
+                    <span class="mr-1">{{ $isUpdate ? '更新する' : '登録する' }}</span>
+                </button>
             </div>
-        </div>
+
+            <!-- シェアモーダル -->
+            {{-- @php
+                $companyName = $enrollmentRecord->company_name ?? '企業名';
+            @endphp
+
+            <div id="shareModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden">
+                <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
+                    <button id="closeModal"
+                        class="absolute top-2 right-2 text-gray-700 hover:text-cyan-500 bg-gray-200 rounded-full p-1">
+                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                            xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                d="M6 18L18 6M6 6l12 12"></path>
+                        </svg>
+                    </button>
+                    <div class="mt-3 text-center">
+                        <h3 class="text-lg leading-6 font-bold text-cyan-500">ご登録ありがとうございます</h3>
+                        <div class="mt-2 px-7 py-3">
+                            <p class="text-sm text-gray-500">
+                                また一つ､働きがい転職につながりました！<br>
+                                お友達にもご紹介いただけると嬉しいです。
+                            </p>
+                        </div>
+                        <div class="mt-4">
+                            <a href="https://twitter.com/intent/tweet?text={{ 'ミルカルチャーに「'. urlencode($companyName . '」の企業カルチャーを登録しました！ #就活 #転職 #企業文化') }}&url={{ urlencode(route('home')) }}"
+                                target="_blank"
+                                class="inline-flex items-center px-3 py-2 bg-black hover:bg-gray-800 text-sm text-white font-bold rounded-full">
+                                <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 24 24"
+                                    aria-hidden="true">
+                                    <path
+                                        d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z">
+                                    </path>
+                                </svg>
+                                シェアする
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div> --}}
+
     </form>
 </div>
 

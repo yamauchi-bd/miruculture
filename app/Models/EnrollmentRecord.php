@@ -46,4 +46,9 @@ class EnrollmentRecord extends Model
     {
         return $this->belongsTo(JobCategory::class, 'current_job_subcategory_id');
     }
+
+    public function company()
+    {
+        return $this->belongsTo(Company::class, 'corporate_number', 'corporate_number');
+    }
 }
