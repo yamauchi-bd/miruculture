@@ -80,7 +80,8 @@ class CompanyCultureController extends Controller
 
         return redirect()->route('companies.show', ['corporate_number' => $enrollmentRecord->corporate_number])
             ->with('success', $message)
-            ->with('companyName', $companyName);
+            ->with('companyName', $companyName)
+            ->with('showShareModal', true);
     }
 
     public function edit(EnrollmentRecord $enrollmentRecord)
@@ -118,5 +119,15 @@ class CompanyCultureController extends Controller
             }
         }
         return false;
+    }
+
+    public function skip(EnrollmentRecord $enrollmentRecord)
+    {
+        $companyName = $enrollmentRecord->company_name ?? '企業';
+
+        return redirect()->route('companies.show', ['corporate_number' => $enrollmentRecord->corporate_number])
+            ->with('success', '企業カルチャーの登録が完了しました。')
+            ->with('companyName', $companyName)
+            ->with('showShareModal', true);
     }
 }

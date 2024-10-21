@@ -145,9 +145,7 @@
             </div>
 
             <div class="flex justify-center mt-16 space-x-4">
-                <a href="{{ route('companies.show', ['corporate_number' => $enrollmentRecord->corporate_number]) }}"
-                    id="skip-button"
-                    class="bg-gray-300 hover:bg-gray-400 text-gray-700 font-bold py-3 px-8 rounded-full transform transition duration-300 ease-in-out hover:scale-105 flex items-center">
+                <a href="{{ route('company_cultures.skip', $enrollmentRecord) }}" id="skip-button" class="bg-gray-300 hover:bg-gray-400 text-gray-700 font-bold py-3 px-8 rounded-full transform transition duration-300 ease-in-out hover:scale-105 flex items-center">
                     <span>スキップ</span>
                 </a>
                 <button type="submit" id="submit-button"
@@ -156,45 +154,6 @@
                 </button>
             </div>
 
-            <!-- シェアモーダル -->
-            {{-- @php
-                $companyName = $enrollmentRecord->company_name ?? '企業名';
-            @endphp
-
-            <div id="shareModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full hidden">
-                <div class="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white">
-                    <button id="closeModal"
-                        class="absolute top-2 right-2 text-gray-700 hover:text-cyan-500 bg-gray-200 rounded-full p-1">
-                        <svg class="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"
-                            xmlns="http://www.w3.org/2000/svg">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                d="M6 18L18 6M6 6l12 12"></path>
-                        </svg>
-                    </button>
-                    <div class="mt-3 text-center">
-                        <h3 class="text-lg leading-6 font-bold text-cyan-500">ご登録ありがとうございます</h3>
-                        <div class="mt-2 px-7 py-3">
-                            <p class="text-sm text-gray-500">
-                                また一つ､働きがい転職につながりました！<br>
-                                お友達にもご紹介いただけると嬉しいです。
-                            </p>
-                        </div>
-                        <div class="mt-4">
-                            <a href="https://twitter.com/intent/tweet?text={{ 'ミルカルチャーに「'. urlencode($companyName . '」の企業カルチャーを登録しました！ #就活 #転職 #企業文化') }}&url={{ urlencode(route('home')) }}"
-                                target="_blank"
-                                class="inline-flex items-center px-3 py-2 bg-black hover:bg-gray-800 text-sm text-white font-bold rounded-full">
-                                <svg class="w-4 h-4 mr-1" fill="currentColor" viewBox="0 0 24 24"
-                                    aria-hidden="true">
-                                    <path
-                                        d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z">
-                                    </path>
-                                </svg>
-                                シェアする
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div> --}}
 
     </form>
 </div>
@@ -203,4 +162,4 @@
 
 <div class="mt-20"></div>
 @include('layouts.footer')
-@vite(['resources/js/create_company_cultures.js'])
+@vite(['resources/js/create-company-cultures.js'])

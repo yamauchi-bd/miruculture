@@ -179,4 +179,4 @@
 
 <div class="mt-20"></div>
 @include('layouts.footer')
-@vite(['resources/js/create_deciding_factors.js'])
+@vite(['resources/js/create-deciding-factors.js'])

@@ -245,50 +245,50 @@
             </div>
 
             {{-- 性格タイプタブコンテンツ --}}
-<div id="personality-types-content" class="tab-content hidden">
-    <section class="py-6 sm:py-6 md:py-6">
-        <div class="mx-auto max-w-full">
-            @foreach ($personalityTypeRecords as $enrollmentRecord)
-                @if ($enrollmentRecord->personalityTypes->isNotEmpty())
-                    <div class="post-container group bg-white border border-solid border-gray-200 rounded-lg px-4 sm:px-6 md:px-8 py-4 mb-6 transition-all duration-300 hover:border-cyan-500 hover:shadow-lg relative flex flex-col cursor-pointer transform hover:-translate-y-1"
-                        data-post-id="{{ $enrollmentRecord->id }}">
+            <div id="personality-types-content" class="tab-content hidden">
+                <section class="py-6 sm:py-6 md:py-6">
+                    <div class="mx-auto max-w-full">
+                        @foreach ($personalityTypeRecords as $enrollmentRecord)
+                            @if ($enrollmentRecord->personalityTypes->isNotEmpty())
+                                <div class="post-container group bg-white border border-solid border-gray-200 rounded-lg px-4 sm:px-6 md:px-8 py-4 mb-6 transition-all duration-300 hover:border-cyan-500 hover:shadow-lg relative flex flex-col cursor-pointer transform hover:-translate-y-1"
+                                    data-post-id="{{ $enrollmentRecord->id }}">
 
-                        <div class="flex items-center gap-2">
-                            <svg xmlns="http://www.w3.org/2000/svg"
-                                class="h-10 w-10 sm:h-12 sm:w-12 text-gray-500" viewBox="0 0 20 20"
-                                fill="currentColor">
-                                <path fill-rule="evenodd"
-                                    d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z"
-                                    clip-rule="evenodd" />
-                            </svg>
-                            <div class="grid flex-grow">
-                                <h5 class="text-xs sm:text-sm text-gray-700 font-medium">
-                                    {{ $enrollmentRecord->start_year ?? '◯◯' }}年
-                                    {{ $enrollmentRecord->entry_type ?? '未設定' }}（{{ $enrollmentRecord->status ?? '未設定' }}）
-                                </h5>
+                                    <div class="flex items-center gap-2">
+                                        <svg xmlns="http://www.w3.org/2000/svg"
+                                            class="h-10 w-10 sm:h-12 sm:w-12 text-gray-500" viewBox="0 0 20 20"
+                                            fill="currentColor">
+                                            <path fill-rule="evenodd"
+                                                d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z"
+                                                clip-rule="evenodd" />
+                                        </svg>
+                                        <div class="grid flex-grow">
+                                            <h5 class="text-xs sm:text-sm text-gray-700 font-medium">
+                                                {{ $enrollmentRecord->start_year ?? '◯◯' }}年
+                                                {{ $enrollmentRecord->entry_type ?? '未設定' }}（{{ $enrollmentRecord->status ?? '未設定' }}）
+                                            </h5>
 
-                                <span class="text-2xs sm:text-xs leading-tight text-gray-500">
-                                    {{ $enrollmentRecord->jobCategory->name ?? '職種未設定' }} >
-                                    {{ $enrollmentRecord->jobSubcategory->name ?? '未設定' }}
-                                </span>
-                                <div class="flex justify-between items-center">
-                                    <span class="text-2xs sm:text-xs leading-tight text-gray-500">
-                                        性格タイプ(MBTI) :
-                                        {{ $enrollmentRecord->personalityTypes->first()->type ?? '未設定' }}
-                                    </span>
-                                    <span class="text-2xs sm:text-xs text-gray-500">
-                                        投稿日:
-                                        {{ $enrollmentRecord->personalityTypes->first()->created_at->format('Y年m月d日') }}
-                                    </span>
+                                            <span class="text-2xs sm:text-xs leading-tight text-gray-500">
+                                                {{ $enrollmentRecord->jobCategory->name ?? '職種未設定' }} >
+                                                {{ $enrollmentRecord->jobSubcategory->name ?? '未設定' }}
+                                            </span>
+                                            <div class="flex justify-between items-center">
+                                                <span class="text-2xs sm:text-xs leading-tight text-gray-500">
+                                                    性格タイプ(MBTI) :
+                                                    {{ $enrollmentRecord->personalityTypes->first()->type ?? '未設定' }}
+                                                </span>
+                                                <span class="text-2xs sm:text-xs text-gray-500">
+                                                    投稿日:
+                                                    {{ $enrollmentRecord->personalityTypes->first()->created_at->format('Y年m月d日') }}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
+                            @endif
+                        @endforeach
                     </div>
-                @endif
-            @endforeach
-        </div>
-    </section>
-</div>
+                </section>
+            </div>
 
             {{-- 決め手タブコンテンツ --}}
             <div id="deciding-factors-content" class="tab-content">
@@ -529,55 +529,55 @@
                     </div>
                     <div class="p-3 space-y-4">
                         {{-- @if ($company['company_mission']) --}}
-                            <div class="flex items-start space-x-4">
-                                <div class="flex-shrink-0 mt-1">
-                                    <svg class="w-6 h-6 text-cyan-500" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                                    </svg>
-                                </div>
-                                <div>
-                                    <p class="text-xs font-medium text-gray-500">ミッション</p>
-                                    <p class="text-xs text-gray-700">{{ $company['company_mission'] }}</p>
-                                </div>
+                        <div class="flex items-start space-x-4">
+                            <div class="flex-shrink-0 mt-1">
+                                <svg class="w-6 h-6 text-cyan-500" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                                </svg>
                             </div>
+                            <div>
+                                <p class="text-xs font-medium text-gray-500">ミッション</p>
+                                <p class="text-xs text-gray-700">{{ $company['company_mission'] }}</p>
+                            </div>
+                        </div>
                         {{-- @endif --}}
 
                         {{-- @if ($company['company_vision']) --}}
-                            <div class="flex items-start space-x-4">
-                                <div class="flex-shrink-0 mt-1">
-                                    <svg class="w-6 h-6 text-cyan-500" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
-                                        </path>
-                                    </svg>
-                                </div>
-                                <div>
-                                    <p class="text-xs font-medium text-gray-500">ビジョン</p>
-                                    <p class="text-xs text-gray-700">{{ $company['company_vision'] }}</p>
-                                </div>
+                        <div class="flex items-start space-x-4">
+                            <div class="flex-shrink-0 mt-1">
+                                <svg class="w-6 h-6 text-cyan-500" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path>
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z">
+                                    </path>
+                                </svg>
                             </div>
+                            <div>
+                                <p class="text-xs font-medium text-gray-500">ビジョン</p>
+                                <p class="text-xs text-gray-700">{{ $company['company_vision'] }}</p>
+                            </div>
+                        </div>
                         {{-- @endif --}}
 
                         {{-- @if ($company['company_values']) --}}
-                            <div class="flex items-start space-x-4">
-                                <div class="flex-shrink-0 mt-1">
-                                    <svg class="w-6 h-6 text-cyan-500" fill="none" stroke="currentColor"
-                                        viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                            d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z">
-                                        </path>
-                                    </svg>
-                                </div>
-                                <div>
-                                    <p class="text-xs font-medium text-gray-500">バリュー</p>
-                                    <p class="text-xs text-gray-700">{{ $company['company_values'] }}</p>
-                                </div>
+                        <div class="flex items-start space-x-4">
+                            <div class="flex-shrink-0 mt-1">
+                                <svg class="w-6 h-6 text-cyan-500" fill="none" stroke="currentColor"
+                                    viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z">
+                                    </path>
+                                </svg>
                             </div>
+                            <div>
+                                <p class="text-xs font-medium text-gray-500">バリュー</p>
+                                <p class="text-xs text-gray-700">{{ $company['company_values'] }}</p>
+                            </div>
+                        </div>
                         {{-- @endif --}}
 
                         @if ($company['business_summary'])
@@ -749,13 +749,41 @@
             </section>
         </div>
     </div>
-
     @include('layouts.footer')
-    @vite(['resources/js/company-show.js'])
+
+    {{-- モーダル --}}
+    @if (session('showShareModal'))
+    <div id="shareModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50 flex items-center justify-center">
+        <div class="relative mx-auto p-8 border w-11/12 max-w-md shadow-lg rounded-lg bg-white text-center">
+            <h3 class="text-xl font-bold text-cyan-600 mb-4">ご登録ありがとうございます</h3>
+            <p class="text-sm text-gray-600 mb-6 leading-relaxed">
+                また一つ､働きがい転職につながりました！<br>
+                お友達にもご紹介いただけると嬉しいです。
+            </p>
+            <div class="flex flex-col sm:flex-row justify-center items-center gap-4">
+                <button id="closeModal"
+                    class="w-full sm:w-auto bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-6 rounded-full transition duration-300 ease-in-out">
+                    閉じる
+                </button>
+                <a href="https://twitter.com/intent/tweet?text={{ urlencode(session('companyName', '') . 'の企業カルチャーを登録しました！ #就活 #転職 #企業文化') }}&url={{ urlencode(route('home')) }}"
+                    target="_blank"
+                    class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-2 bg-cyan-500 hover:bg-cyan-600 text-white font-semibold rounded-full transition duration-300 ease-in-out">
+                    <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                        <path
+                            d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z">
+                        </path>
+                    </svg>
+                    シェアする
+                </a>
+            </div>
+        </div>
+    </div>
+    @endif
 
 
+    {{-- スクリプト --}}
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script id="decidingFactorsData" type="application/json">
-    {!! json_encode($decidingFactorsData) !!}
-</script>
+    <script id="decidingFactorsData" type="application/json">{!! json_encode($decidingFactorsData) !!}</script>
     @vite(['resources/js/company-chart.js'])
+    @vite(['resources/js/company-show.js'])
+    @vite(['resources/js/after-post-modal.js'])

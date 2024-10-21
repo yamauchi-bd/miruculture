@@ -50,23 +50,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // 社風•雰囲気関連
     Route::get('/company-cultures/create/{enrollmentRecord}', [CompanyCultureController::class, 'create'])->name('company_cultures.create');
     Route::post('/company-cultures/{enrollmentRecord}', [CompanyCultureController::class, 'store'])->name('company_cultures.store');
+    Route::get('/enrollment-records/{enrollmentRecord}/company-cultures/skip', [CompanyCultureController::class, 'skip'])->name('company_cultures.skip');
 
-    // 投稿関連
-    Route::get('/posts/create/step1', [PostController::class, 'createStep1'])->name('posts.create.step1');
-    Route::post('/posts/create/step1', [PostController::class, 'storeStep1'])->name('posts.store.step1');
-    Route::get('/posts/create/step2', [PostController::class, 'createStep2'])->name('posts.create.step2');
-    Route::post('/posts/create/step2', [PostController::class, 'storeStep2'])->name('posts.store.step2');
-    Route::get('/posts/create/step3', [PostController::class, 'createStep3'])->name('posts.create.step3');
-    Route::post('/posts/create/step3', [PostController::class, 'store'])->name('posts.store');
-    Route::get('/posts/{post}/edit', [PostController::class, 'edit'])->name('posts.edit');
-    Route::put('/posts/{post}', [PostController::class, 'update'])->name('posts.update');
-    Route::delete('/posts/{post}', [PostController::class, 'destroy'])->name('posts.destroy');
-    Route::post('/posts/validate-section1', [PostController::class, 'validateSection1'])->name('posts.validate.section1');
 });
-
-// 投稿関連（一部は認証不要）
-// Route::get('/posts', [PostController::class, 'index'])->name('posts.index');
-Route::get('/posts/{post}', [PostController::class, 'show'])->name('posts.show');
 
 // Google認証
 Route::get('/auth/google', [GoogleLoginController::class, 'redirectToGoogle'])->name('login.google');
