@@ -755,7 +755,7 @@
     @if (session('showShareModal'))
     <div id="shareModal" class="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50 flex items-center justify-center">
         <div class="relative mx-auto p-8 border w-11/12 max-w-md shadow-lg rounded-lg bg-white text-center">
-            <h3 class="text-xl font-bold text-cyan-600 mb-4">ご登録ありがとうございます</h3>
+            <h3 class="text-xl font-bold text-cyan-500 mb-4">ご登録ありがとうございます</h3>
             <p class="text-sm text-gray-600 mb-6 leading-relaxed">
                 また一つ､働きがい転職につながりました！<br>
                 お友達にもご紹介いただけると嬉しいです。
@@ -765,7 +765,7 @@
                     class="w-full sm:w-auto bg-gray-200 hover:bg-gray-300 text-gray-800 font-semibold py-2 px-6 rounded-full transition duration-300 ease-in-out">
                     閉じる
                 </button>
-                <a href="https://twitter.com/intent/tweet?text={{ urlencode(session('companyName', '') . 'の企業カルチャーを登録しました！ #就活 #転職 #企業文化') }}&url={{ urlencode(route('home')) }}"
+                <a href="https://twitter.com/intent/tweet?text={{'ミルカルチャーに「' . urlencode(session('companyName', '') . '」の企業カルチャーを登録しました！ #就活 #転職 #企業文化') }}&url={{ urlencode(route('home')) }}"
                     target="_blank"
                     class="w-full sm:w-auto inline-flex items-center justify-center px-6 py-2 bg-cyan-500 hover:bg-cyan-600 text-white font-semibold rounded-full transition duration-300 ease-in-out">
                     <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
