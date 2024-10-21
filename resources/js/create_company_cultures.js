@@ -1,25 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const textareas = document.querySelectorAll('textarea[id^="culture_detail_"]');
-    const countSpans = document.querySelectorAll('span[id^="culture_detail_count_"]');
-    
-    function updateTotalCount() {
-        let totalCount = 0;
-        textareas.forEach(textarea => {
-            totalCount += textarea.value.length;
-        });
-        
-        // 各テキストエリアの下の文字数カウンターを更新
-        countSpans.forEach(span => {
-            span.textContent = totalCount;
-        });
-    }
-    
-    textareas.forEach(textarea => {
-        textarea.addEventListener('input', updateTotalCount);
-    });
-
-    // 初期化時にも実行
-    updateTotalCount();
+    setupSliders();
+    setupFormValidation();
+    updateTotalCount(); // 初期表示時にも文字数をカウント
 });
 
 function setupSliders() {
@@ -49,14 +31,25 @@ function setupFormValidation() {
         if (validateForm()) {
             this.submit();
         } else {
-            console.log('フォームのバリデーションに失敗しました');
+            alert('フォームのバリデーションに失敗しました。すべての項目を入力し、自由記述の合計が200文字以上であることを確認してください。');
         }
+    });
+
+    // リアルタイムでバリデーションを行う
+    const textareas = document.querySelectorAll('textarea[id^="culture_detail_"]');
+    textareas.forEach(textarea => {
+        textarea.addEventListener('input', function() {
+            updateTotalCount();
+            validateForm();
+        });
     });
 }
 
 function validateForm() {
     const sliders = document.querySelectorAll('input[type="range"]');
+    const textareas = document.querySelectorAll('textarea[id^="culture_detail_"]');
     let isValid = true;
+    let totalCharCount = 0;
 
     sliders.forEach(slider => {
         if (!slider.value) {
@@ -67,18 +60,38 @@ function validateForm() {
         }
     });
 
+    textareas.forEach(textarea => {
+        totalCharCount += textarea.value.length;
+    });
+
+    if (totalCharCount < 200) {
+        isValid = false;
+        showError('total_char_count');
+    } else {
+        hideError('total_char_count');
+    }
+
+    // 送信ボタンの有効/無効を切り替え
+    const submitButton = document.getElementById('submit-button');
+    submitButton.disabled = !isValid;
+    submitButton.classList.toggle('opacity-50', !isValid);
+
     return isValid;
 }
 
 function showError(name) {
     const errorElement = document.getElementById(`${name}-error`);
     if (!errorElement) {
-        const sliderContainer = document.querySelector(`input[name="${name}"]`).closest('.mb-10');
+        const container = name === 'total_char_count' 
+            ? document.querySelector('.mt-20') 
+            : document.querySelector(`input[name="${name}"]`).closest('.mb-10');
         const error = document.createElement('p');
         error.id = `${name}-error`;
         error.className = 'text-red-500 text-xs mt-1';
-        error.textContent = 'この項目は必須です';
-        sliderContainer.appendChild(error);
+        error.textContent = name === 'total_char_count' 
+            ? '自由記述の合計文字数は200文字以上である必要があります。' 
+            : 'この項目は必須です';
+        container.appendChild(error);
     }
 }
 
@@ -87,4 +100,19 @@ function hideError(name) {
     if (errorElement) {
         errorElement.remove();
     }
+}
+
+function updateTotalCount() {
+    const textareas = document.querySelectorAll('textarea[id^="culture_detail_"]');
+    const countSpans = document.querySelectorAll('span[id^="culture_detail_count_"]');
+    let totalCount = 0;
+    
+    textareas.forEach(textarea => {
+        totalCount += textarea.value.length;
+    });
+    
+    countSpans.forEach(span => {
+        span.textContent = totalCount;
+        span.classList.toggle('text-red-500', totalCount < 200);
+    });
 }

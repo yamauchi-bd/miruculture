@@ -2,48 +2,68 @@
 
 <div class="max-w-xl mx-auto my-4 border-b-2 pb-4 sm:py-8 lg:pt-24">
     <div class="flex pb-2">
+        <!-- ステップ1: 企業･在籍情報 -->
         <div class="flex-1 flex flex-col items-center">
-            <div class="w-10 h-10 bg-cyan-500 mx-auto rounded-full text-lg text-white flex items-center">
-                <span class="text-white text-center w-full">1</span>
+            <div class="w-10 h-10 bg-white border-2 border-grey-light mx-auto rounded-full text-lg text-gray-300 flex items-center justify-center">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4">
+                    </path>
+                </svg>
             </div>
         </div>
 
-        <div class="w-1/6 align-center items-center align-middle content-center flex">
-            <div class="w-full bg-cyan-500 rounded items-center align-middle align-center flex-1">
-                <div class="bg-cyan-500 text-xs leading-none py-1 text-center text-white rounded w-full"></div>
-            </div>
-        </div>
-
+        <!-- ステップ2: 性格タイプ -->
         <div class="flex-1 flex flex-col items-center">
-            <div class="w-10 h-10 bg-cyan-500 mx-auto rounded-full text-lg text-white flex items-center">
-                <span class="text-white text-center w-full">2</span>
+            <div id="step-2"
+                class="w-10 h-10 bg-white border-2 border-grey-light mx-auto rounded-full text-lg text-gray-300 flex items-center justify-center">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
             </div>
         </div>
 
-        <div class="w-1/6 align-center items-center align-middle content-center flex">
-            <div class="w-full bg-gray-200 rounded items-center align-middle align-center flex-1">
-                <div id="progress-bar-2" class="bg-cyan-500 text-xs leading-none py-1 text-center text-white rounded"
-                    style="width: 30%"></div>
-            </div>
-        </div>
-
+        <!-- ステップ3: 入社の決め手 -->
         <div class="flex-1 flex flex-col items-center">
-            <div
-                class="w-10 h-10 bg-white border-2 border-grey-light mx-auto rounded-full text-lg text-white flex items-center">
-                <span class="text-gray-300 text-center w-full">3</span>
+            <div id="step-3"
+                class="w-10 h-10 bg-cyan-500 mx-auto rounded-full text-lg text-white flex items-center justify-center">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+            </div>
+        </div>
+
+        <!-- ステップ4: 社風･雰囲気 -->
+        <div class="flex-1 flex flex-col items-center">
+            <div id="step-4"
+                class="w-10 h-10 bg-white border-2 border-grey-light mx-auto rounded-full text-lg text-gray-300 flex items-center justify-center">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z">
+                    </path>
+                </svg>
             </div>
         </div>
     </div>
 
     <div class="flex text-xs sm:text-sm content-center text-center mt-2">
-        <div class="w-1/4">
-            企業･在籍情報&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <div class="w-1/4 text-gray-300 font-bold">
+            企業･在籍情報
         </div>
-        <div class="w-1/2">
+        <div class="w-1/4 text-gray-300 font-bold">
+            性格タイプ
+        </div>
+        <div class="w-1/4 text-cyan-500 font-bold">
             入社の決め手
         </div>
-        <div class="w-1/4">
-            &nbsp;&nbsp;&nbsp;&nbsp;社風･雰囲気
+        <div class="w-1/4 text-gray-300 font-bold">
+            社風･雰囲気
         </div>
     </div>
 </div>
