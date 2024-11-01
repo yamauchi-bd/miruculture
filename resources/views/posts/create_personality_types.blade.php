@@ -4,7 +4,8 @@
     <div class="flex pb-2">
         <!-- ステップ1: 企業･在籍情報 -->
         <div class="flex-1 flex flex-col items-center">
-            <div class="w-10 h-10 bg-white border-2 border-grey-light mx-auto rounded-full text-lg text-gray-300 flex items-center justify-center">
+            <div
+                class="w-10 h-10 bg-white border-2 border-grey-light mx-auto rounded-full text-lg text-gray-300 flex items-center justify-center">
                 <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"
                     xmlns="http://www.w3.org/2000/svg">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -73,57 +74,56 @@
     <p class="text-2xs text-gray-500">※MBTIという表記を使用していますが、実際は16タイプ性格診断を指します。</p>
     <p class="mt-1 mb-10 text-sm text-gray-700 font-bold">
         無料で診断してみる 👉
-        <a href="https://www.16personalities.com/ja/%E6%80%A7%E6%A0%BC%E8%A8%BA%E6%96%AD%E3%83%86%E3%82%B9%E3%83%88" target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:text-blue-700 underline">
+        <a href="https://www.16personalities.com/ja/%E6%80%A7%E6%A0%BC%E8%A8%BA%E6%96%AD%E3%83%86%E3%82%B9%E3%83%88"
+            target="_blank" rel="noopener noreferrer" class="text-blue-500 hover:text-blue-700 underline">
             https://16personalities.com
         </a>
     </p>
 
     <form method="POST" action="{{ route('personality_types.store', $enrollmentRecord) }}">
         @csrf
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-            <div class="bg-emerald-100 p-4 rounded-lg">
-                <h3 class="text-sm font-bold text-gray-700 mb-2">外交官</h3>
-                @foreach(['INFP', 'INFJ', 'ENFP', 'ENFJ'] as $type)
-                    <div class="mb-2 flex items-center">
-                        <input type="radio" name="type" id="{{ $type }}" value="{{ $type }}" class="mr-2" required
-                               {{ old('type', $formData['type'] ?? '') == $type ? 'checked' : '' }}>
-                        <label for="{{ $type }}" class="flex-1 text-gray-700">{{ $sixteenTypes[$type] }}</label>
-                    </div>
-                @endforeach
-            </div>
-            <div class="bg-purple-100 p-4 rounded-lg">
-                <h3 class="text-sm font-bold text-gray-700 mb-2">分析家</h3>
-                @foreach(['INTP', 'INTJ', 'ENTP', 'ENTJ'] as $type)
-                    <div class="mb-2 flex items-center">
-                        <input type="radio" name="type" id="{{ $type }}" value="{{ $type }}" class="mr-2" required
-                               {{ old('type', $formData['type'] ?? '') == $type ? 'checked' : '' }}>
-                        <label for="{{ $type }}" class="flex-1 text-gray-700">{{ $sixteenTypes[$type] }}</label>
-                    </div>
-                @endforeach
-            </div>
-            <div class="bg-amber-100 p-4 rounded-lg">
-                <h3 class="text-sm font-bold text-gray-700 mb-2">探検家</h3>
-                @foreach(['ISTP', 'ISFP', 'ESTP', 'ESFP'] as $type)
-                    <div class="mb-2 flex items-center">
-                        <input type="radio" name="type" id="{{ $type }}" value="{{ $type }}" class="mr-2" required
-                               {{ old('type', $formData['type'] ?? '') == $type ? 'checked' : '' }}>
-                        <label for="{{ $type }}" class="flex-1 text-gray-700">{{ $sixteenTypes[$type] }}</label>
-                    </div>
-                @endforeach
-            </div>
-            <div class="bg-sky-100 p-4 rounded-lg">
-                <h3 class="text-sm font-bold text-gray-700 mb-2">番人</h3>
-                @foreach(['ISTJ', 'ISFJ', 'ESTJ', 'ESFJ'] as $type)
-                    <div class="mb-2 flex items-center">
-                        <input type="radio" name="type" id="{{ $type }}" value="{{ $type }}" class="mr-2" required
-                               {{ old('type', $formData['type'] ?? '') == $type ? 'checked' : '' }}>
-                        <label for="{{ $type }}" class="flex-1 text-gray-700">{{ $sixteenTypes[$type] }}</label>
-                    </div>
-                @endforeach
-            </div>
+        <div class="space-y-6">
+            <select name="type"
+                class="w-full rounded-md border-gray-300 shadow-sm focus:border-cyan-500 focus:ring-cyan-500" required>
+                <option value="">タイプを選択してください</option>
+                <optgroup label="外交官">
+                    @foreach (['INFP', 'INFJ', 'ENFP', 'ENFJ'] as $type)
+                        <option value="{{ $type }}"
+                            {{ old('type', $formData['type'] ?? '') == $type ? 'selected' : '' }}>
+                            {{ $sixteenTypes[$type] }}
+                        </option>
+                    @endforeach
+                </optgroup>
+                <optgroup label="分析家">
+                    @foreach (['INTP', 'INTJ', 'ENTP', 'ENTJ'] as $type)
+                        <option value="{{ $type }}"
+                            {{ old('type', $formData['type'] ?? '') == $type ? 'selected' : '' }}>
+                            {{ $sixteenTypes[$type] }}
+                        </option>
+                    @endforeach
+                </optgroup>
+                <optgroup label="探検家">
+                    @foreach (['ISTP', 'ISFP', 'ESTP', 'ESFP'] as $type)
+                        <option value="{{ $type }}"
+                            {{ old('type', $formData['type'] ?? '') == $type ? 'selected' : '' }}>
+                            {{ $sixteenTypes[$type] }}
+                        </option>
+                    @endforeach
+                </optgroup>
+                <optgroup label="番人">
+                    @foreach (['ISTJ', 'ISFJ', 'ESTJ', 'ESFJ'] as $type)
+                        <option value="{{ $type }}"
+                            {{ old('type', $formData['type'] ?? '') == $type ? 'selected' : '' }}>
+                            {{ $sixteenTypes[$type] }}
+                        </option>
+                    @endforeach
+                </optgroup>
+            </select>
         </div>
+
         <div class="flex justify-center mt-16 space-x-4">
-            <a href="{{ route('deciding_factors.create', ['enrollmentRecord' => $enrollmentRecord]) }}" id="skip-button"
+            <a href="{{ route('deciding_factors.create', ['enrollmentRecord' => $enrollmentRecord]) }}"
+                id="skip-button"
                 class="bg-gray-300 hover:bg-gray-400 text-gray-700 font-bold py-3 px-8 rounded-full transform transition duration-300 ease-in-out hover:scale-105 flex items-center">
                 <span>スキップ</span>
             </a>

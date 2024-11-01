@@ -58,13 +58,13 @@ class DecidingFactorController extends Controller
     {
         $rules = [
             'factor_1' => 'required|string|in:' . implode(',', array_keys(DecidingFactor::getFactors())),
-            'detail_1' => 'required|string|min:100',
+            'detail_1' => 'nullable|string',
             'satisfaction_1' => 'required|integer|min:1|max:5',
         ];
 
         for ($i = 2; $i <= 3; $i++) {
             $rules["factor_$i"] = 'nullable|string|in:' . implode(',', array_keys(DecidingFactor::getFactors()));
-            $rules["detail_$i"] = 'required_with:factor_' . $i . '|nullable|string|min:100';
+            $rules["detail_$i"] = 'nullable|string';
             $rules["satisfaction_$i"] = 'required_with:factor_' . $i . '|nullable|integer|min:1|max:5';
         }
 

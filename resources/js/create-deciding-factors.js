@@ -5,7 +5,6 @@ document.addEventListener('DOMContentLoaded', function () {
     setupUniqueFactorSelection();
     setupStarRating();
     setupFormNavigation();
-    setupCharacterCount();
     initializeExistingData(); // 新しく追加した関数
 });
 
@@ -230,18 +229,18 @@ function hideError(id) {
     }
 }
 
-function setupCharacterCount() {
-    for (let i = 1; i <= 3; i++) {
-        const detailTextarea = document.getElementById(`detail_${i}`);
-        const detailCount = document.getElementById(`detail_${i}_count`);
+// function setupCharacterCount() {
+//     for (let i = 1; i <= 3; i++) {
+//         const detailTextarea = document.getElementById(`detail_${i}`);
+//         const detailCount = document.getElementById(`detail_${i}_count`);
      
-        if (detailTextarea && detailCount) {
-            detailTextarea.addEventListener('input', function() {
-                detailCount.textContent = this.value.length;
-            });
-        }
-    }
-}
+//         if (detailTextarea && detailCount) {
+//             detailTextarea.addEventListener('input', function() {
+//                 detailCount.textContent = this.value.length;
+//             });
+//         }
+//     }
+// }
 
 // 新しく追加する関数
 function initializeExistingData() {

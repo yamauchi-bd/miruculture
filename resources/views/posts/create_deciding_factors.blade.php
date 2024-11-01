@@ -133,15 +133,17 @@
                                 <label for="detail_{{ $i }}"
                                     class="flex gap-1 mb-2 items-center text-gray-700 text-sm font-bold leading-relaxed">
                                     自由記述
-                                    <p class="text-xs">(決め手の詳細や満足度の理由)</p>
-                                    @if ($i == 1)
+                                    <p class="text-xs">(決め手の詳細や満足度の理由など)</p>
+                                    {{-- @if ($i == 1)
                                         <x-required-mark />
-                                    @endif
-                                    <span class="text-xs text-gray-500 ml-2">(<span id="detail_{{ $i }}_count">0</span>/100文字以上)</span>
+                                    @endif --}}
+                                    {{-- 文字数カウンターをコメントアウト
+                                    <span class="text-xs text-gray-500 ml-2">(<span id="detail_{{ $i }}_count">0</span>文字)</span>
+                                    --}}
                                 </label>
                                 <textarea id="detail_{{ $i }}" name="detail_{{ $i }}"
                                     class="block w-full px-4 py-2 border border-gray-300 text-base font-normal text-gray-700 bg-white rounded-md placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:border-transparent"
-                                    rows="3" {{ $i == 1 ? 'required' : '' }} minlength="100"
+                                    rows="3"
                                     placeholder="入社の決め手や満足度について、詳しく教えてください。">{{ old("detail_$i", $formData["detail_$i"] ?? '') }}</textarea>
                             </div>
                         </div>

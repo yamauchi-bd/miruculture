@@ -47,15 +47,6 @@ class CompanyCultureController extends Controller
             'culture_detail_7' => 'nullable|string',
         ]);
 
-        // 合計文字数のバリデーション
-        $totalCharCount = array_reduce(range(0, 7), function ($carry, $index) use ($validatedData) {
-            return $carry + mb_strlen($validatedData["culture_detail_$index"] ?? '');
-        }, 0);
-
-        if ($totalCharCount < 200) {
-            return back()->withErrors(['total_char_count' => '自由記述の合計文字数は200文字以上である必要があります。'])->withInput();
-        }
-
         $existingCulture = $enrollmentRecord->companyCultures()->latest()->first();
 
         if ($existingCulture) {

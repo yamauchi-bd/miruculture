@@ -126,9 +126,7 @@
             <div class="mt-20">
                 <h3 class="text-lg font-semibold text-gray-700 mb-4">自由記述 📝</h3>
                 <p class="text-sm text-gray-600 mb-8">
-                    社風について、具体的な例や説明があれば、ぜひとも回答お願いします！<br>
-                    すべてに回答しなくても構いませんが、合計で200文字以上の回答が必要です。
-                </p>
+                    社風について、具体的な例や説明があれば、ぜひとも回答お願いします！</p>
                 @foreach ($cultureItems as $index => $item)
                     <div class="mb-6">
                         <label for="culture_detail_{{ $index }}"
@@ -137,9 +135,9 @@
                         </label>
                         <textarea id="culture_detail_{{ $index }}" name="culture_detail_{{ $index }}" rows="3"
                             class="shadow-sm focus:ring-cyan-500 focus:border-cyan-500 mt-1 block w-full sm:text-sm border-gray-300 rounded-md">{{ old("culture_detail_$index", $formData["culture_detail_$index"] ?? '') }}</textarea>
-                        <div class="mt-2 text-right text-xs text-gray-500">
+                        {{-- <div class="mt-2 text-right text-xs text-gray-500">
                             合計文字数: <span id="culture_detail_count_{{ $index }}">0</span>/200文字以上
-                        </div>
+                        </div> --}}
                     </div>
                 @endforeach
             </div>
